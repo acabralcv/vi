@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Worflow process</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+    <div class="col-xs-12 col-md-12" layout:fragment="content">
+
+        <div clas="">
+            <a href="/workflow/process" class="btn btn-outline-primary">
+                Voltar
+            </a>
+        </div>
+
+        <div clas="col">
+            <h4>Workflow process</h4>
+            <h4>
+                <span th:text="${modelProcess.name}">[Não definido]</span>
+            </h4>
+            <div>
+                <span th:text="${modelProcess.description}">Não definido</span>
+            </div>
+
+        </div>
+
+
+         </div>
+
+    </div>
+
+</body>
+</html>

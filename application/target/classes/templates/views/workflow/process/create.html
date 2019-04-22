@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Worflow process</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+    <div class="col-xs-12 col-md-12" layout:fragment="content">
+
+       <div class="col-xs-12 col-md-12">
+
+            <form action="#" th:action="@{/workflow/process/create}" th:object="${wfProcess}" method="post">
+
+                <div class="form-group">
+                    <label for="processCode">Codigo do Processo <small>(Ex: PROCESS_SHOPING)</small></label>
+                    <input type="text" th:field="*{processCode}" id="processCode" class="form-control" />
+                    <span class="error" th:if="${#fields.hasErrors('processCode')}" th:errors="*{processCode}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="processCode">Nome</label>
+                    <input type="text" th:field="*{name}" id="name" class="form-control" />
+                    <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="processCode">Descrição</label>
+                    <textarea th:field="*{description}" id="description" class="form-control">
+                    </textarea>
+                    <span class="error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+                </div>
+
+                <div class="form-group">
+                     <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+
+            </form>
+
+         </div>
+
+    </div>
+
+</body>
+</html>
