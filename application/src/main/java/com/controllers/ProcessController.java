@@ -2,6 +2,7 @@ package com.controllers;
 
 
 import com.helpers.Helper;
+import com.helpers.UtilsDate;
 import com.models.WfProcess;
 import com.repository.WfProcessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,14 @@ public class ProcessController {
         return "views/workflow/process/view";
     }
 
+    /**
+     * CREATE NEW PROCESS
+     * @param wfProcess
+     * @param result
+     * @param model
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "workflow/process/create", method = {RequestMethod.GET, RequestMethod.POST})
     public String actionCreate(@Valid @ModelAttribute WfProcess wfProcess,
                                BindingResult result, ModelMap model, HttpServletRequest request) {
@@ -58,6 +67,7 @@ public class ProcessController {
                 }else{
                     //otherwise, create a new one
                     wfProcess.setId(new Helper().getUUID());
+                    wfProcess.setDescription(wfProcess.getDescription()  + " :: " + new UtilsDate().getCurrentDate("yyyy/MM/dd HH:mm:ss"));
                     wfProcessRepository.save(wfProcess);
                 }
 
