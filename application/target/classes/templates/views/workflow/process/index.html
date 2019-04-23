@@ -9,7 +9,7 @@
     <div class="col-xs-12 col-md-12" layout:fragment="content">
 
         <div clas="">
-            <a href="/workflow/process/create" class="btn btn-info">
+            <a href="/workflow/process/save" class="btn btn-info">
                 New process
             </a>
         </div>
@@ -25,15 +25,16 @@
 
                 <tr th:each="oProcess : ${processes}">
                     <td th:text="${oProcess.name}">Name</td>
+                    <td th:text="${oProcess.processCode}">Process Code</td>
                     <td th:text="${oProcess.description}">backUrl</td>
                     <td>
                         <a th:href="@{/workflow/process/view/{id}(id=${oProcess.id})}" class="btn btn-light btn-sm">
                             <span title="Ver" class="fas fa-eye"></span>
                          </a>
-                         <a href="@{/workflow/process/update/{id}(id=${oProcess.id})}" class="btn btn-light btn-sm">
+                         <a th:href="@{/workflow/process/save/{id}(id=${oProcess.id})}" class="btn btn-light btn-sm">
                             <span title="Ver" class="fas fa-pencil-alt"></span>
                          </a>
-                         <a href="@{/workflow/process/delete/{id}(id=${oProcess.id})}" class="btn btn-light btn-sm" onclick="return confirm('Are you sure?')">
+                         <a th:href="@{/workflow/process/disable/{id}(id=${oProcess.id})}" class="btn btn-light btn-sm" onclick="return confirm('Are you sure?')">
                             <span title="Ver" class="fas fa-minus-circle"></span>
                          </a>
                     </td>
