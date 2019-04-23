@@ -1,10 +1,9 @@
 package com.controllers;
 
-import com.service.MyService;
+import com.library.service.MyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 
 @Controller
@@ -16,6 +15,10 @@ public class HomeController {
         this.myService = myService;
     }
 
+    /**
+     *
+     * @return
+     */
     @GetMapping("/about")
     public String actionAbout() {
         //service.message
@@ -25,6 +28,11 @@ public class HomeController {
         return myService.appName();
     }
 
+    /**
+     *
+     * @param model
+     * @return
+     */
     @GetMapping(value = {"/", "home", "index", "default"})
     public String home(ModelMap model) {
         model.addAttribute("appName", myService.appName());

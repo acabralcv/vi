@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication(scanBasePackages = "com")
 //Note that, To enable JPA Auditing, you need to add the @EnableJpaAuditing annotation to one of the configuration classes
 @EnableJpaAuditing
-@EntityScan(basePackages = {"com.models"})  // scan JPA entities
+@EntityScan(basePackages = {"com.library.models"})  // scan JPA entities
 public class StartApplication {
 
     public static void main(String[] args) {
