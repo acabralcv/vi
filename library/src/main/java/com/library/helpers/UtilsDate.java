@@ -15,7 +15,7 @@ public class UtilsDate {
 
     private LocalDateTime _date;
 
-    public static Date getCurrentDate(){
+    public static Date getDateTime(){
 
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
         Date currentDate = calendar.getTime();
@@ -23,5 +23,16 @@ public class UtilsDate {
         return currentDate;
     }
 
+    /**
+     * UtilsDate.getFormattedDate(dateCreated, "dd MM yyyy")
+     * @param date
+     * @param format
+     * @return
+     */
+    public static String getFormattedDate(Date date, String format){
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
+        return sdf.format(calendar.getTime());
+    }
 
 }

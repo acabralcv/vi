@@ -1,0 +1,22 @@
+<div th:fragment="formField(modelObject,pageNumber)">
+    <nav aria-label="Page navigation">
+        <ul class="pagination" th:if="${modelObject.totalPages > 0}">
+            <li th:each="pageNumber : ${pageNumbers}" class="page-item">
+                <a class="page-link" th:href="@{/(size=${modelObject.size}, page=${pageNumber})}"
+                   th:text=${pageNumber}
+                   th:class="${pageNumber==modelObject.number + 1} ? 'page-link active' : 'page-link'"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+<!--<nav aria-label="Page navigation example">-->
+<!--<ul class="pagination">-->
+<!--<li class="page-item"><a class="page-link" href="#">Previous</a></li>-->
+<!--<li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--<li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--<li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--<li class="page-item"><a class="page-link" href="#">Next</a></li>-->
+<!--</ul>-->
+<!--</nav>-->

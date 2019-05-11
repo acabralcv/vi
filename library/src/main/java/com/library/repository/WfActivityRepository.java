@@ -11,5 +11,19 @@ import java.util.UUID;
 @Repository
 public interface WfActivityRepository extends JpaRepository<WfActivities, UUID> {
 
+    /**
+     * find all by status - default status => Helper.STATUS_ACTIVE
+     * @param status
+     * @return
+     */
+    WfActivities findBystatus(String status);
+
+    /**
+     *
+     * @param name
+     * @param wfType
+     * @return
+     */
     WfActivities findByNameAndWfType(String name, String wfType);
+
 }

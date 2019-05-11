@@ -11,21 +11,16 @@
        <div class="col-xs-12 col-md-12">
 
 
-           ##<span th:text="${wfProcess.name}">[Não definido]</span>##
-
            <form action="#" th:object="${wfProcess}" method="post">
-            <!--<form action="#" th:action="@{/workflow/process/save}" th:object="${wfProcess}" method="post">-->
 
                 <div class="form-group">
-                    <label for="processCode">Codigo do Processo #<small>(Ex: PROCESS_SHOPING)</small></label>
+                    <label for="processCode">Codigo do Processo <small>(Ex: PROCESS_SHOPING)</small></label>
                     <input type="text" th:field="*{processCode}" id="processCode" class="form-control" />
                     <span class="error" th:if="${#fields.hasErrors('processCode')}" th:errors="*{processCode}"></span>
                 </div>
 
                 <div class="form-group">
                     <label for="name">Nome</label>
-                    <!--<input type="text" th:field="*{name}" id="name" value="dasdas" class="form-control" />-->
-                    <!--<span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>-->
                     <input type="text" th:field="*{name}" id="name" class="form-control" />
                     <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 

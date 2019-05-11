@@ -8,6 +8,10 @@ import com.library.models.WfProcess;
 import com.library.repository.WfActivityRepository;
 import com.library.repository.WfProcessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +19,10 @@ import org.springframework.validation.BindingResult;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 public class ProcessController {
@@ -33,9 +39,26 @@ public class ProcessController {
      * @return
      */
     @RequestMapping(value = "workflow/process", method = RequestMethod.GET)
-    public String actionIndex(ModelMap model) {
+    public String actionIndex(ModelMap model, Pageable pageable) {
 
-        model.addAttribute("processes", wfProcessRepository.findAll());
+        Pageable firstPageWithTwoElements = PageRequest.of(0, 5);
+
+        Page<WfProcess> process = wfProcessRepository.findBystatus(Helper.STATUS_ACTIVE,
+                PageRequest.of(0, 3, Sort.by("dateCreated")
+                        .descending()
+                        .and(Sort.by("name").ascending())));
+
+        int totalPages = process.getTotalPages();
+        List<Integer> pageNumbers = null;
+
+        if (totalPages > 0) {
+            pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+        }
+
+        model.addAttribute("pageNumbers", pageNumbers);
+        model.addAttribute("processes", process);
         return "views/workflow/process/index";
     }
 
@@ -141,7 +164,7 @@ public class ProcessController {
                 }else{
                     //otherwise, create a new one
                     wfProcess.setId(new Helper().getUUID());
-                    wfProcess.setDescription(wfProcess.getDescription()  + " :: " + new UtilsDate().getCurrentDate());
+                    wfProcess.setDescription(wfProcess.getDescription()  + " :: " + new UtilsDate().getDateTime());
                     wfProcessRepository.save(wfProcess);
                 }
 
@@ -162,7 +185,6 @@ public class ProcessController {
             }
         }
 
-        wfProcess.setName("bla  bla");
         model.addAttribute("wfProcess", wfProcess);
         return "views/workflow/process/save";
     }
@@ -170,14 +192,14 @@ public class ProcessController {
 
 
     @RequestMapping(value = {"workflow/process/disable/{id}"}, method = {RequestMethod.POST})
-    public String actionDelete( BindingResult result, ModelMap model, HttpServletRequest request,@PathVariable(required = true) UUID id) {
+    public String actionDisable( BindingResult result, ModelMap model, HttpServletRequest request,@PathVariable(required = true) UUID id) {
 
         if(request.getMethod().equals("POST")){
 
             wfProcessRepository.findById(id)
                     .map(process ->{
                         process.setStatus(Helper.STATUS_DISABLED);
-                        process.setDatedUpdated(UtilsDate.getCurrentDate());
+                        process.setDatedUpdated(UtilsDate.getDateTime());
                         return wfProcessRepository.save(process);
                     }).orElseThrow(() -> new ResourceNotFoundException(WfProcess.class.getName() + " not found with id " + id));
 

@@ -14,32 +14,49 @@
             </a>
         </div>
 
-        <div clas="col">
+        <div clas="col" style="margin-top:20px">
             <h3>Workflow process</h3>
             <table class="table table-striped table-responsive">
                 <tr>
                     <th>Name</th>
+                    <th>WF Process Code</th>
                     <th>Description</th>
+                    <th>Date Created</th>
                     <th>Actions</th>
                 </tr>
 
                 <tr th:each="oProcess : ${processes}">
-                    <td th:text="${oProcess.name}">Name</td>
-                    <td th:text="${oProcess.processCode}">Process Code</td>
-                    <td th:text="${oProcess.description}">backUrl</td>
+                    <td th:text="${oProcess.name}">#</td>
+                    <td th:text="${oProcess.processCode}">#</td>
+                    <td th:text="${oProcess.description}">#</td>
+                    <td th:text='${T(com.library.helpers.UtilsDate).getFormattedDate(oProcess.dateCreated, "dd/MM/yyyy")}'>#</td>
                     <td>
+
+                        <span th:replace="/fragments/ActionColumn:: actionView(baseUrl='/workflow/process/view/{id}(id=${oProcess.id})')"></span>
+
                         <a th:href="@{/workflow/process/view/{id}(id=${oProcess.id})}" class="btn btn-light btn-sm">
                             <span title="Ver" class="fas fa-eye"></span>
                          </a>
                          <a th:href="@{/workflow/process/save/{id}(id=${oProcess.id})}" class="btn btn-light btn-sm">
                             <span title="Ver" class="fas fa-pencil-alt"></span>
                          </a>
-                         <a th:href="@{/workflow/process/disable/{id}(id=${oProcess.id})}" class="btn btn-light btn-sm" onclick="return confirm('Are you sure?')">
-                            <span title="Ver" class="fas fa-minus-circle"></span>
-                         </a>
+                        <span>
+                           <form th:action="@{/workflow/process/disable/{id}(id=${oProcess.id})}"method="post">
+                               <button type="submit" class="btn btn-light btn-sm" onclick="return confirm('Are you sure?')">
+                                   <span title="Ver" class="fas fa-minus-circle"></span>
+                               </button>
+                           </form>
+                        </span>
+                         <!--<a th:href="@{/workflow/process/disable/{id}(id=${oProcess.id})}" class="btn btn-light btn-sm" onclick="return confirm('Are you sure?')">-->
+                            <!--<span title="Ver" class="fas fa-minus-circle"></span>-->
+                         <!--</a>-->
                     </td>
                 </tr>
             </table>
+
+
+            <div th:replace="/fragments/pagination:: formField(modelObject=${processes}, pageNumber=${pageNumber} )"></div>
+
         </div>
 
 
