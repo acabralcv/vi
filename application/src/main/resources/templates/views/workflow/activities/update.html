@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Worflow process : <span th:text="${objProcess.name}"></span> </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Library</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Data</li>
+  </ol>
+</nav>
+
+    <div class="col-xs-12 col-md-12" layout:fragment="content">
+
+        <div clas="col">
+            <a th:href="@{|/workflow/process/view/${objProcess.id}|}" class="btn btn-info">
+                Voltar
+            </a>
+        </div>
+
+        <hr />
+
+        <div clas="col">
+            <h5>Update activity: <span th:text="${wfActivity.name}"></span> - Process: <span th:text="${objProcess.name}"></span></h5>
+        </div>
+
+        <hr />
+
+        <!-- activity form -->
+        <div clas="col">
+            <span th:replace="/views/workflow/activities/_form:: formActivity(wfActivity)"></span>
+        </div>
+
+    </div>
+
+    </div>
+
+</body>
+</html>

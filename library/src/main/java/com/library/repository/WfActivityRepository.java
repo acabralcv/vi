@@ -1,8 +1,6 @@
 package com.library.repository;
 
 import com.library.models.WfActivities;
-import com.library.models.WfProcess;
-import com.library.models.WfWorkflow;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.UUID;
@@ -17,6 +15,14 @@ public interface WfActivityRepository extends JpaRepository<WfActivities, UUID> 
      * @return
      */
     WfActivities findBystatus(String status);
+
+    /**
+     * Find ativity by id and type
+     * @param id
+     * @param wfType
+     * @return
+     */
+    WfActivities findByIdAndWfType(UUID id, String wfType);
 
     /**
      *

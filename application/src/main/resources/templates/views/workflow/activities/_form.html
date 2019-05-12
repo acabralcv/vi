@@ -1,0 +1,88 @@
+<span th:fragment="formActivity(wfActivity)">
+    <form action="#" th:object="${wfActivity}" method="post">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="processCode">Proces Type <small></small></label>
+                    <input type="text" th:field="*{wfType}" id="wfType" disabled="true" class="form-control" />
+                    <span class="error" th:if="${#fields.hasErrors('wfType')}" th:errors="*{wfType}"></span>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="processCode">Activity name</label>
+                    <input type="text" th:field="*{name}" id="name" class="form-control" />
+                    <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="processCode">actionName</label>
+                    <input type="text" th:field="*{actionName}" id="actionName" class="form-control" />
+                    <span class="error" th:if="${#fields.hasErrors('actionName')}" th:errors="*{actionName}"></span>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label for="processCode">className</label>
+                    <input type="text" th:field="*{className}" id="className" class="form-control" />
+                    <span class="error" th:if="${#fields.hasErrors('className')}" th:errors="*{className}"></span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="processCode">isViewable</label>
+                    <input type="text" th:field="*{isViewable}" id="isViewable" th:type="number" class="form-control" />
+                    <span class="error" th:if="${#fields.hasErrors('isViewable')}" th:errors="*{isViewable}"></span>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="processCode">wfStep</label>
+                    <input type="text" th:field="*{wfStep}" id="wfStep" th:type="number" class="form-control" />
+                    <span class="error" th:if="${#fields.hasErrors('wfStep')}" th:errors="*{wfStep}"></span>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="processCode">systemDefault</label>
+                    <input type="text" th:field="*{systemDefault}" id="systemDefault" th:type="number" class="form-control" />
+                    <span class="error" th:if="${#fields.hasErrors('systemDefault')}" th:errors="*{systemDefault}"></span>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="processCode">Color</label>
+                    <input type="text" th:field="*{stateColor}" id="stateColor" class="form-control" />
+                    <span class="error" th:if="${#fields.hasErrors('stateColor')}" th:errors="*{stateColor}"></span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                     <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+</span>

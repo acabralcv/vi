@@ -1,7 +1,5 @@
-package com.controllers;
+package com.app.controllers;
 
-import com.library.repository.WfProcessRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;

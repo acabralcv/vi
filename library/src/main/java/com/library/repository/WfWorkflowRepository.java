@@ -1,6 +1,5 @@
 package com.library.repository;
 
-import com.library.models.WfProcess;
 import com.library.models.WfWorkflow;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

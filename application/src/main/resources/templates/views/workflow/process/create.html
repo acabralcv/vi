@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Worflow process</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+    <div class="col-xs-12 col-md-12" layout:fragment="content">
+
+        <div clas="col">
+            <a th:href="@{|/workflow/process|}" class="btn btn-info">
+                Voltar
+            </a>
+        </div>
+
+
+        <h5>New Process</h5>
+
+        <hr />
+
+        <!-- process form -->
+        <div clas="col">
+            <span th:replace="/views/workflow/process/_form:: formProcess(wfProcess)"></span>
+        </div>
+
+    </div>
+
+    </div>
+
+</body>
+</html>

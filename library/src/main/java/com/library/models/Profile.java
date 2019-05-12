@@ -27,4 +27,43 @@ public class Profile extends AuditModel {
     @Column(name = "force_access_check", nullable = false)
     private Integer forceAccessCheck  = 0;
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Set<com.library.models.UserProfiles> getUserProfiles() {
+        return UserProfiles;
+    }
+
+    public void setUserProfiles(Set<com.library.models.UserProfiles> userProfiles) {
+        UserProfiles = userProfiles;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getIsEditable() {
+        return isEditable;
+    }
+
+    public void setIsEditable(Integer isEditable) {
+        this.isEditable = isEditable;
+    }
+
+    public Integer getForceAccessCheck() {
+        return forceAccessCheck;
+    }
+
+    public void setForceAccessCheck(Integer forceAccessCheck) {
+        this.forceAccessCheck = forceAccessCheck;
+    }
 }

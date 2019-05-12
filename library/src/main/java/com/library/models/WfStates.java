@@ -1,11 +1,6 @@
 package com.library.models;
 
-import com.sun.istack.internal.NotNull;
-
-import javax.annotation.Nullable;
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Entity

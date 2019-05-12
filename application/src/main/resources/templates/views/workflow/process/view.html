@@ -16,141 +16,38 @@
 
         <div clas="col">
             <h4>Workflow process</h4>
-            <h4>
-                <span th:text="${modelProcess.name}">[Não definido]</span>
-            </h4>
-            <div>
-                <span th:text="${modelProcess.description}">Não definido</span>
+            <div class="container">
+                <div class="row">
+                    <div class="w-25"><strong>Process Code:</strong></div>
+                    <div class="w-75"><span th:text="${modelProcess.processCode}">Não definido</span></div>
+                </div>
+                <div class="row">
+                    <div class="w-25"><strong>Process Name:</strong></div>
+                    <div class="w-75"><span th:text="${modelProcess.name}">Não definido</span></div>
+                </div>
+                <div class="row">
+                    <div class="w-25"><strong>Description:</strong></div>
+                    <div class="w-75"><span th:text="${modelProcess.description}">Não definido</span></div>
+                </div>
             </div>
         </div>
 
-        <div clas="col">
-            <h3>Workflow Activities</h3>
-            <table class="table table-striped table-responsive">
-                <tr>
-                    <th>Name</th>
-                    <th>wfType</th>
-                    <th>className</th>
-                    <th>actionName</th>
-                    <th>isViewable</th>
-                    <th>systemDefault</th>
-                    <th>stateColor</th>
-                </tr>
 
-                <tr th:each="oActivity : ${modelProcess.getActivitiesSet()}">
-                    <td th:text="${oActivity.name}">Name</td>
-                    <td th:text="${oActivity.wfType}">wfType</td>
-                    <td th:text="${oActivity.className}">className</td>
-                    <td th:text="${oActivity.actionName}">actionName</td>
-                    <td th:text="${oActivity.isViewable}">isViewable</td>
-                    <td th:text="${oActivity.systemDefault}">systemDefault</td>
-                    <td th:text="${oActivity.stateColor}">stateColor</td>
-                    <td>
-                        <a th:href="@{/workflow/process/view/{id}/{id_activity}(id=${modelProcess.id}, id_activity=${oActivity.id})}" class="btn btn-light btn-sm">
-                            <span title="Ver" class="fas fa-eye"></span>
-                        </a>
-                        <a href="@{/workflow/activities/update/{id}(id=${oActivity.id})}" class="btn btn-light btn-sm">
-                            <span title="Ver" class="fas fa-pencil-alt"></span>
-                        </a>
-                        <a href="@{/workflow/activities/delete/{id}(id=${oActivity.id})}" class="btn btn-light btn-sm" onclick="return confirm('Are you sure?')">
-                            <span title="Ver" class="fas fa-minus-circle"></span>
-                        </a>
-                    </td>
-                </tr>
-            </table>
+        <hr />
+
+        <h5>Workflow Activities </h5>
+
+
+        <div clas="">
+            <a th:href="@{|/workflow/activities/create/${modelProcess.id}|}" class="btn btn-info">
+                New activity
+            </a>
         </div>
 
+            <!-- list of process activities -->
+           <span th:replace="/views/workflow/activities/_index_view:: IndexView(${modelProcess.getActivitiesSet()})"></span>
 
-
-        <form action="#" th:object="${wfActivity}" method="post">
-
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="processCode">wfType <small></small></label>
-                        <input type="text" th:field="*{wfType}" id="wfType" disabled="true" class="form-control" />
-                        <span class="error" th:if="${#fields.hasErrors('wfType')}" th:errors="*{wfType}"></span>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="processCode">name</label>
-                        <input type="text" th:field="*{name}" id="name" class="form-control" />
-                        <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="row">
-
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="processCode">actionName</label>
-                        <input type="text" th:field="*{actionName}" id="actionName" class="form-control" />
-                        <span class="error" th:if="${#fields.hasErrors('actionName')}" th:errors="*{actionName}"></span>
-                    </div>
-                </div>
-
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label for="processCode">className</label>
-                        <input type="text" th:field="*{className}" id="className" class="form-control" />
-                        <span class="error" th:if="${#fields.hasErrors('className')}" th:errors="*{className}"></span>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="row">
-
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="processCode">isViewable</label>
-                        <input type="text" th:field="*{isViewable}" id="isViewable" th:type="number" class="form-control" />
-                        <span class="error" th:if="${#fields.hasErrors('isViewable')}" th:errors="*{isViewable}"></span>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="processCode">wfStep</label>
-                        <input type="text" th:field="*{wfStep}" id="wfStep" th:type="number" class="form-control" />
-                        <span class="error" th:if="${#fields.hasErrors('wfStep')}" th:errors="*{wfStep}"></span>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="processCode">systemDefault</label>
-                        <input type="text" th:field="*{systemDefault}" id="systemDefault" th:type="number" class="form-control" />
-                        <span class="error" th:if="${#fields.hasErrors('systemDefault')}" th:errors="*{systemDefault}"></span>
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="processCode">Color</label>
-                        <input type="text" th:field="*{stateColor}" id="stateColor" class="form-control" />
-                        <span class="error" th:if="${#fields.hasErrors('stateColor')}" th:errors="*{stateColor}"></span>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                         <button type="submit" class="btn btn-primary">Add Activity</button>
-                    </div>
-                </div>
-            </div>
-
-        </form>
+        </div>
 
     </div>
 

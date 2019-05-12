@@ -6,11 +6,20 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="app-module-api" />
+        <module name="app-sigp-api" />
+        <module name="app-sigp-application" />
+        <module name="app-sigp-library" />
         <module name="gs-multi-module-application" />
         <module name="gs-multi-module-library" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="app-module-api" target="1.8" />
+      <module name="app-sigp-api" target="1.8" />
+      <module name="app-sigp-application" target="1.8" />
+      <module name="app-sigp-library" target="1.8" />
+      <module name="app-sigp-module" target="1.5" />
       <module name="gs-multi-module" target="1.5" />
       <module name="gs-multi-module-application" target="1.8" />
       <module name="gs-multi-module-library" target="1.8" />

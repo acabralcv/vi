@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/gs-multi-module.iml" filepath="$PROJECT_DIR$/gs-multi-module.iml" />
-      <module fileurl="file://$PROJECT_DIR$/application/gs-multi-module-application.iml" filepath="$PROJECT_DIR$/application/gs-multi-module-application.iml" />
-      <module fileurl="file://$PROJECT_DIR$/library/gs-multi-module-library.iml" filepath="$PROJECT_DIR$/library/gs-multi-module-library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api/app-sigp-api.iml" filepath="$PROJECT_DIR$/api/app-sigp-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/application/app-sigp-application.iml" filepath="$PROJECT_DIR$/application/app-sigp-application.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/app-sigp-library.iml" filepath="$PROJECT_DIR$/library/app-sigp-library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app-sigp-module.iml" filepath="$PROJECT_DIR$/app-sigp-module.iml" />
     </modules>
   </component>
 </project>

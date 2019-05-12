@@ -3,7 +3,6 @@ package com.library.models;
 import java.util.Set;
 import java.util.UUID;
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "tbl_process")

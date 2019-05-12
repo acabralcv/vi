@@ -1,7 +1,6 @@
 package com.library.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Set;
 import java.util.UUID;
 
