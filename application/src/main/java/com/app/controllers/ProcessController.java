@@ -34,7 +34,6 @@ public class ProcessController {
     @Autowired
     private WfActivityRepository wfActivityRepository;
 
-    /**
     @RequestMapping(value = "workflow/process", method = RequestMethod.GET)
     public String actionIndex(ModelMap model, Pageable pageable) {
 

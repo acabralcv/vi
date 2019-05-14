@@ -2,6 +2,7 @@ package com.api.controllers;
 
 import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
+import com.library.helpers.UtilsDate;
 import com.library.models.Profile;
 import com.library.models.WfProcess;
 import com.library.repository.ProfileRepository;
@@ -60,6 +61,7 @@ public class ProfilesController {
                 new Exception("Já existe um 'Perfil' com o mesmo nome.");
 
             objProfile.setId(new Helper().getUUID());
+            objProfile.setDatedUpdated(UtilsDate.getDateTime());
             profileRepository.save(objProfile);
 
             return new BaseResponse().getResponse(1,"ok", objProfile);

@@ -2,6 +2,7 @@ package com.app.controllers;
 
 import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
+import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
 import com.library.models.Profile;
 import com.library.models.WfProcess;
@@ -19,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 public class ProfileController {
@@ -33,7 +37,19 @@ public class ProfileController {
 
         JSONObject objResponse = (new ServiceProxy()).getJsonData("api/profiles", p);
 
-        System.out.println(objResponse.get("content"));
+        int totalPages = 0;
+        List<Integer> pageNumbers = null;
+
+        if (totalPages > 0) {
+            pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+        }
+
+        //System.out.println(objResponse);
+        System.out.println((ArrayList<Profile>) objResponse.get("content"));
+        model.addAttribute("pageNumbers", pageNumbers);
+        model.addAttribute("profiles", (ArrayList<Profile>) objResponse.get("content"));
 
         return  "/views/profile/index";
     }
@@ -52,13 +68,17 @@ public class ProfileController {
 
                     ArrayList<Params> p = new ArrayList<>();
 
-                    JSONObject objResponse = (new ServiceProxy()).postJsonData("api/profiles/create", new ArrayList<>() , objProfile);
+                    BaseResponse objResponse = (new ServiceProxy()).postJsonData("api/profiles/create", objProfile, new ArrayList<>() );
 
-                    System.out.println(objResponse.get("content"));
+                    System.out.println( "PROFILES:: " + objResponse.getStatusAction());
+
+                    if(objResponse.getStatusAction() == 1)
+                        return "redirect:/admin/profile";
+                    else
+                        new Exception(objResponse.getMessage());
 
                 }
 
-                return "redirect:/views/profile/index";
             }
 
             model.addAttribute("objProfile", objProfile);

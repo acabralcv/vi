@@ -88,6 +88,12 @@
             <version>24.1.1-jre</version>
         </dependency>
 
+        <!-- para converter Models prar json -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>2.26</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
