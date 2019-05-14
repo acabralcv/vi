@@ -37,6 +37,7 @@ public class ProfileController {
 
         return  "/views/profile/index";
     }
+
     @RequestMapping(value = {"admin/profile/create"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String actionCreate(@Valid @ModelAttribute Profile objProfile,
                                 BindingResult result,

@@ -27,6 +27,9 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="app-sigp-api" options="-parameters" />
+      <module name="app-sigp-application" options="-parameters" />
+      <module name="app-sigp-library" options="-parameters" />
       <module name="gs-multi-module-application" options="-parameters" />
       <module name="gs-multi-module-library" options="-parameters" />
     </option>
