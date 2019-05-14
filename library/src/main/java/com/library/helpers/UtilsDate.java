@@ -15,8 +15,8 @@ import java.util.TimeZone;
 
 public class UtilsDate {
 
-    private static LocalDateTime _date;
-    private static String timeZone = "Europe/Madrid"; //mudar para cabo verde
+    protected static LocalDateTime _date;
+    protected static String timeZone = "Europe/Madrid"; //mudar para cabo verde
 
     public static Date getDateTime(){
 

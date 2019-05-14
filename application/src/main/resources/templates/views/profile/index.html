@@ -18,14 +18,18 @@
             <h3>Profiles</h3>
             <table class="table table-striped table-responsive">
                 <tr>
-                    <th>Name</th>
-                    <th>Date</th>
+                    <th>Nome</th>
+                    <th>Data criação</th>
+                    <th>Ultima atualização</th>
                     <th>Actions</th>
                 </tr>
 
                 <tr th:each="objProfile : ${profiles}">
-                    <td th:text="${oProcess.name}">#</td>
-                    <td th:text='${T(com.library.helpers.UtilsDate).getFormattedDate(objProfile.dateCreated, "dd/MM/yyyy")}'>#</td>
+                    <td th:text="${objProfile.name}">#</td>
+                    <td th:text="${objProfile.dateCreated}">#</td>
+                    <td th:text="${objProfile.datedUpdated}">#</td>
+                    <td th:text="${objProfile.dateCreated != null} ? ${T(com.library.helpers.UtilsDate).getFormattedDate(objProfile.dateCreated)} : '' ">#</td>
+                    <!--td th:text="${objProfile.datedUpdated != null} ? ${T(com.library.helpers.UtilsDate).getFormattedDate(objProfile.datedUpdated)} : '' ">#</td-->
                     <td>
 
                         <span th:replace="/fragments/ActionColumn:: actionView('/workflow/process/view/' + ${objProfile.id})"></span>
