@@ -2,6 +2,7 @@ package com.app.controllers;
 
 import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
+import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
 import com.library.models.Profile;
 import com.library.models.WfProcess;
@@ -51,13 +52,17 @@ public class ProfileController {
 
                     ArrayList<Params> p = new ArrayList<>();
 
-                    JSONObject objResponse = (new ServiceProxy()).postJsonData("api/profiles/create", new ArrayList<>() , objProfile);
+                    BaseResponse objResponse = (new ServiceProxy()).postJsonData("api/profiles/create", objProfile, new ArrayList<>() );
 
-                    System.out.println(objResponse.get("content"));
+                    System.out.println( "PROFILES:: " + objResponse.getStatusAction());
+
+                    if(objResponse.getStatusAction() == 1)
+                        return "redirect:/admin/profile";
+                    else
+                        new Exception(objResponse.getMessage());
 
                 }
 
-                return "redirect:/views/profile/index";
             }
 
             model.addAttribute("objProfile", objProfile);

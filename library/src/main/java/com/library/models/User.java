@@ -30,4 +30,52 @@ public class User extends AuditModel {
 
     @OneToMany(mappedBy="user") //this will look for 'user' property in the 'UserProfiles' model
     private Set<UserProfiles> UserProfiles;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getIsEditable() {
+        return isEditable;
+    }
+
+    public void setIsEditable(Integer isEditable) {
+        this.isEditable = isEditable;
+    }
+
+    public Set<com.library.models.UserProfiles> getUserProfiles() {
+        return UserProfiles;
+    }
+
+    public void setUserProfiles(Set<com.library.models.UserProfiles> userProfiles) {
+        UserProfiles = userProfiles;
+    }
 }

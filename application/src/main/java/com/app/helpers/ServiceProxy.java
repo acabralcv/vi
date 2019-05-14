@@ -1,5 +1,6 @@
 package com.app.helpers;
 
+import com.library.helpers.BaseResponse;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
@@ -58,7 +59,7 @@ public class ServiceProxy {
     }
 
 
-    public JSONObject postJsonData(String resourse, ArrayList<Params> params, Object objModel) {
+    public BaseResponse postJsonData(String resourse, Object objModel, ArrayList<Params> params) {
 
         try{
 
@@ -70,19 +71,20 @@ public class ServiceProxy {
 
             //post data
             String s = target.request().post(Entity.json(objModel), String.class);
-            System.out.println(s);
+            System.out.println("\n\nPOST RETURNED:: " + s + "\n\n");
             client.close();
 
             JSONParser parser = new JSONParser();
             Object obj = parser.parse(s);
             JSONObject objResponse = (JSONObject)obj;
 
-            return objResponse;
+            return new BaseResponse().getResponse((int) objResponse.get("statusAction"),objResponse.get("message").toString(), objResponse.get("data"));
+
 
         }catch(ParseException pe) {
             System.out.println("position: " + pe.getPosition());
             System.out.println(pe);
-            return null;
+            return new BaseResponse().getResponse(0,pe.getMessage(), null);
         }
     }
 }
