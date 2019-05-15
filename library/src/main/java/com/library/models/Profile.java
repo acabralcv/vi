@@ -18,7 +18,7 @@ public class Profile extends AuditModel {
     private Set<UserProfiles> UserProfiles;
 
     @NotBlank
-    @Size(min = 3, max = 30)
+    @Size(max = 30)
     private String name;
 
     @Column(name = "is_editable", nullable = false)

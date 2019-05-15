@@ -16,7 +16,7 @@
 
         <div clas="col" style="margin-top:20px">
             <h3>Workflow process</h3>
-            <table class="table table-striped table-responsive">
+            <table class="table table-striped table-bordered">
                 <tr>
                     <th>Name</th>
                     <th>Process Code</th>
@@ -30,6 +30,7 @@
                     <td th:text="${oProcess.processCode}">#</td>
                     <td th:text="${oProcess.description}">#</td>
                     <td th:text='${T(com.library.helpers.UtilsDate).getFormattedDate(oProcess.dateCreated, "dd/MM/yyyy")}'>#</td>
+                    <!--<td th:text="${oProcess.dateCreated}">#</td>-->
                     <td>
 
                         <span th:replace="/fragments/ActionColumn:: actionView('/workflow/process/view/' + ${oProcess.id})"></span>

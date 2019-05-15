@@ -1,6 +1,7 @@
 package com.library.models;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -12,15 +13,18 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AuditModel implements Serializable {
 
+    //2019-05-14 16:13:49.854
+    @JsonFormat(shape = JsonFormat.Shape.STRING ,pattern = "dd/MM/yyyy" , timezone="UTC")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_created", nullable = false, updatable = false)
     @CreatedDate
     private Date dateCreated;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING ,pattern = "dd/MM/yyyy" , timezone="UTC")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_updated", nullable = false)
     @LastModifiedDate
-    private Date datedUpdated;
+    private Date dateUpdated;
 
     @Column(name = "status", nullable = false)
     private Integer status = 1;
@@ -34,11 +38,11 @@ public abstract class AuditModel implements Serializable {
     }
 
     public Date getDatedUpdated() {
-        return datedUpdated;
+        return dateUpdated;
     }
 
-    public void setDatedUpdated(Date datedUpdated) {
-        this.datedUpdated = datedUpdated;
+    public void setDatedUpdated(Date dateUpdated) {
+        this.dateUpdated = dateUpdated;
     }
 
     public Integer getStatus() {

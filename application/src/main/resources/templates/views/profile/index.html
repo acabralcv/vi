@@ -9,44 +9,39 @@
     <div class="col-xs-12 col-md-12" layout:fragment="content">
 
         <div clas="">
-            <a href="/admin/profile/create" class="btn btn-info">
+            <a href="/admin/profiles/create" class="btn btn-info">
                 New profile
             </a>
         </div>
 
         <div clas="col" style="margin-top:20px">
             <h3>Profiles</h3>
-            <table class="table table-striped table-responsive">
+            <table class="table table-striped table-bordered">
                 <tr>
                     <th>Nome</th>
                     <th>Data criação</th>
                     <th>Ultima atualização</th>
-                    <th>Actions</th>
+                    <th>Ação</th>
                 </tr>
 
-                <tr th:each="objProfile : ${profiles}">
-                    <td th:text="${objProfile.name}">#</td>
-                    <td th:text="${objProfile.dateCreated}">#</td>
-                    <td th:text="${objProfile.datedUpdated}">#</td>
-                    <td th:text="${objProfile.dateCreated != null} ? ${T(com.library.helpers.UtilsDate).getFormattedDate(objProfile.dateCreated)} : '' ">#</td>
-                    <!--td th:text="${objProfile.datedUpdated != null} ? ${T(com.library.helpers.UtilsDate).getFormattedDate(objProfile.datedUpdated)} : '' ">#</td-->
-                    <td>
-
-                        <span th:replace="/fragments/ActionColumn:: actionView('/workflow/process/view/' + ${objProfile.id})"></span>
-
-                        <span th:replace="/fragments/ActionColumn:: actionUpdate('/workflow/process/update/' + ${objProfile.id})"></span>
-
-                        <span th:replace="/fragments/ActionColumn:: actionDelete('/workflow/process/delete/' + ${objProfile.id})"></span>
+                <tr th:each="oProfile : ${profiles}">
+                    <td th:text="${oProfile.name}">#</td>
+                    <td th:text="${oProfile.dateCreated}">#</td>
+                    <td th:text="${oProfile.dateUpdated}">#</td>
+                    <!--<td th:text="${#dates.format(new java.util.Date(oProfile.datedUpdated), 'dd-MMM-yy')}"></td>-->
+                    <!--<td th:text="${#dates.format(oProfile.datedUpdated, 'dd/MM/yyyy')}"></td>-->
+                    <!--<td th:text="${#dates.format(oProfile.datedUpdated, 'dd/MM/yyyy')}"></td>-->
+                   <td>
+                        <span th:replace="/fragments/ActionColumn:: actionView('/workflow/process/view/' + ${oProfile.id})"></span>
+                        <span th:replace="/fragments/ActionColumn:: actionUpdate('/workflow/process/update/' + ${oProfile.id})"></span>
+                        <span th:replace="/fragments/ActionColumn:: actionDelete('/workflow/process/delete/' + ${oProfile.id})"></span>
                     </td>
                 </tr>
             </table>
 
         </div>
 
-
-         </div>
-
-    </div>
+     </div>
 
 </body>
 </html>

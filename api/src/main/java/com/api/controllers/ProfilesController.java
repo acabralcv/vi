@@ -77,39 +77,38 @@ public class ProfilesController {
     @RequestMapping(value = {"api/profiles/update"}, method = {RequestMethod.POST})
     public BaseResponse actionUpdate(@Valid @RequestBody Profile objProfile) {
 
-        try {
+        try{
 
-            if( profileRepository.findByName(objProfile.getName()).size() > 0)
-                new Exception("Já existe um 'Perfil' com o mesmo nome.");
+            Profile oProfile = profileRepository.findById(objProfile.getId())
+                    .orElseThrow(() -> new Exception(Profile.class.getName() + " not found with id '" + objProfile.getId().toString() + "'"));
 
-            objProfile.setId(new Helper().getUUID());
-            profileRepository.save(objProfile);
 
+            oProfile.setDatedUpdated(UtilsDate.getDateTime());
+            oProfile.setStatus(Helper.STATUS_ACTIVE);
+            profileRepository.save(oProfile);
             return new BaseResponse().getResponse(1,"ok", objProfile);
 
-        }catch(Exception e){
+        }catch (Exception e){
             new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
             return new BaseResponse().getResponse(0,e.getMessage(), null);
         }
     }
 
 
-
-
     @RequestMapping(value = {"api/profiles/delete"}, method = {RequestMethod.POST})
     public BaseResponse actionDelete(@Valid @RequestBody Profile objProfile) {
 
-        try {
+        try{
 
-            if( profileRepository.findByName(objProfile.getName()).size() > 0)
-                new Exception("Já existe um 'Perfil' com o mesmo nome.");
+            Profile oProfile = profileRepository.findById(objProfile.getId())
+                    .orElseThrow(() -> new Exception(Profile.class.getName() + " not found with id '" + objProfile.getId().toString() + "' on actionDelete"));
 
-            objProfile.setId(new Helper().getUUID());
-            profileRepository.save(objProfile);
-
+            oProfile.setDatedUpdated(UtilsDate.getDateTime());
+            oProfile.setStatus(Helper.STATUS_DISABLED);
+            profileRepository.save(oProfile);
             return new BaseResponse().getResponse(1,"ok", objProfile);
 
-        }catch(Exception e){
+        }catch (Exception e){
             new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
             return new BaseResponse().getResponse(0,e.getMessage(), null);
         }

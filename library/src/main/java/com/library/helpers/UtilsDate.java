@@ -33,7 +33,7 @@ public class UtilsDate {
      */
     public static String getFormattedDate(@Nullable Date date){
 
-        if(date == null)
+        if(date != null)
             return "";
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
