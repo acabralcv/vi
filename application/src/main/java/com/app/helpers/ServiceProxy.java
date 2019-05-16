@@ -6,6 +6,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 import org.json.simple.parser.JSONParser;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -18,40 +20,22 @@ import javax.ws.rs.core.Response;
 
 public class ServiceProxy {
 
-    public String baseUrl = "http://localhost:8081/";
+    public String baseUrl = "http://localhost:8085/";
     public String serviceAccessToken = "access_token=Igh6KZaqq99UBUZwpY1nD-7ZpwAPpROx-ejeBMm9CMoLz4hs1WwKKgSQWgMocYNWaOQCz44kMq38uXKVr90BP7kPjyTw5QwOQ-yN96Mqg-rjH4OiBnAA_M8F3di4xZvE";
 
-    public String getServiceUrl(String resource, ArrayList<Params> params){
+    public String getServiceUrl(String resource, ArrayList<Params> params)  {
 
-        String _params = "";
+        String _params = "params=1";
 
-        for(Params objParam: params) {
-            _params = _params + "&" + objParam.name + "=" + objParam.value; //[key];
-        }
+            try {
+                for(Params objParam: params) {
+                _params = _params + "&" + objParam.name + "=" + URLEncoder.encode(objParam.value, "UTF-8").toString(); //[key];
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
 
         return baseUrl + resource + "?" + _params + "&access_token=" + serviceAccessToken;
-    }
-
-    public void getTeste(String resourse, ArrayList<Params> params){
-
-        String serviceUrl = this.getServiceUrl(resourse, params);
-
-        Client client = ClientBuilder.newClient();
-
-        Future<Response> future1 = client.target(serviceUrl)
-                .request()
-                .async().get();
-
-        Response res = null; // block until complete
-        try {
-            res = future1.get();
-            BaseResponse result1 = res.readEntity(BaseResponse.class);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public JSONObject getJsonData(String resourse, ArrayList<Params> params) {
@@ -72,13 +56,10 @@ public class ServiceProxy {
             JSONParser parser = new JSONParser();
             Object obj = parser.parse(s);
             JSONObject objResponse = (JSONObject)obj;
-            //System.out.println(objResponse);
 
             return objResponse;
 
         }catch(ParseException pe) {
-            System.out.println("position: " + pe.getPosition());
-            System.out.println(pe);
             return null;
         }
     }
@@ -96,46 +77,20 @@ public class ServiceProxy {
             WebTarget target = client.target(url);
 
             //post data
-            String s = target.request().post(Entity.json(objModel), String.class);
-            System.out.println("\n\nPOST RETURNED:: " + s + "\n\n");
+            BaseResponse response = target.request().post(Entity.json(objModel), BaseResponse.class);
+            System.out.println("\n\nPOST RETURNED:: " + response.toString() + "\n\n");
             client.close();
 
-            JSONParser parser = new JSONParser();
-            Object obj = parser.parse(s);
-            JSONObject objResponse = (JSONObject)obj;
+            if( response.getStatusAction() != 1)
+                new Exception(response.getMessage());
 
-            return new BaseResponse().getResponse((int) objResponse.get("statusAction"),objResponse.get("message").toString(), objResponse.get("data"));
+            return response;
 
-
-        }catch(ParseException pe) {
-            System.out.println("position: " + pe.getPosition());
-            System.out.println(pe);
+        }catch(Exception pe) {
             return new BaseResponse().getResponse(0,pe.getMessage(), null);
         }
     }
 
 
-
-    public void getTeste1(String resourse, Object objModel, ArrayList<Params> params){
-
-        String serviceUrl = this.getServiceUrl(resourse, params);
-
-        Client client = ClientBuilder.newClient();
-
-        Future<Response> future1 = (Future<Response>) client.target(serviceUrl)
-                .request()
-                .async();
-
-        Response res = null; // block until complete
-        try {
-            res = future1.get();
-            BaseResponse result1 = res.readEntity(BaseResponse.class);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
-    }
 
 }

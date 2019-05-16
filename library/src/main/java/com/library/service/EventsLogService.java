@@ -12,6 +12,9 @@ public class EventsLogService {
 
     public String AddEventologs(String type, String message, String description,  UUID id_target_table){
 
+        System.out.println("\nError in " + this.getClass().getName());
+        System.out.println("\n" + message + "\n" + description);
+
         return message;
     }
 }

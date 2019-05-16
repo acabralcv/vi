@@ -34,19 +34,11 @@ public class ProfilesController {
 
     @RequestMapping(value = "api/profiles", method = RequestMethod.GET)
     public Page<Profile> actionIndex(ModelMap model, Pageable pageable) {
-        Pageable firstPageWithTwoElements = PageRequest.of(0, 5);
 
         Page<Profile> profiles = profileRepository.findByStatus(Helper.STATUS_ACTIVE,
-                PageRequest.of(0, 3, Sort.by("dateCreated")
+                PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dateCreated")
                         .descending()
                         .and(Sort.by("name").ascending())));
-
-        int totalPages = profiles.getTotalPages();
-        List<Integer> pageNumbers = null;
-
-        if (totalPages > 0) {
-            pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
-        }
 
         return profiles;
     }

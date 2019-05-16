@@ -4,6 +4,7 @@ import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
 import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
+import com.library.helpers.HelperPaging;
 import com.library.models.Profile;
 import com.library.models.WfProcess;
 import com.library.repository.ProfileRepository;
@@ -37,17 +38,29 @@ public class ProfileController {
     @Autowired
     private ProfileRepository profileRepository;
 
+    /**
+     *
+     * @param model
+     * @param pageable
+     * @return
+     */
     @RequestMapping(value = "admin/profiles", method = RequestMethod.GET)
     public String actionIndex(ModelMap model, Pageable pageable) {
+
+        System.out.println(pageable);
 
         //buid params
         ArrayList<Params> p = new ArrayList<>();
         p.add(new Params("page", "" + pageable.getPageNumber()));
         p.add(new Params("size", "" + pageable.getPageSize()));
+        p.add(new Params("sort", "" + pageable.getSort()));
+        p.add(new Params("number", "" + pageable.getPageNumber()));
 
-        //get response from service
-        (new ServiceProxy()).getTeste("api/profiles", p);
+        //get info
         JSONObject objResponse = (new ServiceProxy()).getJsonData("api/profiles", p);
+        //check result
+        System.out.println(objResponse);
+        ArrayList<Profile> profiles = (objResponse != null) ? (ArrayList<Profile>) objResponse.get("content") : null;
 
         List<Integer> pageNumbers = null;
 
@@ -56,16 +69,27 @@ public class ProfileController {
                     .boxed()
                     .collect(Collectors.toList());
         }
-//
-//        System.out.println(objResponse);
-//
-        model.addAttribute("pageNumbers", pageNumbers);
-        model.addAttribute("profiles", (ArrayList<Profile>) objResponse.get("content"));
-        Pageable firstPageWithTwoElements = PageRequest.of(0, 5);
+
+        HelperPaging objPaging = new HelperPaging(pageable, (long) pageable.getPageNumber());
+        objPaging.setNumber((Long)objResponse.get("number"));
+        objPaging.setTotalPages((Long) objResponse.get(("totalPages")));
+
+        model.addAttribute("objPaging", objPaging);
+        model.addAttribute("profiles", profiles);
 
         return  "/views/profile/index";
     }
 
+
+    /**
+     *
+     * @param objProfile
+     * @param result
+     * @param model
+     * @param request
+     * @param id
+     * @return
+     */
     @RequestMapping(value = {"admin/profiles/create"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String actionCreate(@Valid @ModelAttribute Profile objProfile,
                                 BindingResult result,
@@ -77,39 +101,21 @@ public class ProfileController {
 
             try {
 
-                System.out.println( "IS POTS");
                 if (!result.hasErrors()) {
-                    System.out.println( "NO ERROR");
-
 
                     ArrayList<Params> p = new ArrayList<>();
-
-
                     BaseResponse objResponse = (new ServiceProxy()).postJsonData("api/profiles/create", objProfile, new ArrayList<>() );
-
-                    if(true)
-                        return "redirect:/admin/profiles";
-
-                    System.out.println( ":::::::");
-                    System.out.println( "PROFILES:: " + objResponse.getStatusAction());
-                    System.out.println( "IS ONE:: " + ( objResponse.getStatusAction() == 1));
 
                     if(objResponse.getStatusAction() == 1)
                         return "redirect:/admin/profiles";
                     else
                         new Exception(objResponse.getMessage());
-
                 }else
                     System.out.println(result.getAllErrors());
-
-
-
 
             } catch (Exception e) {
                 new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
             }
-        }else{
-            System.out.println( "NO POTS");
         }
 
         model.addAttribute("objProfile", objProfile);
