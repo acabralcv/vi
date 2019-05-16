@@ -58,11 +58,11 @@ public class UsersController {
             objUser.setId(new Helper().getUUID());
             userRepository.save(objUser);
 
-            return new BaseResponse().getResponse(1, "ok", objUser);
+            return new BaseResponse().getObjResponse(1, "ok", objUser);
 
         } catch (Exception e) {
             new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
-            return new BaseResponse().getResponse(0, e.getMessage(), null);
+            return new BaseResponse().getObjResponse(0, e.getMessage(), null);
         }
     }
 

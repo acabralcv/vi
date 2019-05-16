@@ -2,6 +2,7 @@ package com.app.controllers;
 
 import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
 import com.library.helpers.HelperPaging;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -25,6 +27,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -45,41 +50,47 @@ public class ProfileController {
      * @return
      */
     @RequestMapping(value = "admin/profiles", method = RequestMethod.GET)
-    public String actionIndex(ModelMap model, Pageable pageable) {
-
-        System.out.println(pageable);
-
-        //buid params
-        ArrayList<Params> p = new ArrayList<>();
-        p.add(new Params("page", "" + pageable.getPageNumber()));
-        p.add(new Params("size", "" + pageable.getPageSize()));
-        p.add(new Params("sort", "" + pageable.getSort()));
-        p.add(new Params("number", "" + pageable.getPageNumber()));
+    public String actionIndex(ModelMap model, @PageableDefault(sort = { "name"}, value = 5, page = 0) Pageable pageable) {
 
         //get info
-        JSONObject objResponse = (new ServiceProxy()).getJsonData("api/profiles", p);
+        BaseResponse objResponse = (new ServiceProxy())
+                .getJsonData("api/profiles", (new ServiceProxy()).encodePageableParams(pageable));
+
+        //Pageable result objt
+        JSONObject dataResponse = (JSONObject) objResponse.getData();
+
         //check result
-        System.out.println(objResponse);
-        ArrayList<Profile> profiles = (objResponse != null) ? (ArrayList<Profile>) objResponse.get("content") : null;
+        ArrayList<Profile> profiles = (ArrayList<Profile>) dataResponse.get("content");
 
-        List<Integer> pageNumbers = null;
-
-        if (pageable.getPageNumber() > 0) {
-            pageNumbers = IntStream.rangeClosed(1, pageable.getPageNumber())
-                    .boxed()
-                    .collect(Collectors.toList());
-        }
-
-        HelperPaging objPaging = new HelperPaging(pageable, (long) pageable.getPageNumber());
-        objPaging.setNumber((Long)objResponse.get("number"));
-        objPaging.setTotalPages((Long) objResponse.get(("totalPages")));
-
-        model.addAttribute("objPaging", objPaging);
+        model.addAttribute("objPaging", (new HelperPaging().getResponsePaging(pageable, dataResponse)));
         model.addAttribute("profiles", profiles);
 
         return  "/views/profile/index";
     }
 
+
+
+
+
+    @RequestMapping(value = {"admin/profiles/view/{id}"}, method = {RequestMethod.GET})
+    public String actionView(ModelMap model, @PathVariable UUID id) {
+
+        ArrayList<Params> params = new ArrayList<>();
+        params.add(new Params("id", id.toString()));
+
+        ServiceProxy oServiceProxy = new ServiceProxy();
+
+        Profile oProfile = oServiceProxy
+                    .buildParams("api/profiles/details", params)
+                    .getTarget()
+                    .get(Profile.class);
+
+        oServiceProxy.close();
+
+        model.addAttribute("oProfile", oProfile);
+
+        return  "/views/profile/view";
+    }
 
     /**
      *

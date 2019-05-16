@@ -1,0 +1,18 @@
+
+
+
+
+<div th:fragment="actionPaging(oPaging, baseUrl)">
+    <nav aria-label="Page navigation">
+        <ul class="pagination" th:if="${oPaging.totalPages > 0}">
+            <li th:each="pageNumber : ${oPaging.pageNumbers}" class="page-item">
+                <a class="page-link" th:href="@{${baseUrl}(size=${oPaging.size}, page=${pageNumber - 1})}"
+                   th:text=${pageNumber}
+                   th:class="${pageNumber==oPaging.number + 1} ? 'page-link active' : 'page-link'"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!--@{(size=${oPaging.size}, page=${pageNumber})}-->
+

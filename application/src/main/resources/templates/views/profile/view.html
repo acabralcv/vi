@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
+
+<div class="col-xs-12 col-md-12" layout:fragment="content">
+
+  <div clas="col">
+    <a href="/admin/profiles" class="btn btn-outline-primary">
+      Voltar
+    </a>
+  </div>
+
+  <div clas="col">
+    <h4>Profile Details</h4>
+    <div class="container">
+      <div class="row">
+        <div class="w-25"><strong>Nome:</strong></div>
+        <div class="w-75"><span th:text="${oProfile.name}">#</span></div>
+      </div>
+      <!--<div class="row">-->
+        <!--<div class="w-25"><strong>Data criação:</strong></div>-->
+        <!--<div class="w-75"><span th:text="${oProfile.dateCreated}">#</span></div>-->
+      <!--</div>-->
+      <!--<div class="row">-->
+        <!--<div class="w-25"><strong>Ultima atualização:</strong></div>-->
+        <!--<div class="w-75"><span th:text="${oProfile.dateUpdated}">#</span></div>-->
+      <!--</div>-->
+    </div>
+  </div>
+
+</div>
+
+</div>
 
 </body>
 </html>

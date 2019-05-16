@@ -1,37 +1,65 @@
 package com.library.helpers;
 
+import org.json.simple.JSONObject;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class HelperPaging {
 
     private int size;
-    private Long totalPages;
-    private int pageNumbers;
+    public Long totalPages;
+    private List<Integer> pageNumbers;
     private Sort sort;
     private  Long number;
 
+    public Long getTotalElements() {
+        return totalElements;
+    }
+
+    public void setTotalElements(Long totalElements) {
+        this.totalElements = totalElements;
+    }
+
+    private  Long totalElements;
+
+
     public HelperPaging(){}
 
-    public HelperPaging(int size, Long totalPages, int pageNumbers, Sort sort){
-        this.size = size;
-        this.totalPages = totalPages;
-        this.pageNumbers = pageNumbers;
-        this.sort = sort;
+    /**
+     * Retorna a paginação atualizada com base na resposta do  serviço
+     * @param pageable
+     * @param objResponse
+     * @return
+     */
+    public HelperPaging getResponsePaging(Pageable pageable, JSONObject objResponse){
+
+        HelperPaging objPaging = new HelperPaging(pageable);
+        objPaging.setNumber((Long)objResponse.get("number"));
+        objPaging.setTotalPages((Long) objResponse.get(("totalPages")));
+        objPaging.setTotalElements((Long) objResponse.get(("totalElements")));
+
+        if (objPaging.getTotalPages() > 0) {
+            List<Integer>  pageNumbers = IntStream.rangeClosed(1,  objPaging.getTotalPages().intValue())
+                    .boxed().collect(Collectors.toList());
+            objPaging.setPageNumbers(pageNumbers);
+        }
+        return objPaging;
     }
 
     public HelperPaging(Pageable pageable){
         this.size = pageable.getPageSize();
-        this.pageNumbers = pageable.getPageNumber();
         this.sort = pageable.getSort();
     }
 
-    public HelperPaging(Pageable pageable, Long totalPages){
-        this.size = pageable.getPageSize();
-        this.totalPages = totalPages;
-        this.pageNumbers = pageable.getPageNumber();
-        this.sort = pageable.getSort();
-    }
+//    public HelperPaging(Pageable pageable, Long totalPages){
+//        this.size = pageable.getPageSize();
+//        this.totalPages = totalPages;
+//        this.sort = pageable.getSort();
+//    }
 
     public int getSize() {
         return size;
@@ -49,11 +77,11 @@ public class HelperPaging {
         this.totalPages = totalPages;
     }
 
-    public int getPageNumbers() {
+    public List<Integer> getPageNumbers() {
         return pageNumbers;
     }
 
-    public void setPageNumbers(int pageNumbers) {
+    public void setPageNumbers(List<Integer> pageNumbers) {
         this.pageNumbers = pageNumbers;
     }
 

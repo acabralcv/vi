@@ -2,26 +2,28 @@ package com.app.helpers;
 
 import com.library.helpers.BaseResponse;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.ParseException;
 import org.json.simple.parser.JSONParser;
+import org.springframework.data.domain.Pageable;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.client.*;
 
 public class ServiceProxy {
 
-    public String baseUrl = "http://localhost:8085/";
+    private String serviceAddress = "";
+    public String baseUrl = "http://localhost:8081/";
     public String serviceAccessToken = "access_token=Igh6KZaqq99UBUZwpY1nD-7ZpwAPpROx-ejeBMm9CMoLz4hs1WwKKgSQWgMocYNWaOQCz44kMq38uXKVr90BP7kPjyTw5QwOQ-yN96Mqg-rjH4OiBnAA_M8F3di4xZvE";
+    private Client client;
+
+    public ArrayList<Params> encodePageableParams(Pageable pageable)  {
+        ArrayList<Params> p = new ArrayList<>();
+        p.add(new Params("page", "" + pageable.getPageNumber()));
+        p.add(new Params("size", "" + pageable.getPageSize()));
+        p.add(new Params("sort", "" + pageable.getSort()));
+        return p;
+    }
 
     public String getServiceUrl(String resource, ArrayList<Params> params)  {
 
@@ -38,7 +40,26 @@ public class ServiceProxy {
         return baseUrl + resource + "?" + _params + "&access_token=" + serviceAccessToken;
     }
 
-    public JSONObject getJsonData(String resourse, ArrayList<Params> params) {
+
+    public ServiceProxy buildParams(String resource, ArrayList<Params> params){
+        this.serviceAddress = this.getServiceUrl(resource, params);
+        return this;
+    }
+
+    public Invocation.Builder getTarget(){
+
+        this.client = ClientBuilder.newClient();
+        WebTarget target = client.target(this.serviceAddress);
+
+        return target.request();
+    }
+
+    public void close(){
+        this.client.close();
+    }
+
+
+    public BaseResponse getJsonData(String resourse, ArrayList<Params> params) {
 
         try{
 
@@ -50,25 +71,50 @@ public class ServiceProxy {
 
             String s = target.request().get(String.class);
 
-
             client.close();
 
             JSONParser parser = new JSONParser();
             Object obj = parser.parse(s);
-            JSONObject objResponse = (JSONObject)obj;
+            JSONObject res = (JSONObject)obj;
 
-            return objResponse;
+            BaseResponse oBaseResponse = new BaseResponse().getObjResponse(
+                    ((Long) res.get("statusAction")).intValue(),
+                    res.get("message").toString(),
+                    res.get("data"));
 
-        }catch(ParseException pe) {
-            return null;
+            return oBaseResponse;
+
+        }catch(Exception pe) {
+            return new BaseResponse().getObjResponse(0,pe.getMessage(), null);
         }
     }
 
 
-    public BaseResponse postJsonData(String resourse, Object objModel, ArrayList<Params> params) {
+
+    public BaseResponse getModelDetails(String resourse, ArrayList<Params> params) {
 
         try{
 
+            String url = this.getServiceUrl(resourse, params);
+
+            //https://www.logicbig.com/how-to/code-snippets/jcode-jax-rs-client-and-clientbuilder.html
+            Client client = ClientBuilder.newClient();
+            WebTarget target = client.target(url);
+
+            Object oBaseResponse = target.request().get(Object.class);
+
+            client.close();
+
+            return new BaseResponse().getObjResponse(1,"ok", oBaseResponse);
+
+        }catch(Exception pe) {
+            return new BaseResponse().getObjResponse(0,pe.getMessage(), null);
+        }
+    }
+
+    public BaseResponse postJsonData(String resourse, Object objModel, ArrayList<Params> params) {
+
+        try{
 
             String url = this.getServiceUrl(resourse, params);
 
@@ -87,7 +133,7 @@ public class ServiceProxy {
             return response;
 
         }catch(Exception pe) {
-            return new BaseResponse().getResponse(0,pe.getMessage(), null);
+            return new BaseResponse().getObjResponse(0,pe.getMessage(), null);
         }
     }
 

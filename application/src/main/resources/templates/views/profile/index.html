@@ -24,31 +24,24 @@
                     <th>Ação</th>
                 </tr>
 
+                <div class="col">
+                    Total: <span th:text="${objPaging.totalElements}"></span>
+                </div>
+
                 <tr th:each="oProfile : ${profiles}">
                     <td th:text="${oProfile.name}">#</td>
                     <td th:text="${oProfile.dateCreated}">#</td>
                     <td th:text="${oProfile.dateUpdated}">#</td>
-                    <!--<td th:text="${#dates.format(new java.util.Date(oProfile.datedUpdated), 'dd-MMM-yy')}"></td>-->
-                    <!--<td th:text="${#dates.format(oProfile.datedUpdated, 'dd/MM/yyyy')}"></td>-->
-                    <!--<td th:text="${#dates.format(oProfile.datedUpdated, 'dd/MM/yyyy')}"></td>-->
                    <td>
-                        <span th:replace="/fragments/ActionColumn:: actionView('/workflow/process/view/' + ${oProfile.id})"></span>
-                        <span th:replace="/fragments/ActionColumn:: actionUpdate('/workflow/process/update/' + ${oProfile.id})"></span>
-                        <span th:replace="/fragments/ActionColumn:: actionDelete('/workflow/process/delete/' + ${oProfile.id})"></span>
+                        <span th:replace="/fragments/ActionColumn:: actionView('/admin/profiles/view/' + ${oProfile.id})"></span>
+                        <span th:replace="/fragments/ActionColumn:: actionUpdate('/admin/profiles/update/' + ${oProfile.id})"></span>
+                        <span th:replace="/fragments/ActionColumn:: actionDelete('/admin/profiles/delete/' + ${oProfile.id})"></span>
                     </td>
                 </tr>
             </table>
 
 
-            <nav aria-label="Page navigation">
-                <ul class="pagination" th:if="${objPaging.totalPages > 0}">
-                    <li th:each="pageNumber : ${objPaging.pageNumbers}" class="page-item">
-                        <a class="page-link" th:href="@{/(size=${objPaging.size}, page=${pageNumber})}"
-                           th:text=${pageNumber}
-                           th:class="${pageNumber==objPaging.number + 1} ? 'page-link active' : 'page-link'"></a>
-                    </li>
-                </ul>
-            </nav>
+            <span th:replace="/fragments/pagingResult:: actionPaging(${objPaging}, '/admin/profiles')"></span>
 
         </div>
 

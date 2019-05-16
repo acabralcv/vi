@@ -32,18 +32,39 @@ public class ProfilesController {
     @Autowired
     private ProfileRepository profileRepository;
 
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = {"api/profiles/details"}, method = {RequestMethod.GET})
+    public Profile actionDetails(@RequestParam(name = "id") UUID id) {
+
+        return profileRepository.findById(id).get();
+    }
+
+    /**
+     *
+     * @param model
+     * @param pageable
+     * @return
+     */
     @RequestMapping(value = "api/profiles", method = RequestMethod.GET)
-    public Page<Profile> actionIndex(ModelMap model, Pageable pageable) {
+    public BaseResponse actionIndex(ModelMap model, Pageable pageable) {
 
         Page<Profile> profiles = profileRepository.findByStatus(Helper.STATUS_ACTIVE,
                 PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dateCreated")
                         .descending()
                         .and(Sort.by("name").ascending())));
 
-        return profiles;
+        return new BaseResponse().getObjResponse(1,"ok", profiles );
     }
 
-
+    /**
+     *
+     * @param objProfile
+     * @return
+     */
     @RequestMapping(value = {"api/profiles/create"}, method = {RequestMethod.POST})
     public BaseResponse actionCreate(@Valid @RequestBody Profile objProfile) {
 
@@ -56,16 +77,20 @@ public class ProfilesController {
             objProfile.setDatedUpdated(UtilsDate.getDateTime());
             profileRepository.save(objProfile);
 
-            return new BaseResponse().getResponse(1,"ok", objProfile);
+            return new BaseResponse().getObjResponse(1,"ok", objProfile );
 
         }catch(Exception e){
             new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
-            return new BaseResponse().getResponse(0,e.getMessage(), null);
+            return new BaseResponse().getObjResponse(0,e.getMessage(), null);
         }
     }
 
 
-
+    /**
+     *
+     * @param objProfile
+     * @return
+     */
     @RequestMapping(value = {"api/profiles/update"}, method = {RequestMethod.POST})
     public BaseResponse actionUpdate(@Valid @RequestBody Profile objProfile) {
 
@@ -78,15 +103,19 @@ public class ProfilesController {
             oProfile.setDatedUpdated(UtilsDate.getDateTime());
             oProfile.setStatus(Helper.STATUS_ACTIVE);
             profileRepository.save(oProfile);
-            return new BaseResponse().getResponse(1,"ok", objProfile);
+            return new BaseResponse().getObjResponse(1,"ok", objProfile);
 
         }catch (Exception e){
             new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
-            return new BaseResponse().getResponse(0,e.getMessage(), null);
+            return new BaseResponse().getObjResponse(0,e.getMessage(), null);
         }
     }
 
-
+    /**
+     *
+     * @param objProfile
+     * @return
+     */
     @RequestMapping(value = {"api/profiles/delete"}, method = {RequestMethod.POST})
     public BaseResponse actionDelete(@Valid @RequestBody Profile objProfile) {
 
@@ -98,11 +127,11 @@ public class ProfilesController {
             oProfile.setDatedUpdated(UtilsDate.getDateTime());
             oProfile.setStatus(Helper.STATUS_DISABLED);
             profileRepository.save(oProfile);
-            return new BaseResponse().getResponse(1,"ok", objProfile);
+            return new BaseResponse().getObjResponse(1,"ok", objProfile);
 
         }catch (Exception e){
             new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
-            return new BaseResponse().getResponse(0,e.getMessage(), null);
+            return new BaseResponse().getObjResponse(0,e.getMessage(), null);
         }
     }
 }
