@@ -84,8 +84,8 @@ public class ProfileController {
                     .buildParams("api/profiles/details", params)
                     .getTarget()
                     .get(Profile.class);
-
         oServiceProxy.close();
+        System.out.println(oProfile);
 
         model.addAttribute("oProfile", oProfile);
 

@@ -4,6 +4,7 @@ import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
 import com.library.helpers.UtilsDate;
 import com.library.models.Profile;
+import com.library.models.UserProfiles;
 import com.library.models.WfProcess;
 import com.library.repository.ProfileRepository;
 import com.library.service.EventsLogService;
@@ -32,6 +33,9 @@ public class ProfilesController {
     @Autowired
     private ProfileRepository profileRepository;
 
+//    @Autowired
+//    private UserProfileRepository userProfileRepository;
+
     /**
      *
      * @param id
@@ -42,6 +46,7 @@ public class ProfilesController {
 
         return profileRepository.findById(id).get();
     }
+
 
     /**
      *

@@ -3,7 +3,7 @@
 
 
 <div th:fragment="actionPaging(oPaging, baseUrl)">
-    <nav aria-label="Page navigation">
+    <nav aria-label="Page navigation" th:if="${oPaging != null && oPaging != 'null'}">
         <ul class="pagination" th:if="${oPaging.totalPages > 0}">
             <li th:each="pageNumber : ${oPaging.pageNumbers}" class="page-item">
                 <a class="page-link" th:href="@{${baseUrl}(size=${oPaging.size}, page=${pageNumber - 1})}"

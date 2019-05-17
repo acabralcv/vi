@@ -21,6 +21,18 @@ public class User extends AuditModel {
     @Size(min = 3, max = 30)
     private String username;
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @NotBlank
+    @Size(min = 3, max = 30)
+    private String email;
+
     @NotBlank
     @Size(min = 3, max = 150)
     private String name;

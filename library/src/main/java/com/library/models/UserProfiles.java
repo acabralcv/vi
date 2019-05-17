@@ -10,6 +10,33 @@ public class UserProfiles extends AuditModel {
     @Id
     private UUID id;
 
+
+
+    /* não eh uma propiedade da DB */
+    @javax.persistence.Transient
+    private UUID profileId;
+
+    public UUID getProfileId() {
+        return profileId;
+    }
+
+    public void setProfileId(UUID profileId) {
+        this.profileId = profileId;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
+
+    /* não eh uma propiedade da DB */
+    @javax.persistence.Transient
+    private UUID userId;
+
+
     @ManyToOne
     @JoinColumn(name="profile_id", nullable=false)
     private Profile profile;
@@ -23,4 +50,44 @@ public class UserProfiles extends AuditModel {
 
     @Column(name = "force_access_check", nullable = false, columnDefinition = "int default 0")
     private Integer forceAccessCheck;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Integer getIsEditable() {
+        return isEditable;
+    }
+
+    public void setIsEditable(Integer isEditable) {
+        this.isEditable = isEditable;
+    }
+
+    public Integer getForceAccessCheck() {
+        return forceAccessCheck;
+    }
+
+    public void setForceAccessCheck(Integer forceAccessCheck) {
+        this.forceAccessCheck = forceAccessCheck;
+    }
 }

@@ -14,7 +14,7 @@ public class Helper {
      * @param lenght
      * @return
      */
-    public static String genToken(Integer lenght) {
+    public String genToken(Integer lenght) {
 
         SecureRandom secureRandom = new SecureRandom();
         byte[] token = new byte[lenght];

@@ -16,32 +16,36 @@
 
         <div clas="col" style="margin-top:20px">
             <h3>Profiles</h3>
-            <table class="table table-striped table-bordered">
-                <tr>
-                    <th>Nome</th>
-                    <th>Data criação</th>
-                    <th>Ultima atualização</th>
-                    <th>Ação</th>
-                </tr>
 
-                <div class="col">
-                    Total: <span th:text="${objPaging.totalElements}"></span>
-                </div>
+            <!--será utilizado pelo user/view/{id} tambem para mostrar perfis do utilizador -->
+            <span th:replace="/views/profile/_index_view:: indexView(${profiles},${objPaging})"></span>
 
-                <tr th:each="oProfile : ${profiles}">
-                    <td th:text="${oProfile.name}">#</td>
-                    <td th:text="${oProfile.dateCreated}">#</td>
-                    <td th:text="${oProfile.dateUpdated}">#</td>
-                   <td>
-                        <span th:replace="/fragments/ActionColumn:: actionView('/admin/profiles/view/' + ${oProfile.id})"></span>
-                        <span th:replace="/fragments/ActionColumn:: actionUpdate('/admin/profiles/update/' + ${oProfile.id})"></span>
-                        <span th:replace="/fragments/ActionColumn:: actionDelete('/admin/profiles/delete/' + ${oProfile.id})"></span>
-                    </td>
-                </tr>
-            </table>
+            <!--<table class="table table-striped table-bordered">-->
+                <!--<tr>-->
+                    <!--<th>Nome</th>-->
+                    <!--<th>Data criação</th>-->
+                    <!--<th>Ultima atualização</th>-->
+                    <!--<th>Ação</th>-->
+                <!--</tr>-->
+
+                <!--<div class="col">-->
+                    <!--Total: <span th:text="${objPaging.totalElements}"></span>-->
+                <!--</div>-->
+
+                <!--<tr th:each="oProfile : ${profiles}">-->
+                    <!--<td th:text="${oProfile.name}">#</td>-->
+                    <!--<td th:text="${oProfile.dateCreated}">#</td>-->
+                    <!--<td th:text="${oProfile.dateUpdated}">#</td>-->
+                   <!--<td>-->
+                        <!--<span th:replace="/fragments/ActionColumn:: actionView('/admin/profiles/view/' + ${oProfile.id})"></span>-->
+                        <!--<span th:replace="/fragments/ActionColumn:: actionUpdate('/admin/profiles/update/' + ${oProfile.id})"></span>-->
+                        <!--<span th:replace="/fragments/ActionColumn:: actionDelete('/admin/profiles/delete/' + ${oProfile.id})"></span>-->
+                    <!--</td>-->
+                <!--</tr>-->
+            <!--</table>-->
 
 
-            <span th:replace="/fragments/pagingResult:: actionPaging(${objPaging}, '/admin/profiles')"></span>
+            <!--<span th:replace="/fragments/pagingResult:: actionPaging(${objPaging}, '/admin/profiles')"></span>-->
 
         </div>
 
