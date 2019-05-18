@@ -164,7 +164,7 @@ public class ProcessController {
             }else{
                 if (!result.hasErrors()) {
 
-                    wfProcess.setDatedUpdated(UtilsDate.getDateTime());
+                    wfProcess.setDateUpdated(UtilsDate.getDateTime());
                     wfProcess.setStatus(Helper.STATUS_ACTIVE);
 
                     wfProcessRepository.save(wfProcess);
@@ -191,7 +191,7 @@ public class ProcessController {
             wfProcessRepository.findById(id)
                     .map(process ->{
                         process.setStatus(Helper.STATUS_DISABLED);
-                        process.setDatedUpdated(UtilsDate.getDateTime());
+                        process.setDateUpdated(UtilsDate.getDateTime());
                         return wfProcessRepository.save(process);
                     }).orElseThrow(() -> new ResourceNotFoundException(WfProcess.class.getName() + " not found with id " + id));
 

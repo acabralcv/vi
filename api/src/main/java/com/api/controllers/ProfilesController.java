@@ -79,7 +79,7 @@ public class ProfilesController {
                 new Exception("Já existe um 'Perfil' com o mesmo nome.");
 
             objProfile.setId(new Helper().getUUID());
-            objProfile.setDatedUpdated(UtilsDate.getDateTime());
+            objProfile.setDateUpdated(UtilsDate.getDateTime());
             profileRepository.save(objProfile);
 
             return new BaseResponse().getObjResponse(1,"ok", objProfile );
@@ -105,7 +105,7 @@ public class ProfilesController {
                     .orElseThrow(() -> new Exception(Profile.class.getName() + " not found with id '" + objProfile.getId().toString() + "'"));
 
 
-            oProfile.setDatedUpdated(UtilsDate.getDateTime());
+            oProfile.setDateUpdated(UtilsDate.getDateTime());
             oProfile.setStatus(Helper.STATUS_ACTIVE);
             profileRepository.save(oProfile);
             return new BaseResponse().getObjResponse(1,"ok", objProfile);
@@ -129,7 +129,7 @@ public class ProfilesController {
             Profile oProfile = profileRepository.findById(objProfile.getId())
                     .orElseThrow(() -> new Exception(Profile.class.getName() + " not found with id '" + objProfile.getId().toString() + "' on actionDelete"));
 
-            oProfile.setDatedUpdated(UtilsDate.getDateTime());
+            oProfile.setDateUpdated(UtilsDate.getDateTime());
             oProfile.setStatus(Helper.STATUS_DISABLED);
             profileRepository.save(oProfile);
             return new BaseResponse().getObjResponse(1,"ok", objProfile);

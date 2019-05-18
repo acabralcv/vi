@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Colaborador</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+<div class="col-xs-12 col-md-12" layout:fragment="content">
+
+    <div clas="col">
+        <a href="/users" class="btn btn-outline-primary">
+            Voltar
+        </a>
+    </div>
+
+    <div clas="col">
+        <div style="width:128px;height: 128px;background-color: #ccc">Foto</div>
+        <i class="fas fa-pencil-alt" alt="Alterar a foto do utilizador"></i>
+    </div>
+
+    <div clas="col">
+        <h5>infomação do colaborador</h5>
+        <div class="container">
+            <div class="row">
+                <div class="w-25"><strong>Nome:</strong></div>
+                <div class="w-75"><span th:text="${oUser.name}">#</span></div>
+            </div>
+            <div class="row">
+                <div class="w-25"><strong>Username:</strong></div>
+                <div class="w-75"><span th:text="${oUser.username}">#</span></div>
+            </div>
+            <div class="row">
+                <div class="w-25"><strong>Email:</strong></div>
+                <div class="w-75"><span th:text="${oUser.email}">#</span></div>
+            </div>
+            <!--<div class="row">-->
+                <!--<div class="w-25"><strong>Ultima atualização:</strong></div>-->
+                <!--<div class="w-75"><span th:text="${oProfile.dateUpdated}">#</span></div>-->
+            <!--</div>-->
+        </div>
+    </div>
+
+
+    <!--<button th:data-user_id="${oUser.id}" type="button" class="btn btn-primary"  onclick="modelUser.addUserProfile(this.getAttribute('data-user_id'))">Adionar</button>-->
+
+    <div clas="col" th:data-user_view_id="${oUser.id}" onload="modelUser.getUserProfiles(this.getAttribute('data-user_view_id'))">
+        <hr />
+        <h5>Perfis do utilizador</h5>
+
+        <div class="col-xs-12 col-md-12" style="margin: 75px 0 30px 0;">
+
+            <table id="listaUserPerfilTable" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!--eh utilizado pelo profile/index tambem -->
+        <!--<span th:replace="/views/profile/_index_view:: indexView(${userProfileList},${objPaging})"></span>-->
+    </div>
+
+
+
+    <div clas="col">
+        <hr />
+        <h5>Adicionar perfil</h5>
+        <!--eh utilizado pelo profile/index tambem -->
+        <span th:replace="/views/user/_form_profile:: formUserProfile(${oUser},${oProfile},${profileList})"></span>
+    </div>
+
+</div>
+
+</div>
+
+</body>
+</html>

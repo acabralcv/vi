@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <title>New user</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+<div class="col-xs-12 col-md-12" layout:fragment="content">
+
+    <div clas="col">
+        <a th:href="@{|/users|}" class="btn btn-info">
+            Voltar
+        </a>
+    </div>
+
+
+    <h5>New user</h5>
+
+    <hr />
+
+    <!-- user form -->
+    <div clas="col">
+        <span th:replace="/views/user/_form:: formUser(objUser)"></span>
+    </div>
+
+</div>
+
+</div>
+
+</body>
+</html>

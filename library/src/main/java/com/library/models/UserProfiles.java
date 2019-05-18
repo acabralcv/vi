@@ -1,5 +1,7 @@
 package com.library.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -10,11 +12,38 @@ public class UserProfiles extends AuditModel {
     @Id
     private UUID id;
 
-
-
     /* não eh uma propiedade da DB */
     @javax.persistence.Transient
     private UUID profileId;
+
+    /* não eh uma propiedade da DB */
+    @javax.persistence.Transient
+    private UUID userId;
+
+
+    @ManyToOne
+    @JoinColumn(name="profile_id", nullable=false)
+    @JsonIgnore
+    private Profile profile;
+
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    @JsonIgnore
+    private User user;
+
+    @Column(name = "is_editable", nullable = false, columnDefinition = "int default 1")
+    private Integer isEditable;
+
+    @Column(name = "force_access_check", nullable = false, columnDefinition = "int default 0")
+    private Integer forceAccessCheck;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public UUID getProfileId() {
         return profileId;
@@ -30,33 +59,6 @@ public class UserProfiles extends AuditModel {
 
     public void setUserId(UUID userId) {
         this.userId = userId;
-    }
-
-    /* não eh uma propiedade da DB */
-    @javax.persistence.Transient
-    private UUID userId;
-
-
-    @ManyToOne
-    @JoinColumn(name="profile_id", nullable=false)
-    private Profile profile;
-
-    @ManyToOne
-    @JoinColumn(name="user_id", nullable=false)
-    private User user;
-
-    @Column(name = "is_editable", nullable = false, columnDefinition = "int default 1")
-    private Integer isEditable;
-
-    @Column(name = "force_access_check", nullable = false, columnDefinition = "int default 0")
-    private Integer forceAccessCheck;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public Profile getProfile() {

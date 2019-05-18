@@ -96,7 +96,7 @@ public class UserController {
             model.addAttribute("oUser", oUser);
             model.addAttribute("oProfile", new Profile());
             model.addAttribute("profileList", profileList);
-            model.addAttribute("userProfileList", oUser.getUserProfiles());
+//            model.addAttribute("userProfileList", oUser.getUserProfiles());
             model.addAttribute("objPaging", null);
 
             return  "/views/user/view";

@@ -37,11 +37,11 @@ public abstract class AuditModel implements Serializable {
         this.dateCreated = dateCreated;
     }
 
-    public Date getDatedUpdated() {
+    public Date getDateUpdated() {
         return dateUpdated;
     }
 
-    public void setDatedUpdated(Date dateUpdated) {
+    public void setDateUpdated(Date dateUpdated) {
         this.dateUpdated = dateUpdated;
     }
 

@@ -66,7 +66,7 @@ public class ActivitiesController {
 
                 if( wfActivity.getId() != null && wfActivityRepository.findById(wfActivity.getId()).isPresent()){
                     //if existe, lets update the updated date
-                    wfActivity.setDatedUpdated(UtilsDate.getDateTime());
+                    wfActivity.setDateUpdated(UtilsDate.getDateTime());
                 }else{
                     wfActivity.setId(new Helper().getUUID());
                     wfActivity.setDateCreated(UtilsDate.getDateTime());
@@ -125,7 +125,7 @@ public class ActivitiesController {
 
                     wfActivity.setProcess(objProcess);
                     wfActivity.setWfType(objProcess.getProcessCode());
-                    wfActivity.setDatedUpdated(UtilsDate.getDateTime());
+                    wfActivity.setDateUpdated(UtilsDate.getDateTime());
                     wfActivity.setStatus(Helper.STATUS_ACTIVE);
 
                     wfActivityRepository.save(wfActivity);
@@ -158,7 +158,7 @@ public class ActivitiesController {
             WfActivities objActivity = wfActivityRepository.findById(id)
                     .map(activity ->{
                         activity.setStatus(Helper.STATUS_DISABLED);
-                        activity.setDatedUpdated(UtilsDate.getDateTime());
+                        activity.setDateUpdated(UtilsDate.getDateTime());
                         return wfActivityRepository.save(activity);
                     })
                     .orElseThrow(() -> new ResourceNotFoundException(WfProcess.class.getName() + " not found with id '" + id + "'"));

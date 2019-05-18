@@ -1,17 +1,22 @@
-<span th:fragment="formUserProfile(oProfile, profileList)">
+<span th:fragment="formUserProfile(oUser, oProfile, profileList)">
 
    <form action="#" th:object="${oProfile}" method="post">
 
-        <div class="form-group">
-           <label for="prfile_id">Profile</label>
-           <select th:field="*{id}" id="prfile_id">
-                <option th:each="profile : ${profileList}" th:value="${profile.id}" th:text="${profile.name}"class="form-control">
-                </option>
-            </select>
+        <div class="w-25">
+            <div class="form-group">
+               <label for="prfile_id">Profile</label>
+               <select th:field="*{id}" id="prfile_id" class="form-control">
+                    <option th:each="profile : ${profileList}" th:value="${profile.id}" th:text="${profile.name}">
+                    </option>
+                </select>
+            </div>
         </div>
 
-        <div class="form-group">
-             <button type="button" class="btn btn-primary" onclick="return alert('ok')">Adionar</button>
+        <div class="col">
+            <div class="form-group">
+                <!-- https://my.oschina.net/u/2312080/blog/2878183 -->
+                 <button th:data-user_id="${oUser.id}" type="button" class="btn btn-primary"  onclick="modelUser.addUserProfile(this.getAttribute('data-user_id'))">Adionar</button>
+            </div>
         </div>
 
     </form>

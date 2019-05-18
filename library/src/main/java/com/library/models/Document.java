@@ -6,20 +6,15 @@ import javax.validation.constraints.Size;
 import java.util.Set;
 import java.util.UUID;
 
-
 @Entity
-@Table(name = "tbl_images")
-public class Image extends AuditModel {
+@Table(name = "tbl_documentos")
+public class Document extends AuditModel {
 
     @Id
     private UUID id;
 
     @Column(name = "storage_id", nullable = true)
     private String storageId;
-
-    @OneToMany(mappedBy = "image")
-    //this will look for 'image' property in the 'UserImages' model
-    private Set<UserImages> UserImages;
 
     @NotBlank
     @Size(max = 64)
@@ -41,12 +36,12 @@ public class Image extends AuditModel {
         this.id = id;
     }
 
-    public Set<com.library.models.UserImages> getUserImages() {
-        return UserImages;
+    public String getStorageId() {
+        return storageId;
     }
 
-    public void setUserImages(Set<com.library.models.UserImages> userImages) {
-        UserImages = userImages;
+    public void setStorageId(String storageId) {
+        this.storageId = storageId;
     }
 
     public String getName() {
@@ -71,13 +66,5 @@ public class Image extends AuditModel {
 
     public void setImageType(String imageType) {
         this.imageType = imageType;
-    }
-
-    public String getStorageId() {
-        return storageId;
-    }
-
-    public void setStorageId(String storageId) {
-        this.storageId = storageId;
     }
 }

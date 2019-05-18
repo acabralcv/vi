@@ -1,90 +1,120 @@
 package com.api.controllers;
 
-import com.library.helpers.FileUpload;
+import java.io.*;
+
+import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
+import com.library.models.Document;
+import com.library.models.Image;
+import com.library.repository.DocumentRepository;
+import com.library.repository.ImageRepository;
+import com.library.service.EventsLogService;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class StorageController {
 
-    public static final String uploadingDir = System.getProperty("user.dir") + "/src/main/resources/static/";
 
+    @Autowired
+    private GridFsOperations gridOperations;
 
-    @RequestMapping(value = "api/storage/exchange-files", method = RequestMethod.POST)
-    public ArrayList<FileUpload> UploadFiles(ModelMap modelMap, MultipartFile[] files) throws IOException {
+    @Autowired
+    private ImageRepository imageRepository;
 
-        ArrayList<FileUpload> filiList = new ArrayList<>();
-        for(MultipartFile uploadedFile : files) {
+    @Autowired
+    private DocumentRepository documentRepository;
 
-            String FileID = new Helper().genToken(18);
-            FileUpload oFileUpload = new FileUpload();
-            oFileUpload.setId(FileID);
-            oFileUpload.setBasePath("uploads/examples/");
-            oFileUpload.setFileExtension(com.google.common.io.Files.getFileExtension(uploadedFile.getOriginalFilename()));
-            oFileUpload.setFileName(FileID + "." + oFileUpload.getFileExtension());
-            oFileUpload.setMimeType(uploadedFile.getContentType());
-            oFileUpload.setFileSize(uploadedFile.getBytes().length);
+    @RequestMapping(value = "api/storage/exchange-image", method = RequestMethod.POST)
+    public ResponseEntity exchangeSingleImage( MultipartFile  file, String description)  throws IOException {
 
-            String fullFilePath = oFileUpload.getBasePath() + oFileUpload.getFileName();
+        try {
 
-            File file = new File(uploadingDir + fullFilePath);
+            if (file != null)
+                new Exception("Nenhum imagem foi enviada.");
 
-            System.out.println(uploadedFile);
-            System.out.println(file);
+            Image oImage = new Image();
+            String extension = com.google.common.io.Files.getFileExtension(file.getOriginalFilename());
 
-            filiList.add(oFileUpload);
+            oImage.setId(new Helper().getUUID());
+            oImage.setImageType(extension);
+            oImage.setName(oImage.getId() + "." + oImage.getImageType());
+            oImage.setDescription(description);
 
-            uploadedFile.transferTo(file);
+            // Define metaData
+            DBObject metaData = new BasicDBObject();
+            metaData.put("document_type", "OTHER");
+            metaData.put("description", oImage.getDescription());
+            metaData.put("file_type", "image"); //Ex: image, document, video
+
+            InputStream iamgeStream = file.getInputStream();
+            ObjectId storeFile = gridOperations.store(iamgeStream, oImage.getName(), file.getContentType(), metaData);
+
+            if (storeFile == null)
+                new Exception("Não foi possivel guardar a imagem.");
+
+            //let's update the image storageId
+            oImage.setStorageId(storeFile.toString());
+
+            //and then, save the metadata image
+            Image objImage = imageRepository.save(oImage);
+
+            return ResponseEntity.ok().body(new BaseResponse(1, "ok", objImage));
+
+        }catch (Exception e){
+            new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
-
-        if(files.length == 0)
-            System.out.println("No files");
-
-        return filiList;
     }
 
+    @RequestMapping(value = "api/storage/exchange-document", method = RequestMethod.POST)
+    public ResponseEntity exchangeSingleFile( MultipartFile  file, String description)  throws IOException {
 
+        try {
 
-    @RequestMapping(value = "files/exchange-file", method = RequestMethod.POST)
-    public FileUpload UploadFileToDiretory(ModelMap modelMap, MultipartFile  file) throws IOException {
+            if (file != null)
+                new Exception("Nenhum documento foi enviado.");
 
-        FileUpload oFileUpload = new FileUpload();
+            Document oDocument = new Document();
+            String extension = com.google.common.io.Files.getFileExtension(file.getOriginalFilename());
 
-        if(file != null) {
+            oDocument.setId(new Helper().getUUID());
+            oDocument.setImageType(extension);
+            oDocument.setName(oDocument.getId() + "." + oDocument.getImageType());
+            oDocument.setDescription(description);
 
-            String FileID = new Helper().genToken(18);
-            oFileUpload.setId(FileID);
-            oFileUpload.setBasePath("uploads/examples/");
-            oFileUpload.setFileExtension(com.google.common.io.Files.getFileExtension(file.getOriginalFilename()));
-            oFileUpload.setFileName(FileID + "." + oFileUpload.getFileExtension());
-            oFileUpload.setMimeType(file.getContentType());
-            oFileUpload.setFileSize(file.getBytes().length);
+            // Define metaData
+            DBObject metaData = new BasicDBObject();
+            metaData.put("document_type", "OTHER");
+            metaData.put("description", oDocument.getDescription());
+            metaData.put("file_type", "document"); //Ex: image, document, video
 
-            String fullFilePath = oFileUpload.getBasePath() + oFileUpload.getFileName();
+            InputStream iamgeStream = file.getInputStream();
+            ObjectId storeFile = gridOperations.store(iamgeStream, oDocument.getName(), file.getContentType(), metaData);
 
-            File oFile = new File(uploadingDir + fullFilePath);
+            if (storeFile == null)
+                new Exception("Não foi possivel guardar o documento.");
 
-            System.out.println(file);
-            System.out.println(file);
+            //let's update the image storageId
+            oDocument.setStorageId(storeFile.toString());
 
-            file.transferTo(oFile);
-        }else
-            System.out.println("No files");
+            //and then, save the metadata image
+            Document objDocument = documentRepository.save(oDocument);
 
-        return oFileUpload;
+            return ResponseEntity.ok().body(new BaseResponse(1, "ok", objDocument));
+
+        }catch (Exception e){
+            new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
     }
 
 }

@@ -2,6 +2,7 @@
 
 var baseUrl = 'http://localhost:8081/',
     serviceAccessToken = 'access_token=Igh6KZaqq99UBUZwpY1nD-7ZpwAPpROx-ejeBMm9CMoLz4hs1WwKKgSQWgMocYNWaOQCz44kMq38uXKVr90BP7kPjyTw5QwOQ-yN96Mqg-rjH4OiBnAA_M8F3di4xZvE';
+/*
 
 var modelApp = {
 
@@ -31,10 +32,10 @@ var modelApp = {
                 callback(null);
             }
         })
-        .fail(function (a, b, c) {
-            console.error(c);
-            callback(null);
-        })
+            .fail(function (a, b, c) {
+                console.error(c);
+                callback(null);
+            })
     },
 
     postJsonData: function(resourse, postData, params, callback) {
@@ -68,3 +69,4 @@ var modelApp = {
     }
 
 };
+*/

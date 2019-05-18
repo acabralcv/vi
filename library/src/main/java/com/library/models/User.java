@@ -1,5 +1,7 @@
 package com.library.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -21,14 +23,6 @@ public class User extends AuditModel {
     @Size(min = 3, max = 30)
     private String username;
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     @NotBlank
     @Size(min = 3, max = 30)
     private String email;
@@ -41,9 +35,11 @@ public class User extends AuditModel {
     private Integer isEditable  = 1;
 
     @OneToMany(mappedBy="user") /* this will look for 'user' property in the 'UserProfiles' model */
+    @JsonIgnore
     private Set<UserProfiles> UserProfiles;
 
     @OneToMany(mappedBy = "image")  /* this will look for 'user' property in the 'UserImages' model */
+    @JsonIgnore
     private Set<UserImages> UserImages;
 
     public UUID getId() {
@@ -76,6 +72,14 @@ public class User extends AuditModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Integer getIsEditable() {

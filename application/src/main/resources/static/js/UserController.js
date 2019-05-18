@@ -4,51 +4,54 @@ var modelUser = {
 
     data: [],
 
-    getUserProfiles: function () {
+    getUserProfiles: function (userId) {
 
         var modelGet = {
-            user_id: null,
+            user_id: userId,
             page: 0,
             size: 20,
             sort: 'dateCreated,desc'
         }
 
-        modelApp.getJsonData("api/profiles/users-profiles", modelGet, function (dataResponse) {
+        modelApp.getJsonData("api/users/users-profiles", modelGet, function (dataResponse) {
             if (dataResponse.content && dataResponse.content.length > 0) {
-                modelQuestion.showTableGridView("questios_table_box", dataResponse.content)
+                modelUser.showUserProfiles(dataResponse.content)
             }
         })
     },
 
-    gaddUserProfile: function () {
+    addUserProfile: function (userId) {
 
         var modelPots = {
-            id: null,
-            user_id: null
+            profileId: $("#prfile_id").val(),
+            userId: userId
         }
 
-        modelApp.posJsonData("api/profiles/add-user-profile",modelPots, {}, function (dataResponse) {
-           console.log(dataResponse)
+        console.log(modelPots)
+
+        modelApp.postJsonData("api/users/add-profile",modelPots, {}, function (dataResponse) {
+            console.log(dataResponse)
+           if(dataResponse.statusAction == 1){
+               modelUser.getUserProfiles(userId)
+               alert(1)
+            }else
+                alert(0)
         })
     },
 
-    showTableGridView: function (tableElemID, modelData) {
+    showUserProfiles: function (data) {
 
         var items = '';
 
-        if (!$('#' + tableElemID))
-            alert("Table identifiier not found")
-
-        $.each(modelData, function (idx, modelItem) {
-            console.log(modelItem)
+        $.each(data, function (idx, oPerifl) {
+            console.log(oPerifl)
             items += "<tr>";
-            items += "<td>" + idx + "</td>";
-            items += "<td>" + modelItem.title + "</td>";
+            items += "<td>" + oPerifl.name + "</td>";
             items += "<td>Action</td>";
             items += "</tr>";
         })
 
-        $('#' + tableElemID + ' tbody').html(items)
+        $('#listaUserPerfilTable tbody').html(items)
 
     }
 

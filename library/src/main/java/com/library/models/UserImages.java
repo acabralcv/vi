@@ -1,5 +1,7 @@
 package com.library.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -19,10 +21,12 @@ public class UserImages extends AuditModel {
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name="image_id", nullable=false)
+    @JsonIgnore
     private Image image;
 
 }

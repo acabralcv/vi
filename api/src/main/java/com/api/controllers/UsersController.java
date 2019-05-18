@@ -3,9 +3,12 @@ package com.api.controllers;
 import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
 import com.library.helpers.UtilsDate;
+import com.library.models.Profile;
 import com.library.models.User;
 import com.library.models.User;
 import com.library.models.UserProfiles;
+import com.library.repository.ProfileRepository;
+import com.library.repository.UserProfilesRepository;
 import com.library.repository.UserRepository;
 import com.library.repository.UserRepository;
 import com.library.service.EventsLogService;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -29,6 +33,12 @@ public class UsersController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ProfileRepository profileRepository;
+
+    @Autowired
+    private UserProfilesRepository userProfilesRepository;
+
     /**
      *
      * @param id
@@ -37,11 +47,16 @@ public class UsersController {
     @RequestMapping(value = {"api/users/details"}, method = {RequestMethod.GET})
     public User actionDetails(@RequestParam(name = "id") UUID id) {
 
-        return userRepository.findById(id)
-                .map(user -> {
-                    user.setUserProfiles(user.getUserProfiles());
-                    return user;
-                }).get();
+        return userRepository.findById(id).get();
+    }
+
+
+    @RequestMapping(value = {"api/users/users-profiles/{user_id}"}, method = {RequestMethod.GET})
+    public UserProfiles actionUserProfiles(@RequestParam(name = "user_id") UUID user_id) {
+
+        return userProfilesRepository.findById(user_id)/*.map(userProfiles -> {
+            userProfiles.getProfile(userProfiles.getProfile())
+        })*/.get();
     }
 
     /**
@@ -100,18 +115,39 @@ public class UsersController {
         try {
 
             User oUser = userRepository.findById(oUserProfile.getUserId()).get();
+            Profile oProfile = profileRepository.findById(oUserProfile.getProfileId()).get();
 
-            if( oUser == null)
-                new Exception("Utilizador não encontrado.");
+            if( oUser == null || oProfile == null)
+                new Exception("Utilizador ou perfil não encontrado.");
 
+            Boolean isNew = true;
+            Set<UserProfiles> listUserProfiles = oUser.getUserProfiles();
 
-            oUser.getUserProfiles().add(new UserProfiles());
+            //check if user allread has the target profile
+            for (UserProfiles auxUserProfile : listUserProfiles)
+                if(auxUserProfile.getProfile().getId() == oUserProfile.getProfileId()){ isNew = false; break; }
 
-            oUserProfile.setId(new Helper().getUUID());
-            oUserProfile.setDatedUpdated(UtilsDate.getDateTime());
-            //userProfileRepository.save(oUserProfile);
+            if(isNew == true){
+                oUserProfile.setId(new Helper().getUUID());
+                oUserProfile.setDateCreated(UtilsDate.getDateTime());
+                oUserProfile.setStatus(Helper.STATUS_ACTIVE);
+                oUserProfile.setUser(oUser);
+                oUserProfile.setProfile(oProfile);
+                oUserProfile.setForceAccessCheck(Helper.STATUS_ACTIVE);
+                oUserProfile.setIsEditable(Helper.STATUS_ACTIVE);
 
-            return new BaseResponse().getObjResponse(1,"ok", null );
+                //update user profiles
+                UserProfiles savedUserProfile = userProfilesRepository.save(oUserProfile);
+
+                //add to the user profiles
+                listUserProfiles.add(savedUserProfile);
+
+                oUser.setUserProfiles(listUserProfiles);
+            }
+            //update user
+            User savedUser = userRepository.save(oUser);
+
+            return new BaseResponse().getObjResponse(1,"ok", savedUser );
 
         }catch(Exception e){
             new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
@@ -133,7 +169,7 @@ public class UsersController {
                     .orElseThrow(() -> new Exception(User.class.getName() + " not found with id '" + objUser.getId().toString() + "'"));
 
 
-            oUser.setDatedUpdated(UtilsDate.getDateTime());
+            oUser.setDateUpdated(UtilsDate.getDateTime());
             oUser.setStatus(Helper.STATUS_ACTIVE);
             userRepository.save(oUser);
             return new BaseResponse().getObjResponse(1,"ok", objUser);
@@ -157,7 +193,7 @@ public class UsersController {
             User oUser = userRepository.findById(objUser.getId())
                     .orElseThrow(() -> new Exception(User.class.getName() + " not found with id '" + objUser.getId().toString() + "' on actionDelete"));
 
-            oUser.setDatedUpdated(UtilsDate.getDateTime());
+            oUser.setDateUpdated(UtilsDate.getDateTime());
             oUser.setStatus(Helper.STATUS_DISABLED);
             userRepository.save(oUser);
             return new BaseResponse().getObjResponse(1,"ok", objUser);

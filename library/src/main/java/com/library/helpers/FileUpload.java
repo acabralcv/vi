@@ -5,9 +5,9 @@ public class FileUpload {
     private String id;
     private String fileName;
     private String basePath;
-    private  String fileExtension;
-    private  double fileSize;
-    private String mimeType;
+    private String fileExtension;
+    private String fileDescription;
+    private String dateUploaded;
 
     public String getId() {
         return id;
@@ -41,20 +41,20 @@ public class FileUpload {
         this.fileExtension = fileExtension;
     }
 
-
-    public String getMimeType() {
-        return mimeType;
+    public String getFileDescription() {
+        return fileDescription;
     }
 
-    public void setMimeType(String mimeType) {
-        this.mimeType = mimeType;
+    public void setFileDescription(String fileDescription) {
+        this.fileDescription = fileDescription;
     }
 
-    public double getFileSize() {
-        return fileSize;
+    public String getDateUploaded() {
+        return dateUploaded;
     }
 
-    public void setFileSize(double fileSize) {
-        this.fileSize = fileSize;
+    public void setDateUploaded(String dateUploaded) {
+        this.dateUploaded = dateUploaded;
+
     }
 }
