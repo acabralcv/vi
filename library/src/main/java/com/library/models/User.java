@@ -40,8 +40,11 @@ public class User extends AuditModel {
     @Column(name = "is_editable", nullable = false)
     private Integer isEditable  = 1;
 
-    @OneToMany(mappedBy="user") //this will look for 'user' property in the 'UserProfiles' model
+    @OneToMany(mappedBy="user") /* this will look for 'user' property in the 'UserProfiles' model */
     private Set<UserProfiles> UserProfiles;
+
+    @OneToMany(mappedBy = "image")  /* this will look for 'user' property in the 'UserImages' model */
+    private Set<UserImages> UserImages;
 
     public UUID getId() {
         return id;
