@@ -1,6 +1,4 @@
-
-<span th:fragment="ActionModal()">
-
+<div th:fragment="ActionModal()">
     <div class="col-md-12" style="margin:10px">
 
         <div class="modal" id="documentsUploadModal">
@@ -13,10 +11,9 @@
                     </div>
 
                     <div class="modal-body">
-                        <span th:fragment="modalBody()">
-
-                        </span>
-                        ola
+                        <div layout:fragment="modalBody">
+                                #modal-body content should be here
+                        </div>
                     </div>
 
                 </div>
@@ -25,4 +22,4 @@
 
     </div>
 
-</span>
+</div>

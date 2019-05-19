@@ -9,11 +9,12 @@
 
         <div class="col-xs-12 col-md-12" layout:fragment="content">
 
-
+            <!-- TO BE USED TO GET PROFILES -->
             <input type="hidden" th:value="${oUser.id}" id="action_user_id" class="form-control" />
 
+            <span th:replace="/views/user/upload_image_modal:: ActionModal(${oUser})"></span>
 
-            <div clas="col">
+            <div clas="col" style="margin:5px 0;">
                 <a href="/users" class="btn btn-outline-primary">
                     Voltar
                 </a>
@@ -21,7 +22,7 @@
 
             <div clas="col">
                 <div style="width:128px;height: 128px;background-color: #ccc">Foto</div>
-                <button class="btn btn-default">
+                <button class="btn btn-default" onclick="modelUser.openUserImagesModal()">
                     <i class="fas fa-pencil-alt" alt="Alterar a foto do utilizador"></i>
                 </button>
             </div>
@@ -69,8 +70,6 @@
                     </table>
                 </div>
 
-                <!--eh utilizado pelo profile/index tambem -->
-                <!--<span th:replace="/views/profile/_index_view:: indexView(${userProfileList},${objPaging})"></span>-->
             </div>
 
 

@@ -11,9 +11,15 @@ import com.library.repository.ImageRepository;
 import com.library.service.EventsLogService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mongodb.client.gridfs.model.GridFSFile;
+import com.mongodb.gridfs.GridFSDBFile;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,7 +44,7 @@ public class StorageController {
 
         try {
 
-            if (file != null)
+            if (file == null)
                 new Exception("Nenhum imagem foi enviada.");
 
             Image oImage = new Image();
@@ -110,6 +116,26 @@ public class StorageController {
             Document objDocument = documentRepository.save(oDocument);
 
             return ResponseEntity.ok().body(new BaseResponse(1, "ok", objDocument));
+
+        }catch (Exception e){
+            new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
+    }
+
+
+    @RequestMapping(value = "api/storage/get-images-details", method = RequestMethod.GET)
+    public ResponseEntity getImageDetails(@RequestParam(name = "id") String id){
+        try {
+
+            id = "5ce1d931c764832950800322";
+
+            GridFSFile file = gridOperations.find(new Query(Criteria.where("_id").is(id))).first();
+
+            return ResponseEntity.ok()
+                .contentLength(file.getLength())
+                    .contentType(MediaType.parseMediaType(file.getContentType()))
+                    .body(new BaseResponse(1, "ok", file.getMetadata().toJson()));
 
         }catch (Exception e){
             new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);

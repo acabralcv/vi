@@ -38,9 +38,34 @@ var modelUser = {
         })
     },
 
-    openFotoModal: function () {
-alert()
-        $("#ImageFileUpload").modal()
+
+    uploadImages: function () {
+
+        var imagesInput = document.getElementById('InputImageUploads');
+
+        if (imagesInput && imagesInput.files) {
+
+            $.each(imagesInput.files, function (idx, anexoImage) {
+
+                var formData = new FormData();
+                formData.append('document_type', 'OTHER');
+                formData.append('file', anexoImage);
+                formData.append('file_type', "IMAGE");
+                formData.append('description', $('#imageFileObservacao').val());
+
+                modelFile.FilesUploadProxy('api/storage/exchange-image', formData, function (dataResponse) {
+                    console.log(dataResponse)
+                    // if (dataResponse.content && dataResponse.content.length > 0) {
+                    //
+                    // }
+                })
+            })
+        }
+    },
+
+    openUserImagesModal: function (userId) {
+
+        $("#UserImageModal").modal()
     },
 
     showUserProfiles: function (data) {
