@@ -51,14 +51,15 @@ public class UsersController {
     }
 
 
-    @RequestMapping(value = {"api/users/users-profiles/{user_id}"}, method = {RequestMethod.GET})
-    public UserProfiles actionUserProfiles(@RequestParam(name = "user_id") UUID user_id) {
+    @RequestMapping(value = {"api/users/users-profiles"}, method = {RequestMethod.GET})
+    public BaseResponse actionUserProfiles(@RequestParam(name = "user_id") UUID user_id) {
+        User user = new User();
+        user.setId(user_id);
 
-        return userProfilesRepository.findById(user_id)/*.map(userProfiles -> {
-            userProfiles.getProfile(userProfiles.getProfile())
-        })*/.get();
+        Set<Profile> oList = profileRepository.findProfileByStatus(1,user);
+
+        return new BaseResponse(1, "ok", oList);
     }
-
     /**
      *
      * @param model

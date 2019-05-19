@@ -14,9 +14,11 @@ var modelUser = {
         }
 
         modelApp.getJsonData("api/users/users-profiles", modelGet, function (dataResponse) {
-            if (dataResponse.content && dataResponse.content.length > 0) {
-                modelUser.showUserProfiles(dataResponse.content)
-            }
+            console.log(dataResponse)
+            if (dataResponse && dataResponse.data && dataResponse.data.length > 0) {
+                modelUser.showUserProfiles(dataResponse.data)
+            }else
+                modelUser.showUserProfiles([])
         })
     },
 
@@ -27,24 +29,24 @@ var modelUser = {
             userId: userId
         }
 
-        console.log(modelPots)
-
         modelApp.postJsonData("api/users/add-profile",modelPots, {}, function (dataResponse) {
-            console.log(dataResponse)
-           if(dataResponse.statusAction == 1){
+           if(dataResponse && ataResponse.statusAction == 1){
+               modelApp.showSuccessMassage("Perfil associado com sucesso", false)
                modelUser.getUserProfiles(userId)
-               alert(1)
-            }else
-                alert(0)
+           }else
+               modelApp.showErrorMassage(dataResponse.message, false)
         })
+    },
+
+    openFotoModal: function () {
+alert()
+        $("#ImageFileUpload").modal()
     },
 
     showUserProfiles: function (data) {
 
         var items = '';
-
         $.each(data, function (idx, oPerifl) {
-            console.log(oPerifl)
             items += "<tr>";
             items += "<td>" + oPerifl.name + "</td>";
             items += "<td>Action</td>";
@@ -52,7 +54,13 @@ var modelUser = {
         })
 
         $('#listaUserPerfilTable tbody').html(items)
-
     }
 
 }
+
+
+$(document).ready(function() {
+    if( $("#action_user_id") && $("#action_user_id").val()){
+        modelUser.getUserProfiles($("#action_user_id").val())
+    }
+})

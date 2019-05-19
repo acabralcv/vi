@@ -9,7 +9,7 @@ var modelApp = {
             _params = _params + '&' + key + '=' + params[key];
         }
 
-        return baseUrl + resource; //+ '?' + _params; // + '&access_token=' + serviceAccessToken ;
+        return baseUrl + resource + '?' + _params; // + '&access_token=' + serviceAccessToken ;
         // return baseUrl + 'access_token=' + serviceAccessToken + '&r=' + resource + _params;
 
     },
@@ -20,8 +20,7 @@ var modelApp = {
 
         $.get(url, function (data) {
 
-            if (data && data.content) {
-
+            if (data) {
                 callback(data);
             } else {
                 callback(null);
@@ -63,6 +62,30 @@ var modelApp = {
             }
         });
 
+    },
+
+    showSuccessMassage: function (message, reload) {
+
+        $("#globalSuccessMessageArea").html(message).show()
+
+        if(reload)
+            location.reload();
+
+        setTimeout(function () {
+            $("#globalSuccessMessageArea").html(message).hide()
+        }, 8000)
+    },
+
+    showErrorMassage: function (message, reload) {
+
+        $("#globalAlertMessageArea").html(message).show()
+
+        if(reload)
+            location.reload();
+
+        setTimeout(function () {
+            $("#globalAlertMessageArea").html(message).hide()
+        }, 8000)
     }
 
 };

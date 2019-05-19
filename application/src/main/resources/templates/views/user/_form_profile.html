@@ -2,9 +2,8 @@
 
    <form action="#" th:object="${oProfile}" method="post">
 
-        <div class="w-25">
+        <div class="w-50 float-left">
             <div class="form-group">
-               <label for="prfile_id">Profile</label>
                <select th:field="*{id}" id="prfile_id" class="form-control">
                     <option th:each="profile : ${profileList}" th:value="${profile.id}" th:text="${profile.name}">
                     </option>
@@ -12,12 +11,11 @@
             </div>
         </div>
 
-        <div class="col">
-            <div class="form-group">
-                <!-- https://my.oschina.net/u/2312080/blog/2878183 -->
-                 <button th:data-user_id="${oUser.id}" type="button" class="btn btn-primary"  onclick="modelUser.addUserProfile(this.getAttribute('data-user_id'))">Adionar</button>
-            </div>
-        </div>
+        <!-- https://my.oschina.net/u/2312080/blog/2878183 -->
+        <button class="btn btn-default" style="margin: 0 10px;">
+            <span class="fas fa-plus-circle" th:data-user_id="${oUser.id}" onclick="modelUser.addUserProfile(this.getAttribute('data-user_id'))"></span>
+        </button>
+
 
     </form>
 
