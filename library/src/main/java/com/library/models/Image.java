@@ -33,6 +33,9 @@ public class Image extends AuditModel {
     @Column(name = "image_type", nullable = true)
     private String imageType;
 
+    @OneToOne(mappedBy = "profileImage")
+    private User user;
+
     public UUID getId() {
         return id;
     }
