@@ -1,0 +1,39 @@
+<span th:fragment="formDomain(oDomain)">
+
+   <form action="" th:object="${oDomain}" method="post">
+
+       <span onautocomplete="alert()"></span>
+
+        <div class="col">
+            <div class="form-group">
+                <label for="name">Tipo</label>
+                <input type="text" th:field="*{domainType}" id="domainType" class="form-control" />
+                <span class="error" th:if="${#fields.hasErrors('domainType')}" th:errors="*{domainType}"></span>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-group">
+                <label for="name">Nome</label>
+                <input type="text" th:field="*{name}" id="name" class="form-control" />
+                <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-group">
+                <label for="name">Valor</label>
+                <input type="text" th:field="*{value}" id="value" class="form-control" />
+                <span class="error" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-group">
+                 <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+
+    </form>
+
+</span>

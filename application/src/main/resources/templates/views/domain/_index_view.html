@@ -1,0 +1,35 @@
+
+<span th:fragment="indexView(domains,objPaging)">
+
+    <table class="table table-striped table-bordered">
+        <tr>
+            <th>Tipo</th>
+            <th>Nome</th>
+            <th>Valor</th>
+            <th>Data criaação</th>
+            <th>Ultima atualização</th>
+            <th>Ação</th>
+        </tr>
+
+        <div class="col">
+            Total: <span th:if="${oPaging != null && oPaging != 'null'}" th:text="${objPaging.totalElements}"></span>
+        </div>
+
+        <tr th:each="oDomain : ${domains}">
+            <td th:text="${oDomain.domainType}">#</td>
+            <td th:text="${oDomain.name}">#</td>
+            <td th:text="${oDomain.value}">#</td>
+            <td th:text="${oDomain.dateCreated}">#</td>
+            <td th:text="${oDomain.dateUpdated}">#</td>
+            <td>
+                <span th:replace="/fragments/ActionColumn:: actionView('/domains/view/' + ${oDomain.id})"></span>
+                <span th:replace="/fragments/ActionColumn:: actionUpdate('/domains/update/' + ${oDomain.id})"></span>
+                <span th:replace="/fragments/ActionColumn:: actionDelete('/domains/delete/' + ${oDomain.id})"></span>
+            </td>
+        </tr>
+    </table>
+
+
+    <span th:replace="/fragments/pagingResult:: actionPaging(${objPaging}, '/domains')"></span>
+
+</span>

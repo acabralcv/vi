@@ -22,7 +22,7 @@
 
             <div clas="col">
                 <div style="width:128px;height: 128px;background-color: #ccc">Foto</div>
-                <button class="btn btn-default" onclick="modelUser.openUserImagesModal()">
+                <button th:data-user_image_id="${oUser.id}" class="btn btn-default" onclick="modelUser.openUserImagesModal(this.getAttribute('data-user_image_id'))">
                     <i class="fas fa-pencil-alt" alt="Alterar a foto do utilizador"></i>
                 </button>
             </div>

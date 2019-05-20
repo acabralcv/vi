@@ -14,6 +14,25 @@ var modelUser = {
         }
 
         modelApp.getJsonData("api/users/users-profiles", modelGet, function (dataResponse) {
+
+            if (dataResponse && dataResponse.data && dataResponse.data.length > 0) {
+                modelUser.showUserProfiles(dataResponse.data)
+            }else
+                modelUser.showUserProfiles([])
+        })
+    },
+
+    getUserImages: function (userId) {
+
+        var modelGet = {
+            userId: userId,
+            page: 0,
+            size: 20,
+            sort: 'dateCreated,desc'
+        }
+
+        modelApp.getJsonData("api/storage/user-images", modelGet, function (dataResponse) {
+            console.log(modelGet)
             console.log(dataResponse)
             if (dataResponse && dataResponse.data && dataResponse.data.length > 0) {
                 modelUser.showUserProfiles(dataResponse.data)
@@ -38,8 +57,7 @@ var modelUser = {
         })
     },
 
-
-    uploadImages: function () {
+    uploadImages: function (userId) {
 
         var imagesInput = document.getElementById('InputImageUploads');
 
@@ -51,7 +69,10 @@ var modelUser = {
                 formData.append('document_type', 'OTHER');
                 formData.append('file', anexoImage);
                 formData.append('file_type', "IMAGE");
+                formData.append('userId', userId);
                 formData.append('description', $('#imageFileObservacao').val());
+
+                console.log(userId)
 
                 modelFile.FilesUploadProxy('api/storage/exchange-image', formData, function (dataResponse) {
                     console.log(dataResponse)
@@ -66,6 +87,7 @@ var modelUser = {
     openUserImagesModal: function (userId) {
 
         $("#UserImageModal").modal()
+        modelUser.getUserImages(userId);
     },
 
     showUserProfiles: function (data) {

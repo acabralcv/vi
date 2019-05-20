@@ -11,7 +11,7 @@ import java.util.UUID;
 public class Profile extends AuditModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @OneToMany(mappedBy="profile") //this will look for 'profile' property in the 'UserProfiles' model

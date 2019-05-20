@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Domains</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+<div class="col-xs-12 col-md-12" layout:fragment="content">
+
+    <div clas="">
+        <a href="domains/create" class="btn btn-info">
+            New domain
+        </a>
+    </div>
+
+    <div clas="col" style="margin-top:20px">
+        <h3>Profiles</h3>
+
+        <!--será utilizado pelo user/view/{id} tambem para mostrar perfis do utilizador -->
+        <span th:replace="/views/domain/_index_view:: indexView(${domains},${objPaging})"></span>
+
+    </div>
+
+</div>
+
+</body>
+</html>

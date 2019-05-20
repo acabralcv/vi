@@ -15,7 +15,7 @@
 
                         <div class="" style="margin: 10px 0;">
                             <div class="upload-files-field">
-                                <label class="control-label" for="InputFileUploads"><span th:text="${oUser.name}"></span> - Imagens</label>
+                                <label class="control-label" for="InputImageUploads"><span th:text="${oUser.name}"></span> - Imagens</label>
                                 <input type="file" id="InputImageUploads" class="upload-files-field" name="images" multiple />
                             </div>
                         </div>
@@ -29,7 +29,7 @@
 
                         <div class="row">
                             <div class="col-xs-12 col-md-12">
-                                <input type="button" id="fileUploadBtn" value="Upload" onclick="modelUser.uploadImages()" class="btn btn-success" />
+                                <input th:data-user_image_upload_id="${oUser.id}" type="button" id="fileUploadBtn" value="Upload" onclick="modelUser.uploadImages(this.getAttribute('data-user_image_upload_id'))" class="btn btn-success" />
                             </div>
                         </div>
 

@@ -3,6 +3,7 @@ package com.api.controllers;
 import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
 import com.library.helpers.UtilsDate;
+import com.library.models.Domain;
 import com.library.models.Profile;
 import com.library.models.UserProfiles;
 import com.library.models.WfProcess;
@@ -14,16 +15,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -33,18 +32,19 @@ public class ProfilesController {
     @Autowired
     private ProfileRepository profileRepository;
 
-//    @Autowired
-//    private UserProfileRepository userProfileRepository;
-
     /**
      *
      * @param id
      * @return
      */
     @RequestMapping(value = {"api/profiles/details"}, method = {RequestMethod.GET})
-    public Profile actionDetails(@RequestParam(name = "id") UUID id) {
+    public ResponseEntity actionDetails(@RequestParam(name = "id") UUID id) {
 
-        return profileRepository.findById(id).get();
+        //return profileRepository.findById(id).get();
+
+        Optional<Profile> oProfile = (Optional) profileRepository.findById(id);
+
+        return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oProfile != null ? 1 : 0,"ok", oProfile));
     }
 
 

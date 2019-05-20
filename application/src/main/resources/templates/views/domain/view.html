@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Domain</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+<div class="col-xs-12 col-md-12" layout:fragment="content">
+
+    <div clas="col">
+        <a href="/domains" class="btn btn-outline-primary">
+            Voltar
+        </a>
+        <a href="/domains/create" class="btn btn-info">
+            New domain
+        </a>
+    </div>
+
+    <div clas="col">
+        <h4>Domain Details</h4>
+        <div class="container">
+            <div class="row">
+                <div class="w-25"><strong>Tipo:</strong></div>
+                <div class="w-75"><span th:text="${oDomain.domainType}">#</span></div>
+            </div>
+            <div class="row">
+                <div class="w-25"><strong>Nome:</strong></div>
+                <div class="w-75"><span th:text="${oDomain.name}">#</span></div>
+            </div>
+            <div class="row">
+                <div class="w-25"><strong>Valor:</strong></div>
+                <div class="w-75"><span th:text="${oDomain.value}">#</span></div>
+            </div>
+            <div class="row">
+                <div class="w-25"><strong>Data criação:</strong></div>
+                <div class="w-75"><span th:text="${oDomain.dateCreated}">#</span></div>
+            </div>
+            <div class="row">
+                <div class="w-25"><strong>Ultima atualização:</strong></div>
+                <div class="w-75"><span th:text="${oDomain.dateUpdated}">#</span></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+</body>
+</html>

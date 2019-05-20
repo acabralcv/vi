@@ -17,4 +17,6 @@ public interface ImageRepository extends JpaRepository<Image, UUID> {
     Page<Image> findByStatus(int status, Pageable pageable);
 
     List<Image> findByName(String name);
+
+    Page<Image> findByUserId(UUID userId, Pageable pageable);
 }

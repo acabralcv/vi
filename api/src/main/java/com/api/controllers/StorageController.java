@@ -1,11 +1,16 @@
 package com.api.controllers;
 
 import java.io.*;
+import java.util.Base64;
+import java.util.List;
+import java.util.UUID;
 
 import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
 import com.library.models.Document;
+import com.library.models.Domain;
 import com.library.models.Image;
+import com.library.models.Profile;
 import com.library.repository.DocumentRepository;
 import com.library.repository.ImageRepository;
 import com.library.service.EventsLogService;
@@ -16,11 +21,18 @@ import com.mongodb.gridfs.GridFSDBFile;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
+import org.springframework.data.mongodb.gridfs.GridFsResource;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,26 +52,24 @@ public class StorageController {
     private DocumentRepository documentRepository;
 
     @RequestMapping(value = "api/storage/exchange-image", method = RequestMethod.POST)
-    public ResponseEntity exchangeSingleImage( MultipartFile  file, String description)  throws IOException {
+    public ResponseEntity exchangeSingleImage( MultipartFile  file, Image oImage)  throws IOException {
 
         try {
 
             if (file == null)
                 new Exception("Nenhum imagem foi enviada.");
 
-            Image oImage = new Image();
-            String extension = com.google.common.io.Files.getFileExtension(file.getOriginalFilename());
-
             oImage.setId(new Helper().getUUID());
-            oImage.setImageType(extension);
+            oImage.setImageType(com.google.common.io.Files.getFileExtension(file.getOriginalFilename()));
             oImage.setName(oImage.getId() + "." + oImage.getImageType());
-            oImage.setDescription(description);
+
 
             // Define metaData
             DBObject metaData = new BasicDBObject();
             metaData.put("document_type", "OTHER");
             metaData.put("description", oImage.getDescription());
             metaData.put("file_type", "image"); //Ex: image, document, video
+            metaData.put("user_id", oImage.getUserId()); //Ex: image, document, video
 
             InputStream iamgeStream = file.getInputStream();
             ObjectId storeFile = gridOperations.store(iamgeStream, oImage.getName(), file.getContentType(), metaData);
@@ -123,24 +133,45 @@ public class StorageController {
         }
     }
 
-
-    @RequestMapping(value = "api/storage/get-images-details", method = RequestMethod.GET)
+    @RequestMapping(value = "api/storage/images-details", method = RequestMethod.GET)
     public ResponseEntity getImageDetails(@RequestParam(name = "id") String id){
         try {
+            GridFSFile fileObj = gridOperations.find(new Query(Criteria.where("_id").is(id))).first();
 
-            id = "5ce1d931c764832950800322";
-
-            GridFSFile file = gridOperations.find(new Query(Criteria.where("_id").is(id))).first();
-
-            return ResponseEntity.ok()
-                .contentLength(file.getLength())
-                    .contentType(MediaType.parseMediaType(file.getContentType()))
-                    .body(new BaseResponse(1, "ok", file.getMetadata().toJson()));
+            if(fileObj != null)
+                return ResponseEntity.ok()
+                        .contentLength(fileObj.getLength())
+                        .contentType(MediaType.valueOf("image/png"))
+                        .body(gridOperations.getResource(fileObj));
+            else
+                return ResponseEntity.ok().body(new BaseResponse(0,"File not found!", null));
 
         }catch (Exception e){
             new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
+    }
+
+    @RequestMapping(value = "api/storage/user-images", method = RequestMethod.GET)
+    public ResponseEntity getImages(@RequestParam(name = "userId") UUID userId, Pageable pageable){
+        try {
+
+            Page<Image> images = imageRepository.findByUserId(userId, pageable);
+
+            return ResponseEntity.ok().body(new BaseResponse(1,"ok", images));
+
+        }catch (Exception e){
+            new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
+    }
+
+    @RequestMapping(value = "api/storage/documents", method = RequestMethod.GET)
+    public ResponseEntity getDocuments(ModelMap model, @PageableDefault(sort = {"name"}, size = 10, page = 0) Pageable pageable) {
+
+        Page<Document> documents = documentRepository.findByStatus(Helper.STATUS_ACTIVE, pageable);
+
+        return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1, "ok", documents));
     }
 
 }

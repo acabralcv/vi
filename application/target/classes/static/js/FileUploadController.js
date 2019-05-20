@@ -25,10 +25,6 @@ var modelFile = {
 
         if (anexoInput.files) {
 
-            /*$('#fileUploadBtn').prop('disabled', false);
-            $('#fileUploadObservacao').prop('disabled', true);
-            $('#InputFileUploads').prop('disabled', true);*/
-
             $.each(anexoInput.files, function (idx, anexoFile) {
 
                 var formData = new FormData();

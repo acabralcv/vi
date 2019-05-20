@@ -50,7 +50,7 @@ public class ProfileController {
      * @return
      */
     @RequestMapping(value = "admin/profiles", method = RequestMethod.GET)
-    public String actionIndex(ModelMap model, @PageableDefault(sort = { "name"}, value = 5, page = 0) Pageable pageable) {
+    public String actionIndex(ModelMap model, @PageableDefault(sort = { "name"}, value = 10, page = 0) Pageable pageable) {
 
         //get info
         BaseResponse objResponse = (new ServiceProxy())

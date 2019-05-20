@@ -38,9 +38,9 @@ public class User extends AuditModel {
     @JsonIgnore
     private Set<UserProfiles> UserProfiles;
 
-    @OneToMany(mappedBy = "image")  /* this will look for 'user' property in the 'UserImages' model */
-    @JsonIgnore
-    private Set<UserImages> UserImages;
+//    @OneToMany(mappedBy = "image")  /* this will look for 'user' property in the 'UserImages' model */
+//    @JsonIgnore
+//    private Set<UserImages> UserImages;
 
     public UUID getId() {
         return id;

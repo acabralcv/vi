@@ -24,3 +24,15 @@ input[type="file"] {
     opacity: 0;
     cursor: pointer;
 }
+
+.upload-files-field {
+    position: relative;
+    cursor: pointer;
+    width: auto;
+    max-width: 300px;
+    height: 35px;
+    line-height: 25px;
+    padding: 5px 10px;
+    border: 1px solid #203F53;
+    border-radius: 5px;
+}

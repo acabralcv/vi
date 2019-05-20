@@ -3,6 +3,7 @@ package com.library.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.InputStream;
 import java.util.Set;
 import java.util.UUID;
 
@@ -17,9 +18,8 @@ public class Image extends AuditModel {
     @Column(name = "storage_id", nullable = true)
     private String storageId;
 
-    @OneToMany(mappedBy = "image")
-    //this will look for 'image' property in the 'UserImages' model
-    private Set<UserImages> UserImages;
+    @Column(name = "user_id", nullable = true)
+    private UUID userId;
 
     @NotBlank
     @Size(max = 64)
@@ -39,14 +39,6 @@ public class Image extends AuditModel {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public Set<com.library.models.UserImages> getUserImages() {
-        return UserImages;
-    }
-
-    public void setUserImages(Set<com.library.models.UserImages> userImages) {
-        UserImages = userImages;
     }
 
     public String getName() {
@@ -79,5 +71,13 @@ public class Image extends AuditModel {
 
     public void setStorageId(String storageId) {
         this.storageId = storageId;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 }
