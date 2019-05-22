@@ -3,13 +3,9 @@ package com.api.controllers;
 import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
 import com.library.helpers.UtilsDate;
-import com.library.models.Profile;
+import com.library.models.*;
 import com.library.models.User;
-import com.library.models.User;
-import com.library.models.UserProfiles;
-import com.library.repository.ProfileRepository;
-import com.library.repository.UserProfilesRepository;
-import com.library.repository.UserRepository;
+import com.library.repository.*;
 import com.library.repository.UserRepository;
 import com.library.service.EventsLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +32,9 @@ public class UsersController {
     private UserRepository userRepository;
 
     @Autowired
+    private ImageRepository imageRepository;
+
+    @Autowired
     private ProfileRepository profileRepository;
 
     @Autowired
@@ -59,7 +58,11 @@ public class UsersController {
 
     }
 
-
+    /**
+     *
+     * @param user_id
+     * @return
+     */
     @RequestMapping(value = {"api/users/users-profiles"}, method = {RequestMethod.GET})
     public BaseResponse actionUserProfiles(@RequestParam(name = "user_id") UUID user_id) {
         User user = new User();
@@ -69,6 +72,7 @@ public class UsersController {
 
         return new BaseResponse(1, "ok", oList);
     }
+
     /**
      *
      * @param model
@@ -118,7 +122,11 @@ public class UsersController {
         }
     }
 
-
+    /**
+     *
+     * @param oUserProfile
+     * @return
+     */
     @RequestMapping(value = {"api/users/add-profile"}, method = {RequestMethod.POST})
     public BaseResponse actionAddUserProfile(@Valid @RequestBody UserProfiles oUserProfile) {
 
@@ -164,6 +172,32 @@ public class UsersController {
             return new BaseResponse().getObjResponse(0,e.getMessage(), null);
         }
     }
+
+
+    @RequestMapping(value = {"api/users/add-profile-image"}, method = {RequestMethod.POST})
+    public BaseResponse actionAddUserImage(@RequestBody User userPosted) {
+
+        try {
+
+            User oUser = userRepository.findById(userPosted.getId()).get();
+            Image oImage = imageRepository.findById(userPosted.getProfileImageId()).get();
+
+            if( oUser == null || oImage == null)
+                new Exception("Utilizador não encontrado.");
+
+            oUser.setProfileImage(oImage);
+
+            //update user
+            User savedUser = userRepository.save(oUser);
+
+            return new BaseResponse().getObjResponse(1,"ok", savedUser );
+
+        }catch(Exception e){
+            new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
+            return new BaseResponse().getObjResponse(0,e.getMessage(), null);
+        }
+    }
+
 
     /**
      *

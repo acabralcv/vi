@@ -42,10 +42,17 @@ public class User extends AuditModel {
     @JsonIgnore
     private Set<UserProfiles> UserProfiles;
 
+    public UUID getProfileImageId() {
+        return profile_image_id;
+    }
 
-//    @OneToMany(mappedBy = "image")  /* this will look for 'user' property in the 'UserImages' model */
-//    @JsonIgnore
-//    private Set<UserImages> UserImages;
+    public void setProfileImageId(UUID profile_image_id) {
+        this.profile_image_id = profile_image_id;
+    }
+
+    /** No table field **/
+    @Transient
+    public UUID profile_image_id;
 
     public UUID getId() {
         return id;

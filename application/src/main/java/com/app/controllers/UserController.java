@@ -82,7 +82,7 @@ public class UserController {
                 .get(User.class);
         oServiceProxy.close();
 
-        //get info
+        //get profiles info
         BaseResponse objResProfiles = (new ServiceProxy())
                 .getJsonData("api/profiles", (new ServiceProxy()).encodePageableParams(PageRequest.of(0,50)));
 

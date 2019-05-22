@@ -56,17 +56,17 @@ var modelUser = {
         $("#listaUserImagesTable").html(srtImages)        
     },
 
-    addUserProfileImage: function (userId) {
+    addUserProfileImage: function (userId, profile_image_id) {
 
         var modelPots = {
-            imageId: $("#prfile_id").val(),
-            userId: userId
+            profile_image_id: profile_image_id,
+            id: userId
         }
 
-        modelApp.postJsonData("api/users/add-profile",modelPots, {}, function (dataResponse) {
-           if(dataResponse && ataResponse.statusAction == 1){
-               modelApp.showSuccessMassage("Perfil associado com sucesso", false)
-               modelUser.getUserProfiles(userId)
+        modelApp.postJsonData("api/users/add-profile-image",modelPots, {}, function (dataResponse) {
+           if(dataResponse && dataResponse.statusAction == 1){
+               modelApp.showSuccessMassage("Imagem do perfil associado com sucesso", false)
+               location.reload()
            }else
                modelApp.showErrorMassage(dataResponse.message, false)
         })
@@ -80,7 +80,7 @@ var modelUser = {
         }
 
         modelApp.postJsonData("api/users/add-profile",modelPots, {}, function (dataResponse) {
-           if(dataResponse && ataResponse.statusAction == 1){
+           if(dataResponse && dataResponse.statusAction == 1){
                modelApp.showSuccessMassage("Perfil associado com sucesso", false)
                modelUser.getUserProfiles(userId)
            }else
@@ -103,10 +103,10 @@ var modelUser = {
                 formData.append('userId', userId);
                 formData.append('description', $('#imageFileObservacao').val());
 
-                console.log(userId)
-
                 modelFile.FilesUploadProxy('api/storage/exchange-image', formData, function (dataResponse) {
-                    modelUser.getUserImages()
+                    if(dataResponse && dataResponse.data ){
+                        modelUser.addUserProfileImage(userId, dataResponse.data.id)
+                    }
                 })
             })
         }
