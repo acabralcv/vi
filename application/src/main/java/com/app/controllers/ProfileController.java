@@ -3,6 +3,7 @@ package com.app.controllers;
 import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
 import com.library.helpers.HelperPaging;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -75,18 +78,14 @@ public class ProfileController {
     @RequestMapping(value = {"admin/profiles/view/{id}"}, method = {RequestMethod.GET})
     public String actionView(ModelMap model, @PathVariable UUID id) {
 
-        ArrayList<Params> params = new ArrayList<>();
-        params.add(new Params("id", id.toString()));
-
         ServiceProxy oServiceProxy = new ServiceProxy();
-
-        Profile oProfile = oServiceProxy
-                    .buildParams("api/profiles/details", params)
+        BaseResponse oBaseResponse = oServiceProxy
+                    .buildParams("api/profiles/details", new Params().Add(new Params("id", id.toString())).Get())
                     .getTarget()
-                    .get(Profile.class);
+                    .get(BaseResponse.class);
         oServiceProxy.close();
-        System.out.println(oProfile);
 
+        Profile oProfile = (Profile) BaseResponse.convertToModel(oBaseResponse, new Profile());
         model.addAttribute("oProfile", oProfile);
 
         return  "/views/profile/view";
@@ -104,9 +103,7 @@ public class ProfileController {
     @RequestMapping(value = {"admin/profiles/create"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String actionCreate(@Valid @ModelAttribute Profile objProfile,
                                 BindingResult result,
-                                ModelMap model, HttpServletRequest request,
-                                @PathVariable(required = false)
-                                UUID id) {
+                                ModelMap model, HttpServletRequest request) {
 
         if (request.getMethod().equals("POST")) {
 
@@ -131,5 +128,79 @@ public class ProfileController {
 
         model.addAttribute("objProfile", objProfile);
         return "views/profile/create";
+    }
+
+    /**
+     *
+     * @param objProfile
+     * @param result
+     * @param model
+     * @param request
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = {"admin/profiles/update/{id}"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String actionUpdate(@Valid @ModelAttribute Profile objProfile,
+                               BindingResult result,
+                               ModelMap model, HttpServletRequest request,
+                               @PathVariable(required = true) UUID id) {
+
+        try{
+
+            if (request.getMethod().equals("POST")) {
+                if (!result.hasErrors()) {
+
+                    ArrayList<Params> p = new ArrayList<>();
+                    BaseResponse objResponse = (new ServiceProxy()).postJsonData("api/profiles/update", objProfile, new ArrayList<>() );
+
+                    if(objResponse.getStatusAction() == 1)
+                        return "redirect:/admin/profiles/view/" + id.toString();
+                    else
+                        new Exception(objResponse.getMessage());
+                }
+            }
+
+            ServiceProxy oServiceProxy = new ServiceProxy();
+            BaseResponse oBaseResponse = oServiceProxy
+                    .buildParams("api/profiles/details", new Params().Add(new Params("id", id.toString())).Get())
+                    .getTarget()
+                    .get(BaseResponse.class);
+            oServiceProxy.close();
+
+            objProfile = (Profile) BaseResponse.convertToModel(oBaseResponse, new Profile());
+            model.addAttribute("objProfile", objProfile);
+            return "views/profile/update";
+
+        } catch (Exception e) {
+            new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
+            new NotFoundException("Pagina não encontrada");
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = {"admin/profiles/delete/{id}"}, method = {RequestMethod.GET})
+    public String actionDelete(@PathVariable(required = true) UUID id) {
+        try{
+
+            Profile objProfile = new Profile();
+            objProfile.setId(id);
+
+            ArrayList<Params> p = new ArrayList<>();
+            BaseResponse objResponse = (new ServiceProxy()).postJsonData("api/profiles/delete", objProfile, new ArrayList<>() );
+
+            if(objResponse.getStatusAction() == 1)
+                return "redirect:/admin/profiles";
+            else
+                new Exception(objResponse.getMessage());
+
+        } catch (Exception e) {
+            new NotFoundException("Pagina não encontrada.");
+        }
+        return null;
     }
 }

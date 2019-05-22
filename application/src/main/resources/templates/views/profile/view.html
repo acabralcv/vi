@@ -12,23 +12,29 @@
     <a href="/admin/profiles" class="btn btn-outline-primary">
       Voltar
     </a>
+    <a th:href="@{|/admin/profiles/update/${oProfile.id}|}" class="btn btn-outline-info">
+      Atualizar
+    </a>
+    <a th:href="@{|/admin/profiles/delete/${oProfile.id}|}" class="btn btn-outline-danger" onclick="return confirm('Tem certeza de que deseja remover este item')">
+      Remover
+    </a>
   </div>
 
-  <div clas="col">
-    <h4>Profile Details</h4>
+  <div clas="col" style="margin-top: 30px">
+    <h4>Detalhes do perfil</h4>
     <div class="container">
       <div class="row">
         <div class="w-25"><strong>Nome:</strong></div>
         <div class="w-75"><span th:text="${oProfile.name}">#</span></div>
       </div>
-      <!--<div class="row">-->
-        <!--<div class="w-25"><strong>Data criação:</strong></div>-->
-        <!--<div class="w-75"><span th:text="${oProfile.dateCreated}">#</span></div>-->
-      <!--</div>-->
-      <!--<div class="row">-->
-        <!--<div class="w-25"><strong>Ultima atualização:</strong></div>-->
-        <!--<div class="w-75"><span th:text="${oProfile.dateUpdated}">#</span></div>-->
-      <!--</div>-->
+      <div class="row">
+        <div class="w-25"><strong>Data criação:</strong></div>
+        <div class="w-75"><span th:text="${oProfile.dateCreated}">#</span></div>
+      </div>
+      <div class="row">
+        <div class="w-25"><strong>Ultima atualização:</strong></div>
+        <div class="w-75"><span th:text="${oProfile.dateUpdated}">#</span></div>
+      </div>
     </div>
   </div>
 

@@ -6,8 +6,14 @@ import jdk.nashorn.internal.parser.JSONParser;
 //import org.json.simple.JSONObject;
 import org.json.simple.JSONObject;
 import org.springframework.ui.Model;
+import org.springframework.util.ReflectionUtils;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 public class BaseResponse {
 
@@ -27,18 +33,19 @@ public class BaseResponse {
         return new BaseResponse(statusAction,message, data);
     }
 
-    public static Object convertToModel(BaseResponse objResponse){
+    public static Object convertToModel(BaseResponse objResponse, Object object){
 
         try{
 
-            //Pageable result objt
-            JSONObject dataResponse = (JSONObject) objResponse.getData();
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(objResponse.getData());
 
             ObjectMapper m = new ObjectMapper();
-            Object oObject = m.readValue(dataResponse.toString(), Object.class);
+            Object oObject = m.readValue( jsonResult, object.getClass());
             return oObject;
 
-        }catch (IOException e){
+        } catch (Exception e) {
+            e.printStackTrace();
             return  null;
         }
     }

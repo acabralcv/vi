@@ -104,10 +104,10 @@ public class ProfilesController {
             Profile oProfile = profileRepository.findById(objProfile.getId())
                     .orElseThrow(() -> new Exception(Profile.class.getName() + " not found with id '" + objProfile.getId().toString() + "'"));
 
-
             oProfile.setDateUpdated(UtilsDate.getDateTime());
+            oProfile.setName(objProfile.getName());
             oProfile.setStatus(Helper.STATUS_ACTIVE);
-            profileRepository.save(oProfile);
+            profileRepository.save(objProfile);
             return new BaseResponse().getObjResponse(1,"ok", objProfile);
 
         }catch (Exception e){
@@ -122,7 +122,7 @@ public class ProfilesController {
      * @return
      */
     @RequestMapping(value = {"api/profiles/delete"}, method = {RequestMethod.POST})
-    public BaseResponse actionDelete(@Valid @RequestBody Profile objProfile) {
+    public BaseResponse actionDelete(@RequestBody Profile objProfile) {
 
         try{
 
