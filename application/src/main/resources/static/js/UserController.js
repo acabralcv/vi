@@ -30,14 +30,45 @@ var modelUser = {
             size: 20,
             sort: 'dateCreated,desc'
         }
-
+        
         modelApp.getJsonData("api/storage/user-images", modelGet, function (dataResponse) {
-            console.log(modelGet)
             console.log(dataResponse)
-            if (dataResponse && dataResponse.data && dataResponse.data.length > 0) {
-                modelUser.showUserProfiles(dataResponse.data)
-            }else
-                modelUser.showUserProfiles([])
+            if (dataResponse && dataResponse.data && dataResponse.data && dataResponse.data.content.length > 0) {
+                modelUser.getUserImageDeatils(dataResponse.data.content)
+            }
+        })
+    },
+
+    getUserImageDeatils: function (dataImages) {
+        
+        var srtImages = '';
+
+       for(var i =0; i< dataImages.length; i++){
+           
+           var oImage = dataImages[i]
+           
+           srtImages += '<div class="md-image-card">';
+                srtImages += '<span class="fas fa-plus-circle"></span>';
+                srtImages += '<img width="128px" height="128px" src="/api/storage/images-details?&id=' + oImage.storageId + '" />';
+           srtImages += '</div>';
+
+        }
+        $("#listaUserImagesTable").html(srtImages)        
+    },
+
+    addUserProfileImage: function (userId) {
+
+        var modelPots = {
+            imageId: $("#prfile_id").val(),
+            userId: userId
+        }
+
+        modelApp.postJsonData("api/users/add-profile",modelPots, {}, function (dataResponse) {
+           if(dataResponse && ataResponse.statusAction == 1){
+               modelApp.showSuccessMassage("Perfil associado com sucesso", false)
+               modelUser.getUserProfiles(userId)
+           }else
+               modelApp.showErrorMassage(dataResponse.message, false)
         })
     },
 
@@ -75,10 +106,7 @@ var modelUser = {
                 console.log(userId)
 
                 modelFile.FilesUploadProxy('api/storage/exchange-image', formData, function (dataResponse) {
-                    console.log(dataResponse)
-                    // if (dataResponse.content && dataResponse.content.length > 0) {
-                    //
-                    // }
+                    modelUser.getUserImages()
                 })
             })
         }

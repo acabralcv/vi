@@ -21,6 +21,7 @@
             </div>
 
             <div clas="col">
+              <img th:src="@{/api/storage/images-details?id={id}(id='5ce339f34f37931a045f9a64')}" style="width:128px;height: 128px;"/>
                 <div style="width:128px;height: 128px;background-color: #ccc">Foto</div>
                 <button th:data-user_image_id="${oUser.id}" class="btn btn-default" onclick="modelUser.openUserImagesModal(this.getAttribute('data-user_image_id'))" style="position: absolute;left: 101px;top: 133px;">
                     <i class="fas fa-pencil-alt" alt="Alterar a foto do utilizador"></i>

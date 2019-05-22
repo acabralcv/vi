@@ -17,11 +17,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -45,9 +47,16 @@ public class UsersController {
      * @return
      */
     @RequestMapping(value = {"api/users/details"}, method = {RequestMethod.GET})
-    public User actionDetails(@RequestParam(name = "id") UUID id) {
+    public ResponseEntity actionDetails(@RequestParam(name = "id") UUID id) {
 
-        return userRepository.findById(id).get();
+        Optional<User> oUser = userRepository.findById(id)
+                .map(user -> {
+                    user.setProfileImage(user.getProfileImage());
+                    return user;
+                });
+
+        return ResponseEntity.ok().body(oUser);
+
     }
 
 
