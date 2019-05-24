@@ -37,7 +37,7 @@ public class DomainController {
     final ObjectMapper objectMapper = new ObjectMapper();
     final ServiceProxy oServiceProxy = new ServiceProxy();
 
-    @RequestMapping(value = "domains", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/domains", method = RequestMethod.GET)
     public String actionIndex(ModelMap model,@PageableDefault(sort = {"name"}, value = 10, page = 0) Pageable pageable) {
 
         //get info
@@ -59,7 +59,7 @@ public class DomainController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "domains/view/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/domains/view/{id}", method = RequestMethod.GET)
     public String actionDetails(ModelMap model, @PathVariable UUID id) {
 
         ArrayList<Params> params = new ArrayList<>();
@@ -88,7 +88,7 @@ public class DomainController {
      * @param domainType
      * @return
      */
-    @RequestMapping(value = "domains/create", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "admin/domains/create", method = {RequestMethod.GET, RequestMethod.POST})
     public String actionCreate(@Valid @ModelAttribute Domain oDomain,
                                BindingResult result,
                                ModelMap model, HttpServletRequest request,
@@ -109,7 +109,7 @@ public class DomainController {
 
                     Domain createdDomain = objectMapper.convertValue(oBaseResponse.getData(), Domain.class);
 
-                    return "redirect:/domains/view/" + createdDomain.getId().toString();
+                    return "redirect:/admin/domains/view/" + createdDomain.getId().toString();
                 }
 
             } catch (Exception e) {
@@ -119,6 +119,39 @@ public class DomainController {
 
         model.addAttribute("oDomain", oDomain);
         return  "/views/domain/create";
+    }
+
+
+    @RequestMapping(value = "admin/domains/update", method = {RequestMethod.GET, RequestMethod.POST})
+    public String actionUpdate(@Valid @ModelAttribute Domain oDomain,
+                               BindingResult result,
+                               ModelMap model, HttpServletRequest request) {
+
+        if (request.getMethod().equals("POST")) {
+
+            try {
+
+                if (!result.hasErrors()) {
+
+                    ArrayList<Params> p = new ArrayList<>();
+                    BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/domains/update", oDomain, new ArrayList<>() );
+
+                    if(oBaseResponse.getStatusAction() != 1 || oBaseResponse.getData() == null || oBaseResponse.getData() == "null")
+                        new Exception(oBaseResponse.getMessage());
+
+                    Domain updatedDomain = objectMapper.convertValue(oBaseResponse.getData(), Domain.class);
+
+                    return "redirect:/admin/domains/view/" + updatedDomain.getId().toString();
+                }
+
+            } catch (Exception e) {
+                new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
+            }
+        }
+
+        model.addAttribute("oDomain", oDomain);
+
+        return  "/views/domain/update";
     }
 
 }

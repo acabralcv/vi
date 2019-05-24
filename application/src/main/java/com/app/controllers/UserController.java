@@ -70,38 +70,38 @@ public class UserController {
     @RequestMapping(value = {"users/view/{id}"}, method = {RequestMethod.GET})
     public String actionView(ModelMap model, @PathVariable UUID id) {
 
-        ArrayList<Params> params1 = new ArrayList<>();
-        params1.add(new Params("id", id.toString()));
+//        ArrayList<Params> params1 = new ArrayList<>();
+//        params1.add(new Params("id", id.toString()));
+//
+//        ServiceProxy oServiceProxy = new ServiceProxy();
+//
+//        //let's get the user details
+//        User oUser = oServiceProxy
+//                .buildParams("api/users/details", new Params().Add(new Params("id", id.toString())))
+//                .getTarget()
+//                .get(User.class);
+//        oServiceProxy.close();
+
 
         ServiceProxy oServiceProxy = new ServiceProxy();
-
-        //let's get the user details
-        User oUser = oServiceProxy
-                .buildParams("api/users/details", params1)
+        BaseResponse oBaseResponse = oServiceProxy
+                .buildParams("api/users/details", new Params().Add(new Params("id", id.toString())).Get())
                 .getTarget()
-                .get(User.class);
+                .get(BaseResponse.class);
         oServiceProxy.close();
+        User oUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
 
-        //get profiles info
+
+        //get profiles
         BaseResponse objResProfiles = (new ServiceProxy())
                 .getJsonData("api/profiles", (new ServiceProxy()).encodePageableParams(PageRequest.of(0,50)));
-
-        //Pageable result objt
         JSONObject dataResponse = (JSONObject) objResProfiles.getData();
-
-        //check result
-        ArrayList<Profile> profileList = (ArrayList<Profile>) dataResponse.get("content");
 
         //setting the variables
         model.addAttribute("oUser", oUser);
         model.addAttribute("oProfile", new Profile());
-        model.addAttribute("profileList", profileList);
+        model.addAttribute("profileList",  (ArrayList<Profile>) dataResponse.get("content"));
         model.addAttribute("objPaging", null);
-
-
-
-
-        System.out.println(oUser.getProfileImage());
 
         return  "/views/user/view";
     }
@@ -126,18 +126,17 @@ public class UserController {
 
             try {
 
-                if (!result.hasErrors()) {
+                if (result.hasErrors())
+                    new Exception(result.getAllErrors().get(0).toString());
 
-                    System.out.println(objUser);
+                    BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/users/create", objUser, new ArrayList<>() );
+                    User createdUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
 
-                    BaseResponse objResponse = (new ServiceProxy()).postJsonData("api/users/create", objUser, new ArrayList<>() );
-
-                    if(objResponse.getStatusAction() == 1)
-                        return "redirect:/users/view/" + ( (LinkedHashMap) objResponse.getData()).get("id");
+                    if(oBaseResponse.getStatusAction() == 1)
+                        return "redirect:/users/view/" + createdUser.getId();
                     else
-                        new Exception(objResponse.getMessage());
-                }else
-                    System.out.println(result.getAllErrors());
+                        new Exception(oBaseResponse.getMessage());
+
 
             } catch (Exception e) {
                 new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);

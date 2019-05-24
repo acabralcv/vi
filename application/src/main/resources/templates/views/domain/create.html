@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
 <head>
-    <title>Domains</title>
+    <title>Dominios</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
@@ -9,19 +9,19 @@
     <div class="col-xs-12 col-md-12" layout:fragment="content">
 
         <div clas="col">
-            <a th:href="@{|/domains|}" class="btn btn-info">
+            <a th:href="@{|/domains|}" class="btn btn-success">
                 Voltar
             </a>
         </div>
 
-
-        <h5>New domain</h5>
-
-        <hr />
-
-        <!-- process form -->
-        <div clas="col">
-            <span th:replace="/views/domain/_form:: formDomain(oDomain)"></span>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Novo dominio</div>
+                <div class="panel-body">
+                    <div clas="col">
+                        <span th:replace="/views/domain/_form:: formDomain(oDomain)"></span>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>

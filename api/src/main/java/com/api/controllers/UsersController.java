@@ -54,7 +54,10 @@ public class UsersController {
                     return user;
                 });
 
-        return ResponseEntity.ok().body(oUser);
+        if(oUser != null)
+            return ResponseEntity.ok().body(new BaseResponse(1, "ok", oUser.get()));
+        else
+            return ResponseEntity.ok().body(new BaseResponse(0, "ok", null));
 
     }
 
@@ -96,13 +99,12 @@ public class UsersController {
      * @return
      */
     @RequestMapping(value = {"api/users/create"}, method = {RequestMethod.POST})
-    public BaseResponse actionCreate(@Valid @RequestBody User objUser) {
+    public ResponseEntity actionCreate(@Valid @RequestBody User objUser) {
 
         try {
 
             if( userRepository.findByName(objUser.getUsername()).size() > 0)
                 new Exception("Já existe utilizador com o mesmo 'username'.");
-
 
             if( userRepository.findByName(objUser.getEmail()).size() > 0)
                 new Exception("Já existe utilizador com o mesmo 'email'.");
@@ -112,13 +114,13 @@ public class UsersController {
             objUser.setIsEditable(1);
             objUser.setDateCreated(UtilsDate.getDateTime());
             objUser.setStatus(Helper.STATUS_ACTIVE);
-            userRepository.save(objUser);
+            User crestedUser = userRepository.save(objUser);
 
-            return new BaseResponse().getObjResponse(1,"ok", objUser );
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", crestedUser ));
 
         }catch(Exception e){
             new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
-            return new BaseResponse().getObjResponse(0,e.getMessage(), null);
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(0,e.getMessage(), null));
         }
     }
 

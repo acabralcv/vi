@@ -1,10 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Dominios</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
+
+    <div class="col-xs-12 col-md-12" layout:fragment="content">
+
+        <div clas="col">
+            <a th:href="@{|/domains|}" class="btn btn-default">
+                Voltar
+            </a>
+        </div>
+
+
+        <h5><span th:text="${oDominio.name}"></span> - Atualização</h5>
+
+        <hr />
+
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Dominios</div>
+                <div class="panel-body">
+                    <div clas="col">
+                        <span th:replace="/views/domain/_form:: formDomain(oDomain)"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
 
 </body>
 </html>

@@ -9,13 +9,13 @@
 <div class="col-xs-12 col-md-12" layout:fragment="content">
 
   <div clas="col">
-    <a href="/admin/profiles" class="btn btn-outline-primary">
+    <a href="/admin/profiles" class="btn btn-default">
       Voltar
     </a>
-    <a th:href="@{|/admin/profiles/update/${oProfile.id}|}" class="btn btn-outline-info">
+    <a th:href="@{|/admin/profiles/update/${oProfile.id}|}" class="btn btn-success">
       Atualizar
     </a>
-    <a th:href="@{|/admin/profiles/delete/${oProfile.id}|}" class="btn btn-outline-danger" onclick="return confirm('Tem certeza de que deseja remover este item')">
+    <a th:href="@{|/admin/profiles/delete/${oProfile.id}|}" class="btn btn-danger" onclick="return confirm('Tem certeza de que deseja remover este item')">
       Remover
     </a>
   </div>
