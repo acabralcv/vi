@@ -1,0 +1,34 @@
+
+<span th:fragment="indexView(documents,objPaging)">
+
+    <table class="table table-striped table-bordered">
+        <tr>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Data de publicação</th>
+            <th>Ação</th>
+        </tr>
+
+        <div class="col">
+            Total: <span th:if="${oPaging != null}" th:text="${objPaging.totalElements}"></span>
+        </div>
+
+        <tr th:each="oDocument : ${documents}">
+            <td>
+                <a th:href="@{|/api/storage/documents-details?id=${oDocument.storageId}|}" target="_blank" class="btn-link">
+                  Ver documento
+                </a>
+            </td>
+            <td th:text="${oDocument.description}">#</td>
+            <td th:text="${oDocument.dateCreated}">#</td>
+            <td>
+                <span th:replace="/fragments/ActionColumn:: actionView('/documents/view/' + ${oDocument.id})"></span>
+                <span th:replace="/fragments/ActionColumn:: actionDelete('/documents/delete/' + ${oDocument.id})"></span>
+            </td>
+        </tr>
+    </table>
+
+
+    <span th:replace="/fragments/pagingResult:: actionPaging(${objPaging}, '/documents')"></span>
+
+</span>

@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+    <head>
+        <title>Profiiles</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    </head>
+    <body>
 
-</body>
+        <div class="col-xs-12 col-md-12" layout:fragment="content">
+
+            <div clas="">
+                <button th:data-document_id="xxx" class="btn btn-default" onclick="modelDocument.openDocumentModal()">
+                    <i class="fas fa-file-upload" alt="Carregar documento"></i>
+                </button>
+            </div>
+
+            <div clas="col" style="margin-top:20px">
+                <h5>Profiles</h5>
+                <span th:replace="/views/document/_index_view:: indexView(${documents},${objPaging})"></span>
+            </div>
+
+         </div>
+
+    </body>
 </html>
+
+
+
+
+

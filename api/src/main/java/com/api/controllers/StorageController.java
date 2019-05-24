@@ -8,12 +8,10 @@ import java.util.UUID;
 
 import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
-import com.library.models.Document;
-import com.library.models.Domain;
-import com.library.models.Image;
-import com.library.models.Profile;
+import com.library.models.*;
 import com.library.repository.DocumentRepository;
 import com.library.repository.ImageRepository;
+import com.library.repository.UserRepository;
 import com.library.service.EventsLogService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -51,6 +49,9 @@ public class StorageController {
 
     @Autowired
     private DocumentRepository documentRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @RequestMapping(value = "api/storage/exchange-image", method = RequestMethod.POST)
     public ResponseEntity exchangeSingleImage( MultipartFile  file, Image oImage)  throws IOException {
@@ -93,7 +94,7 @@ public class StorageController {
     }
 
     @RequestMapping(value = "api/storage/exchange-document", method = RequestMethod.POST)
-    public ResponseEntity exchangeSingleFile( MultipartFile  file, String description)  throws IOException {
+    public ResponseEntity exchangeSingleFile( MultipartFile  file, Document documentPosted)  throws IOException {
 
         try {
 
@@ -106,7 +107,7 @@ public class StorageController {
             oDocument.setId(new Helper().getUUID());
             oDocument.setImageType(extension);
             oDocument.setName(oDocument.getId() + "." + oDocument.getImageType());
-            oDocument.setDescription(description);
+            oDocument.setDescription(documentPosted.getDescription());
 
             // Define metaData
             DBObject metaData = new BasicDBObject();
@@ -138,11 +139,13 @@ public class StorageController {
     public ResponseEntity getImageDetails(@RequestParam(name = "id") String id){
         try {
             GridFSFile fileObj = gridOperations.find(new Query(Criteria.where("_id").is(id))).first();
+            GridFsResource resource = gridOperations.getResource(fileObj);
 
             if(fileObj != null)
                 return ResponseEntity.ok()
                         .contentLength(fileObj.getLength())
-                        .contentType(MediaType.valueOf("image/png"))
+                        .contentType(MediaType.parseMediaType(resource.getContentType()))
+                        //.contentType(MediaType.valueOf("image/png"))
                         .body(gridOperations.getResource(fileObj));
             else
                 return ResponseEntity.ok().body(new BaseResponse(0,"File not found!", null));
@@ -167,12 +170,46 @@ public class StorageController {
         }
     }
 
+
+
+
+    @RequestMapping(value = "api/storage/documents-details", method = RequestMethod.GET)
+    public ResponseEntity getDocumentDetails(@RequestParam(name = "id") String id){
+        try {
+            GridFSFile fileObj = gridOperations.find(new Query(Criteria.where("_id").is(id))).first();
+
+            GridFsResource resource = gridOperations.getResource(fileObj);
+
+            if(fileObj != null)
+                return ResponseEntity.ok()
+                        .contentLength(fileObj.getLength())
+                        .contentType(MediaType.parseMediaType(resource.getContentType()))
+                        .body(gridOperations.getResource(fileObj));
+            else
+                return ResponseEntity.ok().body(new BaseResponse(0,"File not found!", null));
+
+        }catch (Exception e){
+            new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
+    }
+
     @RequestMapping(value = "api/storage/documents", method = RequestMethod.GET)
-    public ResponseEntity getDocuments(ModelMap model, @PageableDefault(sort = {"name"}, size = 10, page = 0) Pageable pageable) {
+    public ResponseEntity getDocuments(Pageable pageable) {
 
-        Page<Document> documents = documentRepository.findByStatus(Helper.STATUS_ACTIVE, pageable);
+        try {
 
-        return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1, "ok", documents));
+            Page<Document> documents = documentRepository.findByStatus(Helper.STATUS_ACTIVE,
+                    PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dateCreated")
+                            .descending()
+                            .and(Sort.by("name").ascending())));
+
+            return ResponseEntity.ok().body(new BaseResponse(1,"ok", documents));
+
+        }catch (Exception e){
+            new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
+            return ResponseEntity.ok().body(new BaseResponse(0,"ok", null));
+        }
     }
 
 }

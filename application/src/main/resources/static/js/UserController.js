@@ -103,7 +103,7 @@ var modelUser = {
                 formData.append('userId', userId);
                 formData.append('description', $('#imageFileObservacao').val());
 
-                modelFile.FilesUploadProxy('api/storage/exchange-image', formData, function (dataResponse) {
+                modelStorage.filesUploadProxy('api/storage/exchange-image', formData, function (dataResponse) {
                     if(dataResponse && dataResponse.data ){
                         modelUser.addUserProfileImage(userId, dataResponse.data.id)
                     }

@@ -1,25 +1,60 @@
-<div th:fragment="ActionModal()">
-    <div class="col-md-12" style="margin:10px">
 
-        <div class="modal" id="documentsUploadModal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
+<span th:fragment="ActionModal()">
 
-                    <div class="modal-header">
-                        <h4 id="documentsModalTitle" class="modal-title">File upload</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
+    <div id="documentUploadModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 
-                    <div class="modal-body">
-                        <div layout:fragment="modalBody">
-                                #modal-body content should be here
+          <div class="modal-dialog modal-lg">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 id="documentsModalTitle" class="modal-title">Garregar documentos</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form name="uploadingDocumentForm" enctype="multipart/form-data" action="#" method="POST">
+
+                        <div class="" style="margin: 10px 0;">
+                            <div class="upload-files-field">
+                                <label class="control-label" for="InputDocumentsUploads">Anexar documentos</label>
+                                <input type="file" id="InputDocumentsUploads" class="upload-files-field" name="images" multiple onchange="modelDocument.showDocsLabels()" />
+                            </div>
                         </div>
-                    </div>
+
+                        <div id="DocumentsUploadWidgetFileName" class="documents-widget-list"></div>
+
+
+                        <div class="form-group">
+                            <label for="documentFileObservacao">Observação:</label>
+                            <textarea rows="3" class="form-control" id="documentFileObservacao"></textarea>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <input type="button" id="DocumentsUploadWidgetBtn" value="Carregar" onclick="modelDocument.uploadDocument()" disabled class="btn btn-success" />
+                            </div>
+                        </div>
+
+                    </form>
+
+
+                    <!--div clas="col" style="margin-top: 30px">
+                        <hr />
+                        <h5>Documentos</h5>
+                        <div id="listaDocumentosTable">
+
+                        </div>
+                    </div-->
 
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 
-</div>
+</span>
+
+e>
