@@ -1,5 +1,7 @@
 package com.library.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -27,6 +29,13 @@ public class Document extends AuditModel {
     @Size(max = 32)
     @Column(name = "image_type", nullable = true)
     private String imageType;
+
+    /** REALATIONS **/
+    //Tasks
+    @ManyToOne
+    @JoinColumn(name="target_table_id", nullable = true)
+    @JsonIgnore
+    private Tasks task;
 
     public UUID getId() {
         return id;
@@ -66,5 +75,13 @@ public class Document extends AuditModel {
 
     public void setImageType(String imageType) {
         this.imageType = imageType;
+    }
+
+    public Tasks getTask() {
+        return task;
+    }
+
+    public void setTask(Tasks task) {
+        this.task = task;
     }
 }

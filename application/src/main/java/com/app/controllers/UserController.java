@@ -41,7 +41,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "users", method = RequestMethod.GET)
-    public String actionIndex(ModelMap model, @PageableDefault(sort = { "name"}, value = 5, page = 0) Pageable pageable) {
+    public String actionIndex(ModelMap model, @PageableDefault(sort = { "name"}, value = 10, page = 0) Pageable pageable) {
 
         //get info
         BaseResponse objResponse = (new ServiceProxy())
@@ -70,19 +70,6 @@ public class UserController {
     @RequestMapping(value = {"users/view/{id}"}, method = {RequestMethod.GET})
     public String actionView(ModelMap model, @PathVariable UUID id) {
 
-//        ArrayList<Params> params1 = new ArrayList<>();
-//        params1.add(new Params("id", id.toString()));
-//
-//        ServiceProxy oServiceProxy = new ServiceProxy();
-//
-//        //let's get the user details
-//        User oUser = oServiceProxy
-//                .buildParams("api/users/details", new Params().Add(new Params("id", id.toString())))
-//                .getTarget()
-//                .get(User.class);
-//        oServiceProxy.close();
-
-
         ServiceProxy oServiceProxy = new ServiceProxy();
         BaseResponse oBaseResponse = oServiceProxy
                 .buildParams("api/users/details", new Params().Add(new Params("id", id.toString())).Get())
@@ -90,7 +77,6 @@ public class UserController {
                 .get(BaseResponse.class);
         oServiceProxy.close();
         User oUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
-
 
         //get profiles
         BaseResponse objResProfiles = (new ServiceProxy())
@@ -116,11 +102,8 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = {"users/create"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String actionCreate(@Valid @ModelAttribute User objUser,
-                               BindingResult result,
-                               ModelMap model, HttpServletRequest request,
-                               @PathVariable(required = false)
-                                       UUID id) {
+    public String actionCreate(@Valid @ModelAttribute User objUser, BindingResult result,
+                               ModelMap model, HttpServletRequest request) {
 
         if (request.getMethod().equals("POST")) {
 
@@ -129,14 +112,13 @@ public class UserController {
                 if (result.hasErrors())
                     new Exception(result.getAllErrors().get(0).toString());
 
-                    BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/users/create", objUser, new ArrayList<>() );
-                    User createdUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
+                BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/users/create", objUser, new ArrayList<>() );
+                User createdUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
 
-                    if(oBaseResponse.getStatusAction() == 1)
-                        return "redirect:/users/view/" + createdUser.getId();
-                    else
-                        new Exception(oBaseResponse.getMessage());
-
+                if(oBaseResponse.getStatusAction() == 1)
+                    return "redirect:/users/view/" + createdUser.getId();
+                else
+                    new Exception(oBaseResponse.getMessage());
 
             } catch (Exception e) {
                 new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);

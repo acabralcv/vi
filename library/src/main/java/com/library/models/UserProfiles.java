@@ -20,7 +20,6 @@ public class UserProfiles extends AuditModel {
     @javax.persistence.Transient
     private UUID userId;
 
-
     @ManyToOne
     @JoinColumn(name="profile_id", nullable=false)
     @JsonIgnore

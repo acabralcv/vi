@@ -1,67 +1,72 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
 <head>
-    <title>Utilizador</title>
+    <title><span th:text="${oUser.name}"></span> </title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
-    <body>
 
+    <div class="col-xs-12 col-md-12" layout:fragment="content">
 
-        <div class="col-xs-12 col-md-12" layout:fragment="content">
+        <!-- TO BE USED TO GET PROFILES -->
+        <input type="hidden" th:value="${oUser.id}" id="action_user_id" class="form-control" />
 
-            <!-- TO BE USED TO GET PROFILES -->
-            <input type="hidden" th:value="${oUser.id}" id="action_user_id" class="form-control" />
+        <span th:replace="/views/user/upload_image_modal:: ActionModal(${oUser})"></span>
 
-            <span th:replace="/views/user/upload_image_modal:: ActionModal(${oUser})"></span>
+        <div clas="col" style="margin:5px 0;">
+            <a href="/users" class="btn btn-default">
+                Voltar
+            </a>
+        </div>
 
-            <div clas="col" style="margin:5px 0;">
-                <a href="/users" class="btn btn-default">
-                    Voltar
-                </a>
-            </div>
+		<div class="panel panel-info">
+		    <div class="panel-heading">Utilizadores</div>
+			  <div class="panel-body">
 
-            <div clas="col">
-                <span th:if="${oUser.profileImage != null}">
-                    <img th:src="@{/api/storage/images-details?id={id}(id=${oUser.profileImage.storageId})}" style="width:128px;height: 128px;"/>
-                </span>
-                <span th:unless="${oUser.profileImage != null}">
-                    <div style="width:128px;height: 128px;background-color: #ccc">Foto</div>
-                </span>
-                <button th:data-user_image_id="${oUser.id}" class="btn btn-default" onclick="modelUser.openUserImagesModal(this.getAttribute('data-user_image_id'))" style="position: absolute;left: 101px;top: 133px;">
-                    <i class="fas fa-pencil-alt" alt="Alterar a foto do utilizador"></i>
-                </button>
-            </div>
-
-            <div clas="col">
-                <h4>Infomação do utilizador</h4>
-                <div class="container">
-                    <div class="row">
-                        <div class="w-25"><strong>Nome:</strong></div>
-                        <div class="w-75"><span th:text="${oUser.name}">#</span></div>
+                    <div clas="col">
+                        <span th:if="${oUser.profileImage != null}">
+                            <img th:src="@{/api/storage/images-details?id={id}(id=${oUser.profileImage.storageId})}" style="width:128px;height: 128px;"/>
+                        </span>
+                        <span th:unless="${oUser.profileImage != null}">
+                            <div style="width:128px;height: 128px;background-color: #ccc">Foto</div>
+                        </span>
+                        <button th:data-user_image_id="${oUser.id}" class="btn btn-default" onclick="modelUser.openUserImagesModal(this.getAttribute('data-user_image_id'))" style="position: absolute;left: 101px;top: 133px;">
+                            <i class="fas fa-pencil-alt" alt="Alterar a foto do utilizador"></i>
+                        </button>
                     </div>
-                    <div class="row">
-                        <div class="w-25"><strong>Username:</strong></div>
-                        <div class="w-75"><span th:text="${oUser.username}">#</span></div>
-                    </div>
-                    <div class="row">
-                        <div class="w-25"><strong>Email:</strong></div>
-                        <div class="w-75"><span th:text="${oUser.email}">#</span></div>
-                    </div>
-                    <div class="row">
-                        <div class="w-25"><strong>Data de criação:</strong></div>
-                        <div class="w-75"><span th:text="${oUser.dateCreated}">#</span></div>
-                    </div>
-                    <div class="row">
-                        <div class="w-25"><strong>Ultima atualização:</strong></div>
-                        <div class="w-75"><span th:text="${oUser.dateUpdated}">#</span></div>
-                    </div>
-                </div>
-            </div>
 
-            <div clas="col" style="margin-top: 30px">
-                <h5>Perfis do utilizador</h5>
+                    <div clas="col">
+                        <h4>Infomação do utilizador</h4>
+                        <div class="container">
+                            <div class="row">
+                                <div class="w-25"><strong>Nome:</strong></div>
+                                <div class="w-75"><span th:text="${oUser.name}">#</span></div>
+                            </div>
+                            <div class="row">
+                                <div class="w-25"><strong>Username:</strong></div>
+                                <div class="w-75"><span th:text="${oUser.username}">#</span></div>
+                            </div>
+                            <div class="row">
+                                <div class="w-25"><strong>Email:</strong></div>
+                                <div class="w-75"><span th:text="${oUser.email}">#</span></div>
+                            </div>
+                            <div class="row">
+                                <div class="w-25"><strong>Data de criação:</strong></div>
+                                <div class="w-75"><span th:text="${oUser.dateCreated}">#</span></div>
+                            </div>
+                            <div class="row">
+                                <div class="w-25"><strong>Ultima atualização:</strong></div>
+                                <div class="w-75"><span th:text="${oUser.dateUpdated}">#</span></div>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="">
+              </div>
+        </div>
+
+
+		<div class="panel panel-info" style="margin-top: 30px">
+		      <div class="panel-heading">Perfis/roles do utilizador</div>
+			  <div class="panel-body">
 
                     <table id="listaUserPerfilTable" class="table table-striped">
                         <thead>
@@ -72,20 +77,16 @@
                         </thead>
                         <tbody></tbody>
                     </table>
-                </div>
 
-            </div>
-
-
-
-            <div clas="col">
-                <h5>Adicionar perfil</h5>
-                <!--eh utilizado pelo profile/index tambem -->
-                <span th:replace="/views/user/_form_profile:: formUserProfile(${oUser},${oProfile},${profileList})"></span>
-            </div>
-
+                    <div class="col">
+                        <h5>Adicionar perfil</h5>
+                        <!--eh utilizado pelo profile/index tambem -->
+                        <span th:replace="/views/user/_form_profile:: formUserProfile(${oUser},${oProfile},${profileList})"></span>
+                    </div>
+              </div>
         </div>
 
 
-    </body>
+    </div>
+
 </html>
