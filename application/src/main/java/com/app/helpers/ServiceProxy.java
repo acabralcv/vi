@@ -18,6 +18,9 @@ public class ServiceProxy {
     private Client client;
 
     public ArrayList<Params> encodePageableParams(Pageable pageable)  {
+
+        System.out.println(pageable.getSort());
+
         ArrayList<Params> p = new ArrayList<>();
         p.add(new Params("page", "" + pageable.getPageNumber()));
         p.add(new Params("size", "" + pageable.getPageSize()));

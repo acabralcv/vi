@@ -2,25 +2,18 @@ package com.app.controllers;
 
 import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.library.helpers.BaseResponse;
-import com.library.helpers.Helper;
 import com.library.helpers.HelperPaging;
 import com.library.models.Profile;
-import com.library.models.WfProcess;
 import com.library.repository.ProfileRepository;
 import com.library.service.EventsLogService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,14 +23,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.NotFoundException;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 public class ProfileController {
@@ -47,13 +34,13 @@ public class ProfileController {
     private ProfileRepository profileRepository;
 
     /**
-     *
+     * get profiles
      * @param model
      * @param pageable
      * @return
      */
     @RequestMapping(value = "admin/profiles", method = RequestMethod.GET)
-    public String actionIndex(ModelMap model, @PageableDefault(sort = { "name"}, value = 10, page = 0) Pageable pageable) {
+    public String actionIndex(ModelMap model, @PageableDefault(page = 0, size = 10) Pageable pageable) {
 
         //get info
         BaseResponse objResponse = (new ServiceProxy())
@@ -72,9 +59,12 @@ public class ProfileController {
     }
 
 
-
-
-
+    /**
+     * get profile details
+     * @param model
+     * @param id
+     * @return
+     */
     @RequestMapping(value = {"admin/profiles/view/{id}"}, method = {RequestMethod.GET})
     public String actionView(ModelMap model, @PathVariable UUID id) {
 
@@ -92,12 +82,11 @@ public class ProfileController {
     }
 
     /**
-     *
+     * create new profile
      * @param objProfile
      * @param result
      * @param model
      * @param request
-     * @param id
      * @return
      */
     @RequestMapping(value = {"admin/profiles/create"}, method = {RequestMethod.GET, RequestMethod.POST})

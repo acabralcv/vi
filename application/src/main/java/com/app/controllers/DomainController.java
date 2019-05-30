@@ -4,18 +4,12 @@ import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.library.helpers.BaseResponse;
-import com.library.helpers.Helper;
 import com.library.helpers.HelperPaging;
 import com.library.models.Domain;
-import com.library.models.Profile;
-import com.library.models.WfProcess;
 import com.library.repository.DomainRepository;
 import com.library.service.EventsLogService;
 import org.json.simple.JSONObject;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,10 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 public class DomainController {

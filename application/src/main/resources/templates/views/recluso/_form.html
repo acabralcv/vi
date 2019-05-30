@@ -1,0 +1,35 @@
+<span th:fragment="formRecluso(objRecluso)">
+
+   <form action="#" th:object="${objRecluso}" method="post">
+
+        <div class="form-group">
+            <label for="name">Nome</label>
+            <input type="text" th:field="*{nome}" id="name" class="form-control" />
+            <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Nº Recluso</label>
+            <input type="text" th:field="*{numRecluso}" id="numRecluso" class="form-control" />
+            <span class="error" th:if="${#fields.hasErrors('numRecluso')}" th:errors="*{numRecluso}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Sexo</label>
+            <input type="text" th:field="*{sexo}" id="sexo" class="form-control" />
+            <span class="error" th:if="${#fields.hasErrors('sexo')}" th:errors="*{sexo}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Data Nascimento</label>
+            <input type="text" th:field="*{dataNascimento}" id="dataNascimento" class="form-control" />
+            <span class="error" th:if="${#fields.hasErrors('dataNascimento')}" th:errors="*{dataNascimento}"></span>
+        </div>
+
+        <div class="form-group">
+             <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+
+    </form>
+
+</span>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Reclusos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+
+<div class="col-xs-12 col-md-12" layout:fragment="content">
+
+    <div clas="">
+        <a href="/reclusos/create" class="btn btn-success">Novo recluso</a>
+    </div>
+
+    <div clas="col" style="margin-top:20px">
+
+        <div class="panel panel-info">
+            <div class="panel-heading">Reclusos</div>
+            <div class="panel-body">
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <th>Nome</th>
+                        <th>Data criação</th>
+                        <th>Ultima atualização</th>
+                        <th>Ações</th>
+                    </tr>
+
+                    <div class="col">
+                        Total: <span th:text="${objPaging.totalElements}"></span>
+                    </div>
+
+                    <tr th:each="oRecluso : ${reclusos}">
+                        <td th:text="${oRecluso.nome}">#</td>
+                        <td th:text="${oRecluso.sexo}">#</td>
+                        <td th:text="${oRecluso.dataNascimento}">#</td>
+                        <td th:text="${oRecluso.dateCreated}">#</td>
+                        <td th:text="${oRecluso.dateUpdated}">#</td>
+                        <td>
+                            <span th:replace="/fragments/ActionColumn:: actionView('/users/view/' + ${oRecluso.id})"></span>
+                            <span th:replace="/fragments/ActionColumn:: actionUpdate('/users/update/' + ${oRecluso.id})"></span>
+                            <span th:replace="/fragments/ActionColumn:: actionDelete('/users/delete/' + ${oRecluso.id})"></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <span th:replace="/fragments/pagingResult:: actionPaging(${objPaging}, '/reclusos')"></span>
+
+    </div>
+
+</div>
+
+
+
+</body>
+
+</html>

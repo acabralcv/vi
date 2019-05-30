@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+  <title th:text="${objProfile.name}"> - Atualização</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+<div class="col-xs-12 col-md-12" layout:fragment="content">
+
+  <div clas="col">
+    <a href="/admin/profiles" class="btn btn-default">Voltar</a>
+  </div>
+
+
+  <h5><span th:text="${objProfile.name}"></span> - Atualização</h5>
+
+  <hr />
+
+  <!-- process form -->
+  <div clas="col">
+    <span th:replace="/views/profile/_form:: formProfile(objProfile)"></span>
+  </div>
+
+</div>
+
+</div>
+
+</body>
+</html>

@@ -3,28 +3,21 @@ package com.api.controllers;
 import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
 import com.library.helpers.UtilsDate;
-import com.library.models.Domain;
 import com.library.models.Profile;
-import com.library.models.UserProfiles;
-import com.library.models.WfProcess;
 import com.library.repository.ProfileRepository;
 import com.library.service.EventsLogService;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @RestController
 public class ProfilesController {
@@ -40,8 +33,6 @@ public class ProfilesController {
     @RequestMapping(value = {"api/profiles/details"}, method = {RequestMethod.GET})
     public ResponseEntity actionDetails(@RequestParam(name = "id") UUID id) {
 
-        //return profileRepository.findById(id).get();
-
         Optional<Profile> oProfile = (Optional) profileRepository.findById(id);
 
         return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oProfile != null ? 1 : 0,"ok", oProfile));
@@ -55,14 +46,14 @@ public class ProfilesController {
      * @return
      */
     @RequestMapping(value = "api/profiles", method = RequestMethod.GET)
-    public BaseResponse actionIndex(ModelMap model, Pageable pageable) {
+    public ResponseEntity actionIndex(ModelMap model, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+
+        System.out.println(pageable.getSort());
 
         Page<Profile> profiles = profileRepository.findByStatus(Helper.STATUS_ACTIVE,
-                PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dateCreated")
-                        .descending()
-                        .and(Sort.by("name").ascending())));
+                PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("name").descending()) );
 
-        return new BaseResponse().getObjResponse(1,"ok", profiles );
+        return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", profiles ));
     }
 
     /**

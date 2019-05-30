@@ -8,7 +8,7 @@
 
 <head>
 
-    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">vWeb Framawork</title>
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">SIGP</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -57,11 +57,12 @@
 
 <body class="hold-transition skin-blue sidebar-mini">
 
-    <div class="wrapper">
+    <div class="wrapper" style="background-color:#ecf0f5">
 
-
+    <!-- header fragment -->
     <span th:replace="/layouts/main-header:: ActionView()"></span>
 
+    <!-- side fragment -->
     <span th:replace="/layouts/main-sidebar:: ActionView()"></span>
 
 
