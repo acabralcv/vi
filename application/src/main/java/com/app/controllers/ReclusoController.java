@@ -1,5 +1,6 @@
 package com.app.controllers;
 
+import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
 import com.library.helpers.BaseResponse;
 import com.library.helpers.HelperPaging;
@@ -16,18 +17,41 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.UUID;
 
 @Controller
 public class ReclusoController {
 
     @Autowired
     private ReclusoRepository reclusoRepository;
+
+
+    @RequestMapping(value = {"reclusos/view/{id}"}, method = {RequestMethod.GET})
+    public String actionView(ModelMap model, @PathVariable UUID id) {
+
+        ServiceProxy oServiceProxy = new ServiceProxy();
+        BaseResponse oBaseResponse = oServiceProxy
+                .buildParams("api/reclusos/details", new Params().Add(new Params("id", id.toString())).Get())
+                .getTarget()
+                .get(BaseResponse.class);
+        oServiceProxy.close();
+
+        Recluso oRecluso = (Recluso) BaseResponse.convertToModel(oBaseResponse, new Recluso());
+
+        if(oRecluso == null)
+            new ResourceNotFoundException("Não possivel encontrar o recluso solicitado");
+
+        model.addAttribute("oRecluso", oRecluso);
+
+        return  "/views/recluso/view";
+    }
 
     @RequestMapping(value = "reclusos", method = RequestMethod.GET)
     public String actionIndex(ModelMap model, @PageableDefault(page = 0, size = 10) Pageable pageable) {

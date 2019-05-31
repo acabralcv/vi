@@ -44,10 +44,10 @@ public class Recluso extends AuditModel {
 //    private String motherName;
 
 
-//    @Transient
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "id_nacionalidade", referencedColumnName = "id")
-//    private Image nacionalidade;
+    @Transient
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_nacionalidade", referencedColumnName = "id")
+    private Image nacionalidade;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_image_id", referencedColumnName = "id")
