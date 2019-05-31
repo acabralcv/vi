@@ -28,8 +28,12 @@ public class Recluso extends AuditModel {
     @Column(name = "data_nascimento", nullable = false)
     private Date dataNascimento;
 
-//    @Column(name = "id_nacionalidade", nullable = true)
-//    private String idNacionalidade;
+    @Size(max = 36)
+    @Column(name = "estado_civil", nullable = true)
+    private String estadoCivil;
+
+    @Column(name = "id_nacionalidade", nullable = true)
+    private String idNacionalidade;
 //
 //    @Column(name = "id_concelho", nullable = true)
 //    private String idConcelho;
@@ -47,7 +51,7 @@ public class Recluso extends AuditModel {
     @Transient
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_nacionalidade", referencedColumnName = "id")
-    private Image nacionalidade;
+    private Pais nacionalidade;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_image_id", referencedColumnName = "id")
@@ -99,5 +103,29 @@ public class Recluso extends AuditModel {
 
     public void setProfileImage(Image profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public String getEstadoCivil() {
+        return estadoCivil;
+    }
+
+    public void setEstadoCivil(String estadoCivil) {
+        this.estadoCivil = estadoCivil;
+    }
+
+    public String getIdNacionalidade() {
+        return idNacionalidade;
+    }
+
+    public void setIdNacionalidade(String idNacionalidade) {
+        this.idNacionalidade = idNacionalidade;
+    }
+
+    public Pais getNacionalidade() {
+        return nacionalidade;
+    }
+
+    public void setNacionalidade(Pais nacionalidade) {
+        this.nacionalidade = nacionalidade;
     }
 }

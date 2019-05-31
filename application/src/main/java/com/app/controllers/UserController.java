@@ -76,7 +76,11 @@ public class UserController {
                 .getTarget()
                 .get(BaseResponse.class);
         oServiceProxy.close();
+
         User oUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
+
+        if(oUser == null)
+            new ResourceNotFoundException("Não possivel encontrar o 'Peril' solicitado");
 
         //get profiles
         BaseResponse objResProfiles = (new ServiceProxy())

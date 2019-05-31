@@ -15,9 +15,33 @@
         </div>
 
         <div class="form-group">
-            <label for="name">Sexo</label>
-            <input type="text" th:field="*{sexo}" id="sexo" class="form-control" />
-            <span class="error" th:if="${#fields.hasErrors('sexo')}" th:errors="*{sexo}"></span>
+            <label for="sexo">Sexo</label>
+            <div class="form-group">
+               <select th:field="*{sexo}" id="sexo" class="form-control">
+                    <option value="">-- Selecionar Sexo --</option>
+                    <option th:each="domain : ${T(com.app.service.StorageService).getDomains('DOMAIN_SEXO')}" th:value="${domain.id}" th:text="${domain.name}">
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="estadoCivil">Estado civil</label>
+            <div class="form-group">
+               <select th:field="*{estadoCivil}" id="estadoCivil" class="form-control">
+                    <option value="">-- Selecionar estado civil --</option>
+                    <option th:each="domain : ${T(com.app.service.StorageService).getDomains('DOMAIN_ESTADO_CIVIL')}" th:value="${domain.id}" th:text="${domain.name}">
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="nacionalidade">Nacionalidade</label>
+            <div class="form-group">
+               <select th:field="*{nacionalidade}" id="nacionalidade" class="form-control">
+                    <option value="">-- Selecionar nacionalidade --</option>
+                    <option th:each="pais : ${paisList}" th:value="${pais.id}" th:text="${pais.nome}">
+                </select>
+            </div>
         </div>
 
         <div class="form-group">

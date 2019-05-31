@@ -26,8 +26,8 @@ public abstract class AuditModel implements Serializable {
     @LastModifiedDate
     private Date dateUpdated;
 
-    @Column(name = "status", nullable = false)
-    private Integer status = 1;
+    @Column(name = "status", nullable = false, columnDefinition = "int default 1")
+    private Integer status;
 
     public Date getDateCreated() {
         return dateCreated;

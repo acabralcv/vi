@@ -31,6 +31,10 @@ public class Domain extends AuditModel {
     @Size(max = 64)
     private String name;
 
+    @NotBlank
+    @Column(name = "ordem", nullable = false, columnDefinition = "int default 1")
+    private String ordem;
+
     public UUID getId() {
         return id;
     }

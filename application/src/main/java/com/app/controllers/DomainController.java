@@ -4,6 +4,7 @@ import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.library.helpers.BaseResponse;
+import com.library.helpers.Helper;
 import com.library.helpers.HelperPaging;
 import com.library.models.Domain;
 import com.library.repository.DomainRepository;
@@ -29,11 +30,23 @@ public class DomainController {
     final ServiceProxy oServiceProxy = new ServiceProxy();
 
     @RequestMapping(value = "admin/domains", method = RequestMethod.GET)
-    public String actionIndex(ModelMap model,@PageableDefault(sort = {"name"}, value = 10, page = 0) Pageable pageable) {
+    public String actionIndex(ModelMap model, @RequestParam(name = "domainType", required = false) String domainType, @PageableDefault(sort = {"name"}, value = 10, page = 0) Pageable pageable) {
+
+        ArrayList<Params> params = new ArrayList<>();
+
+        if(domainType != null) {
+            //se for indicado o tipo do dominio, vamos ignorar a paginação
+            params = new Params()
+                    .Add(new Params("domainType", domainType.toString()))
+                    .Add(new Params("statue", String.valueOf(Helper.STATUS_ACTIVE)))
+                    .Get();
+        }else{
+            //caso contrario, vamos pegar os resultado paginados
+            params = (new ServiceProxy()).encodePageableParams(pageable);
+        }
 
         //get info
-        BaseResponse objResponse = (new ServiceProxy())
-                .getJsonData("api/domains", (new ServiceProxy()).encodePageableParams(pageable));
+        BaseResponse objResponse = (new ServiceProxy()).getJsonData("api/domains", params);
 
         //Pageable result objt
         JSONObject dataResponse = (JSONObject) objResponse.getData();
@@ -62,10 +75,10 @@ public class DomainController {
                 .get(BaseResponse.class);
         oServiceProxy.close();
 
-        if(oBaseResponse.getData() == null || oBaseResponse.getData() == "null")
-            new ResourceNotFoundException("Dominio não encontrado");
-
         Domain oDomain = objectMapper.convertValue(oBaseResponse.getData(), Domain.class);
+
+        if(oDomain == null)
+            new ResourceNotFoundException("Não possivel encontrar o 'Dominio' solicitado");
 
         model.addAttribute("oDomain", oDomain);
 

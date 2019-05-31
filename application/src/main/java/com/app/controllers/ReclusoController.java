@@ -2,15 +2,19 @@ package com.app.controllers;
 
 import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
+import com.app.service.PaisService;
+import com.app.service.StorageService;
 import com.library.helpers.BaseResponse;
+import com.library.helpers.Helper;
 import com.library.helpers.HelperPaging;
-import com.library.models.Profile;
-import com.library.models.Recluso;
-import com.library.models.User;
+import com.library.models.*;
+import com.library.repository.PaisRepository;
 import com.library.repository.ReclusoRepository;
 import com.library.service.EventsLogService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -31,6 +35,9 @@ public class ReclusoController {
 
     @Autowired
     private ReclusoRepository reclusoRepository;
+
+    @Autowired
+    private PaisRepository paisRepository;
 
 
     @RequestMapping(value = {"reclusos/view/{id}"}, method = {RequestMethod.GET})
@@ -96,7 +103,9 @@ public class ReclusoController {
             }
         }
 
+        model.addAttribute("paisList", new PaisService().findAll());
         model.addAttribute("objRecluso", objRecluso);
+
         return "views/recluso/create";
     }
 

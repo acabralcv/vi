@@ -76,6 +76,10 @@ public class ProfileController {
         oServiceProxy.close();
 
         Profile oProfile = (Profile) BaseResponse.convertToModel(oBaseResponse, new Profile());
+
+        if(oProfile == null)
+            new ResourceNotFoundException("Não possivel encontrar o 'Peril' solicitado");
+
         model.addAttribute("oProfile", oProfile);
 
         return  "/views/profile/view";

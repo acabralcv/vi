@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
 import com.library.helpers.BaseResponse;
+import com.library.helpers.Helper;
 import com.library.models.Domain;
 import com.library.models.Profile;
 import com.library.models.User;
@@ -20,18 +21,25 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class StorageService {
 
+    public static final String DOMAIN_SEXO = "DOMAIN_SEXO";
+    public static final String DOMAIN_ESTADO_CIVIL = "DOMAIN_ESTADO_CIVIL";
+    public static final String DOCUMENT_TYPE = "DOCUMENT_TYPE";
 
     public  static ArrayList<Domain> getDomains(String domain){
 
-        ServiceProxy oServiceProxy = new ServiceProxy();
+        ArrayList<Domain> domainList = new ArrayList<>();
 
-        BaseResponse oBaseResponse = oServiceProxy
-                .buildParams("api/users/details", new Params().Add(new Params("domain", domain)).Get())
-                .getTarget()
-                .get(BaseResponse.class);
-        oServiceProxy.close();
+        ArrayList<Params> params = new Params()
+                .Add(new Params("domainType", domain))
+                .Add(new Params("statue", String.valueOf(Helper.STATUS_ACTIVE)))
+                .Get();
 
-        ArrayList<Domain> domainList = (ArrayList<Domain>) oBaseResponse.getData();
+        BaseResponse objResponse = (new ServiceProxy()).getJsonData("api/domains", params);
+
+        JSONObject dataResponse = (JSONObject) objResponse.getData();
+
+        if(dataResponse.get("content") != null)
+            domainList =  (ArrayList<Domain>) dataResponse.get("content");
 
         return domainList;
     }
