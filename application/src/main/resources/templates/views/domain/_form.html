@@ -2,12 +2,10 @@
 
    <form action="" th:object="${oDomain}" method="post">
 
-       <span onautocomplete="alert()"></span>
-
         <div class="col">
             <div class="form-group">
                 <label for="name">Tipo</label>
-                <input type="text" th:field="*{domainType}" id="domainType" class="form-control" />
+                <input type="text" th:field="*{domainType}" id="domainType" class="form-control"  th:disabled="${#domainType gt 1}" />
                 <span class="error" th:if="${#fields.hasErrors('domainType')}" th:errors="*{domainType}"></span>
             </div>
         </div>
@@ -31,7 +29,7 @@
         <div class="col">
             <div class="form-group">
                  <button type="reset" class="btn btn-default">Cancelar</button>
-                 <button type="submit" class="btn btn-primary">Guardar</button>
+                 <button type="submit" class="btn btn-success">Guardar</button>
             </div>
         </div>
 

@@ -42,20 +42,27 @@ public class ProfileController {
     @RequestMapping(value = "admin/profiles", method = RequestMethod.GET)
     public String actionIndex(ModelMap model, @PageableDefault(page = 0, size = 10) Pageable pageable) {
 
-        //get info
-        BaseResponse objResponse = (new ServiceProxy())
-                .getJsonData("api/profiles", (new ServiceProxy()).encodePageableParams(pageable));
+        try {
 
-        //Pageable result objt
-        JSONObject dataResponse = (JSONObject) objResponse.getData();
+            //get info
+            BaseResponse objResponse = (new ServiceProxy())
+                    .getJsonData("api/profiles", (new ServiceProxy()).encodePageableParams(pageable));
 
-        //check result
-        ArrayList<Profile> profiles = (ArrayList<Profile>) dataResponse.get("content");
+            //Pageable result objt
+            JSONObject dataResponse = (JSONObject) objResponse.getData();
 
-        model.addAttribute("objPaging", (new HelperPaging().getResponsePaging(pageable, dataResponse)));
-        model.addAttribute("profiles", profiles);
+            //check result
+            ArrayList<Profile> profiles = (ArrayList<Profile>) dataResponse.get("content");
 
-        return  "/views/profile/index";
+            model.addAttribute("objPaging", (new HelperPaging().getResponsePaging(pageable, dataResponse)));
+            model.addAttribute("profiles", profiles);
+
+            return  "/views/profile/index";
+
+        } catch (Exception e) {
+            new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
+            throw new NotFoundException("Pagina não encontrada.");
+        }
     }
 
 
@@ -68,21 +75,28 @@ public class ProfileController {
     @RequestMapping(value = {"admin/profiles/view/{id}"}, method = {RequestMethod.GET})
     public String actionView(ModelMap model, @PathVariable UUID id) {
 
-        ServiceProxy oServiceProxy = new ServiceProxy();
-        BaseResponse oBaseResponse = oServiceProxy
-                    .buildParams("api/profiles/details", new Params().Add(new Params("id", id.toString())).Get())
-                    .getTarget()
-                    .get(BaseResponse.class);
-        oServiceProxy.close();
+        try{
 
-        Profile oProfile = (Profile) BaseResponse.convertToModel(oBaseResponse, new Profile());
+            ServiceProxy oServiceProxy = new ServiceProxy();
+            BaseResponse oBaseResponse = oServiceProxy
+                        .buildParams("api/profiles/details", new Params().Add(new Params("id", id.toString())).Get())
+                        .getTarget()
+                        .get(BaseResponse.class);
+            oServiceProxy.close();
 
-        if(oProfile == null)
-            new ResourceNotFoundException("Não possivel encontrar o 'Peril' solicitado");
+            Profile oProfile = (Profile) BaseResponse.convertToModel(oBaseResponse, new Profile());
 
-        model.addAttribute("oProfile", oProfile);
+            if(oProfile == null)
+                throw new ResourceNotFoundException("Não possivel encontrar o 'Peril' solicitado");
 
-        return  "/views/profile/view";
+            model.addAttribute("oProfile", oProfile);
+
+            return  "/views/profile/view";
+
+        } catch (Exception e) {
+            new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
+            throw new NotFoundException("Pagina não encontrada.");
+        }
     }
 
     /**
@@ -110,11 +124,12 @@ public class ProfileController {
                     if(objResponse.getStatusAction() == 1)
                         return "redirect:/admin/profiles";
                     else
-                        new Exception(objResponse.getMessage());
+                        throw new Exception(objResponse.getMessage());
                 }else
                     System.out.println(result.getAllErrors());
 
             } catch (Exception e) {
+                new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
                 new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
             }
         }
@@ -149,7 +164,7 @@ public class ProfileController {
                     if(objResponse.getStatusAction() == 1)
                         return "redirect:/admin/profiles/view/" + id.toString();
                     else
-                        new Exception(objResponse.getMessage());
+                        throw new Exception(objResponse.getMessage());
                 }
             }
 
@@ -166,9 +181,8 @@ public class ProfileController {
 
         } catch (Exception e) {
             new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
-            new NotFoundException("Pagina não encontrada");
+            throw new NotFoundException("Pagina não encontrada");
         }
-        return null;
     }
 
     /**
@@ -189,11 +203,11 @@ public class ProfileController {
             if(objResponse.getStatusAction() == 1)
                 return "redirect:/admin/profiles";
             else
-                new Exception(objResponse.getMessage());
+                throw new Exception(objResponse.getMessage());
 
         } catch (Exception e) {
-            new NotFoundException("Pagina não encontrada.");
+            new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
+            throw new NotFoundException("Pagina não encontrada.");
         }
-        return null;
     }
 }

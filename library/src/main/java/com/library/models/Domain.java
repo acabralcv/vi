@@ -31,9 +31,9 @@ public class Domain extends AuditModel {
     @Size(max = 64)
     private String name;
 
-    @NotBlank
+    //@NotBlank
     @Column(name = "ordem", nullable = false, columnDefinition = "int default 1")
-    private String ordem;
+    private Integer ordem;
 
     public UUID getId() {
         return id;
@@ -65,5 +65,13 @@ public class Domain extends AuditModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getOrdem() {
+        return ordem;
+    }
+
+    public void setOrdem(Integer ordem) {
+        this.ordem = ordem;
     }
 }

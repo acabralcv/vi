@@ -9,22 +9,21 @@
 <div class="col-xs-12 col-md-12" layout:fragment="content">
 
     <div clas="">
-        <a href="admin/domains/create" class="btn btn-success">
+        <a href="/admin/domains/create" class="btn btn-success">
             Novo dominio
         </a>
     </div>
 
-    <div clas="col" style="margin-top:20px">
-        <div class="panel panel-info">
-          <div class="panel-heading">Dominios</div>
-          <div class="panel-body">
-            <!--será utilizado pelo user/view/{id} tambem para mostrar perfis do utilizador -->
-            <span th:replace="/views/domain/_index_view:: indexView(${domains},${objPaging})"></span>
+	<div clas="col" style="margin-top:20px">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Dominios</div>
+			<div class="panel-body">
+			<!--será utilizado pelo user/view/{id} tambem para mostrar perfis do utilizador -->
+			<span th:replace="/views/domain/_index_view:: indexView(${domains},${objPaging})"></span>
 
-          </div>
-        </div>
-
-    </div>
+			</div>
+		</div>
+	</div>
 
 </div>
 

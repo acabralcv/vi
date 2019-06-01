@@ -2,56 +2,264 @@
 
    <form action="#" th:object="${objRecluso}" method="post">
 
-        <div class="form-group">
-            <label for="name">Nome</label>
-            <input type="text" th:field="*{nome}" id="name" class="form-control" />
-            <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
-        </div>
+        <div class="col-xs-12 col-md-6">
 
-        <div class="form-group">
-            <label for="name">Nº Recluso</label>
-            <input type="text" th:field="*{numRecluso}" id="numRecluso" class="form-control" />
-            <span class="error" th:if="${#fields.hasErrors('numRecluso')}" th:errors="*{numRecluso}"></span>
-        </div>
 
-        <div class="form-group">
-            <label for="sexo">Sexo</label>
-            <div class="form-group">
-               <select th:field="*{sexo}" id="sexo" class="form-control">
-                    <option value="">-- Selecionar Sexo --</option>
-                    <option th:each="domain : ${T(com.app.service.StorageService).getDomains('DOMAIN_SEXO')}" th:value="${domain.id}" th:text="${domain.name}">
-                </select>
+            <h4 class="">Informações do Recluso</h4>
+            <hr />
+            <div class="row">
+                <div class="col-xs-12 col-md-12">
+                    <div class="form-group">
+                        <label for="name">Nome</label>
+                        <input type="text" th:field="*{nome}" id="name" class="form-control" required/>
+                        <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label for="estadoCivil">Estado civil</label>
-            <div class="form-group">
-               <select th:field="*{estadoCivil}" id="estadoCivil" class="form-control">
-                    <option value="">-- Selecionar estado civil --</option>
-                    <option th:each="domain : ${T(com.app.service.StorageService).getDomains('DOMAIN_ESTADO_CIVIL')}" th:value="${domain.id}" th:text="${domain.name}">
-                </select>
+            <div class="row">
+                <div class="col-xs-12 col-md-12">
+                    <div class="form-group">
+                        <label for="name">Mais conhecido por</label>
+                        <input type="text" th:field="*{alcunha}" id="alcunha" class="form-control"/>
+                        <span class="error" th:if="${#fields.hasErrors('alcunha')}" th:errors="*{alcunha}"></span>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label for="nacionalidade">Nacionalidade</label>
-            <div class="form-group">
-               <select th:field="*{nacionalidade}" id="nacionalidade" class="form-control">
-                    <option value="">-- Selecionar nacionalidade --</option>
-                    <option th:each="pais : ${paisList}" th:value="${pais.id}" th:text="${pais.nome}">
-                </select>
+
+
+            <div class="row">
+                <div class="col-xs-6 col-md-6">
+                    <div class="form-group">
+                        <label for="tipoDocumento">Tipo de Documento</label>
+                        <div class="form-group">
+                           <select th:field="*{tipoDocumento}" id="tipoDocumento" class="form-control">
+                                <option value="">-- Selecionar Tipo de Documento --</option>
+                                <option th:each="domain : ${T(com.app.service.DomainService).getDomains('DOMAIN_TIPO_DOC_IDENTIF')}" th:value="${domain.id}" th:text="${domain.name}">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-1 col-md-1" style="width: auto;padding: 0;">
+                    <span class="btn btn-default" style="margin-top: 25px;">
+                        <a th:href="@{|/admin/domains/create?domainType=DOMAIN_TIPO_DOC_IDENTIF|}" title="Criar uma nova opção de 'Tipo de Documento'" target="_blank">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </span>
+                </div>
+
+                <div class="col-xs-6 col-md-5">
+                    <div class="form-group">
+                        <label for="name">Nº Documento Identificação</label>
+                        <input type="text" th:field="*{numDocIdentificacao}" id="numDocIdentificacao" class="form-control"/>
+                        <span class="error" th:if="${#fields.hasErrors('numDocIdentificacao')}" th:errors="*{numDocIdentificacao}"></span>
+                    </div>
+                </div>
             </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-5">
+                    <div class="form-group">
+                        <label for="name">Nº Recluso</label>
+                        <input type="text" th:field="*{numRecluso}" id="numRecluso" class="form-control" />
+                        <span class="error" th:if="${#fields.hasErrors('numRecluso')}" th:errors="*{numRecluso}"></span>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-6">
+                    <div class="form-group">
+                        <label for="sexo">Sexo</label>
+                        <div class="form-group">
+                           <select th:field="*{sexo}" id="sexo" class="form-control">
+                                <option value="">-- Selecionar Sexo --</option>
+                                <option th:each="domain : ${T(com.app.service.DomainService).getDomains('DOMAIN_SEXO')}" th:value="${domain.value}" th:text="${domain.name}">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-1 col-md-1" style="width: auto;padding: 0;">
+                    <span class="btn btn-default" style="margin-top: 25px;">
+                        <a th:href="@{|/admin/domains/create?domainType=DOMAIN_SEXO|}" title="Criar uma nova opção de sexo" target="_blank">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </span>
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-xs-12 col-md-5">
+                    <div class="form-group">
+                        <label for="name">Data de Nascimento</label>
+                        <input type="text" th:field="*{dataNascimento}" id="dataNascimento" class="form-control" />
+                        <span class="error" th:if="${#fields.hasErrors('dataNascimento')}" th:errors="*{dataNascimento}"></span>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-6">
+                    <div class="form-group">
+                        <label for="estadoCivil">Estado civil</label>
+                        <div class="form-group">
+                           <select th:field="*{estadoCivil}" id="estadoCivil" class="form-control">
+                                <option value="">-- Selecionar estado civil --</option>
+                                <option th:each="domain : ${T(com.app.service.DomainService).getDomains('DOMAIN_ESTADO_CIVIL')}" th:value="${domain.id}" th:text="${domain.name}">
+                            </select>
+                        </div>
+                    </div>
+                 </div>
+
+                <div class="col-xs-1 col-md-1" style="width: auto;padding: 0;">
+                    <span class="btn btn-default" style="margin-top: 25px;">
+                        <a th:href="@{|/admin/domains/create?domainType=DOMAIN_ESTADO_CIVIL|}" title="Criar uma nova opção de 'Estado Civil'" target="_blank">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </span>
+                </div>
+            </div>
+
+
+            <h4 class="">Endereço e contatos</h4>
+            <hr />
+
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <div class="form-group">
+                        <label for="nacionalidade">Nacionalidade</label>
+                        <div class="form-group">
+                           <select th:field="*{nacionalidade}" id="nacionalidade" class="form-control">
+                                <option value="">-- Selecionar nacionalidade --</option>
+                                <option th:each="pais : ${paisList}" th:value="${pais.id}" th:text="${pais.nome}">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-6">
+                    <div class="form-group">
+                        <label for="sexo">Ilha</label>
+                        <div class="form-group">
+                           <select th:field="*{ilha}" id="ilha" class="form-control">
+                                <option value="">-- Selecionar Ilha --</option>
+                                <option th:each="objIlha : ${ilhaList}" th:value="${objIlha.id}" th:text="${objIlha.nome}">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12">
+                    <div class="form-group">
+                        <label for="contactoFamiliar">Residência</label>
+                        <textarea rows="2" th:field="*{residencia}" id="residencia" class="form-control" />
+                        <span class="error" th:if="${#fields.hasErrors('residencia')}" th:errors="*{residencia}"></span>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
         </div>
 
-        <div class="form-group">
-            <label for="name">Data Nascimento</label>
-            <input type="text" th:field="*{dataNascimento}" id="dataNascimento" class="form-control" />
-            <span class="error" th:if="${#fields.hasErrors('dataNascimento')}" th:errors="*{dataNascimento}"></span>
+
+        <div class="col-xs-12 col-md-6">
+
+
+            <h4 class="">Outras Informações </h4>
+            <hr />
+
+
+            <div class="row">
+                <div class="col-xs-12 col-md-10">
+                    <div class="form-group">
+                        <label for="estadoCivil">Profissão</label>
+                        <div class="form-group">
+                           <select th:field="*{profissao}" id="profissao" class="form-control">
+                                <option value="">-- Selecionar Profissão --</option>
+                                <option th:each="profissao : ${T(com.app.service.DomainService).getDomains('DOMAIN_PROFISSAO')}" th:value="${profissao.id}" th:text="${profissao.name}">
+                            </select>
+                        </div>
+                    </div>
+                 </div>
+                <span class="btn btn-default" style="margin-top: 25px;">
+                    <a th:href="@{|/admin/domains/create?domainType=DOMAIN_PROFISSAO|}" title="Criar uma nova opção de 'Profissão" target="_blank">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </span>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-xs-12 col-md-10">
+                    <div class="form-group">
+                        <label for="nivelEscolaridade">Nível de Escolaridade</label>
+                        <div class="form-group">
+                           <select th:field="*{nivelEscolaridade}" id="nivelEscolaridade" class="form-control">
+                                <option value="">-- Selecionar Nível Escolaridade --</option>
+                                <option th:each="domainEscolar : ${T(com.app.service.DomainService).getDomains('DOMAIN_NIVEL_ESCOLAR')}" th:value="${domainEscolar.id}" th:text="${domainEscolar.name}">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <span class="btn btn-default" style="margin-top: 25px;">
+                    <a th:href="@{|/admin/domains/create?domainType=DOMAIN_NIVEL_ESCOLAR|}" title="Criar uma nova opção de 'Nivel de Escolaridade'" target="_blank">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </span>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-xs-12 col-md-10">
+                    <div class="form-group">
+                        <label for="contactoFamiliar">Contacto Familiar</label>
+                        <textarea rows="2" th:field="*{contactoFamiliar}" id="contactoFamiliar" class="form-control" />
+                        <span class="error" th:if="${#fields.hasErrors('contactoFamiliar')}" th:errors="*{contactoFamiliar}"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <h4 style="margin-top:20px">Filhação </h4>
+            <hr />
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12">
+                    <div class="form-group">
+                        <label for="nomePai">Nome do Pai</label>
+                        <input type="text" th:field="*{nomePai}" id="nomePai" class="form-control" />
+                        <span class="error" th:if="${#fields.hasErrors('nomePai')}" th:errors="*{nomePai}"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12">
+                    <div class="form-group">
+                        <label for="nomeMae">Nome da Mãe</label>
+                        <input type="text" th:field="*{nomeMae}" id="nomeMae" class="form-control" />
+                        <span class="error" th:if="${#fields.hasErrors('nomeMae')}" th:errors="*{nomeMae}"></span>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <div class="form-group">
-             <button type="submit" class="btn btn-primary">Guardar</button>
+
+        <div class="col-xs-12 col-md-12">
+            <div class="form-group">
+                 <button type="reset" class="btn btn-default">Cancelar</button>
+                 <button type="submit" class="btn btn-success">Guardar</button>
+            </div>
         </div>
 
     </form>

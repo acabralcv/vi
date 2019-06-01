@@ -1,8 +1,10 @@
 package com.api.controllers;
 
+import com.library.models.Ilha;
 import com.library.models.Pais;
 import com.library.helpers.Helper;
 import com.library.helpers.BaseResponse;
+import com.library.repository.IlhaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import com.library.repository.PaisRepository;
@@ -21,8 +23,11 @@ public class PaisesController {
     @Autowired
     PaisRepository paisRepository;
 
+    @Autowired
+    IlhaRepository ilhaRepository;
+
     @RequestMapping(value = {"api/paises"}, method = {RequestMethod.GET})
-    public ResponseEntity actionDetails(@PageableDefault(sort = {"name"}, value = 10, page = 0) Pageable pageable) {
+    public ResponseEntity actionPaises(@PageableDefault(sort = {"name"}, value = 10, page = 0) Pageable pageable) {
 
         Pageable pageableBuilded = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome")
                 .ascending()
@@ -31,5 +36,17 @@ public class PaisesController {
         Page<Pais> paises = paisRepository.findByStatus(Helper.STATUS_ACTIVE, pageableBuilded);
 
         return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", paises ));
+    }
+
+    @RequestMapping(value = {"api/ilhas"}, method = {RequestMethod.GET})
+    public ResponseEntity actionIlhas(@PageableDefault(sort = {"name"}, value = 10, page = 0) Pageable pageable) {
+
+        Pageable pageableBuilded = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome")
+                .ascending()
+                .and(Sort.by("dateCreated").descending()));
+
+        Page<Ilha> ilhas = ilhaRepository.findByStatus(Helper.STATUS_ACTIVE, pageableBuilded);
+
+        return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", ilhas ));
     }
 }

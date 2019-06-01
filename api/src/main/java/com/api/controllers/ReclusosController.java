@@ -69,6 +69,7 @@ public class ReclusosController {
             objRecluso.setDateCreated(UtilsDate.getDateTime());
             objRecluso.setStatus(Helper.STATUS_ACTIVE);
             objRecluso.setNumRecluso(max.toString());
+            objRecluso.setNacionalidade(objRecluso.getNacionalidade());
 
             Recluso crestedRecluso = reclusoRepository.save(objRecluso);
 

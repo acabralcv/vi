@@ -22,14 +22,14 @@
             <td th:text="${oDomain.dateCreated}">#</td>
             <td th:text="${oDomain.dateUpdated}">#</td>
             <td>
-                <span th:replace="/fragments/ActionColumn:: actionView('/domains/view/' + ${oDomain.id})"></span>
-                <span th:replace="/fragments/ActionColumn:: actionUpdate('/domains/update/' + ${oDomain.id})"></span>
-                <span th:replace="/fragments/ActionColumn:: actionDelete('/domains/delete/' + ${oDomain.id})"></span>
+                <span th:replace="/fragments/ActionColumn:: actionView('/admin/domains/view/' + ${oDomain.id})"></span>
+                <span th:replace="/fragments/ActionColumn:: actionUpdate('/admin/domains/update/' + ${oDomain.id})"></span>
+                <span th:replace="/fragments/ActionColumn:: actionDelete('/admin/domains/delete/' + ${oDomain.id})"></span>
             </td>
         </tr>
     </table>
 
 
-    <span th:replace="/fragments/pagingResult:: actionPaging(${objPaging}, '/domains')"></span>
+    <span th:replace="/fragments/pagingResult:: actionPaging(${objPaging}, '/admin/domains')"></span>
 
 </span>

@@ -19,7 +19,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-public class StorageService {
+public class DomainService {
 
     public static final String DOMAIN_SEXO = "DOMAIN_SEXO";
     public static final String DOMAIN_ESTADO_CIVIL = "DOMAIN_ESTADO_CIVIL";
@@ -38,20 +38,20 @@ public class StorageService {
 
         JSONObject dataResponse = (JSONObject) objResponse.getData();
 
-        if(dataResponse.get("content") != null)
+        if(dataResponse != null && dataResponse.get("content") != null)
             domainList =  (ArrayList<Domain>) dataResponse.get("content");
 
         return domainList;
     }
 
-    public  static HashMap<UUID, String> getMapedDomain(String domain){
-
-        HashMap<UUID, String> mapDomains = new HashMap<>();
-
-        for(Domain oDomain: getDomains(domain)){
-            mapDomains.put(oDomain.getId(), oDomain.getName());
-        }
-        return mapDomains;
-    }
+//    public  static HashMap<UUID, String> getMapedDomain(String domain){
+//
+//        HashMap<UUID, String> mapDomains = new HashMap<>();
+//
+//        for(Domain oDomain: getDomains(domain)){
+//            mapDomains.put(oDomain.getId(), oDomain.getName());
+//        }
+//        return mapDomains;
+//    }
 }
 

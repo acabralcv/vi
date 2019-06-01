@@ -2,6 +2,7 @@ package com.app.controllers;
 
 import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
+import com.app.service.DomainService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
@@ -10,6 +11,7 @@ import com.library.models.Domain;
 import com.library.repository.DomainRepository;
 import com.library.service.EventsLogService;
 import org.json.simple.JSONObject;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -32,27 +34,24 @@ public class DomainController {
     @RequestMapping(value = "admin/domains", method = RequestMethod.GET)
     public String actionIndex(ModelMap model, @RequestParam(name = "domainType", required = false) String domainType, @PageableDefault(sort = {"name"}, value = 10, page = 0) Pageable pageable) {
 
-        ArrayList<Params> params = new ArrayList<>();
+        ArrayList<Domain> domains = new ArrayList<>();
+        HelperPaging objPaging = null;
 
         if(domainType != null) {
-            //se for indicado o tipo do dominio, vamos ignorar a paginação
-            params = new Params()
-                    .Add(new Params("domainType", domainType.toString()))
-                    .Add(new Params("statue", String.valueOf(Helper.STATUS_ACTIVE)))
-                    .Get();
+            //em caso do cliente especificar o Tipo de Dominio
+            domains = DomainService.getDomains(domainType);
         }else{
             //caso contrario, vamos pegar os resultado paginados
-            params = (new ServiceProxy()).encodePageableParams(pageable);
+            BaseResponse objResponse = (new ServiceProxy()).getJsonData("api/domains", (new ServiceProxy()).encodePageableParams(pageable));
+
+            //Pageable result objt
+            JSONObject dataResponse = (JSONObject) objResponse.getData();
+            objPaging = (new HelperPaging().getResponsePaging(pageable, dataResponse));
+            domains = (ArrayList<Domain>) dataResponse.get("content");
         }
 
-        //get info
-        BaseResponse objResponse = (new ServiceProxy()).getJsonData("api/domains", params);
-
-        //Pageable result objt
-        JSONObject dataResponse = (JSONObject) objResponse.getData();
-
-        model.addAttribute("objPaging", (new HelperPaging().getResponsePaging(pageable, dataResponse)));
-        model.addAttribute("domains", (ArrayList<Domain>) dataResponse.get("content"));
+        model.addAttribute("objPaging", objPaging);
+        model.addAttribute("domains", domains);
 
         return  "/views/domain/index";
     }
@@ -81,6 +80,7 @@ public class DomainController {
             new ResourceNotFoundException("Não possivel encontrar o 'Dominio' solicitado");
 
         model.addAttribute("oDomain", oDomain);
+        model.addAttribute("domains", DomainService.getDomains(oDomain.getDomainType()));
 
         return  "/views/domain/view";
     }
@@ -97,7 +97,6 @@ public class DomainController {
                                BindingResult result,
                                ModelMap model, HttpServletRequest request,
                                @RequestParam(name = "domainType", required = false) String domainType) {
-
 
         if (request.getMethod().equals("POST")) {
 
@@ -122,6 +121,7 @@ public class DomainController {
         }
 
         model.addAttribute("oDomain", oDomain);
+        model.addAttribute("domains", DomainService.getDomains(domainType));
         return  "/views/domain/create";
     }
 
@@ -141,7 +141,7 @@ public class DomainController {
                     BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/domains/update", oDomain, new ArrayList<>() );
 
                     if(oBaseResponse.getStatusAction() != 1 || oBaseResponse.getData() == null || oBaseResponse.getData() == "null")
-                        new Exception(oBaseResponse.getMessage());
+                       throw  new Exception(oBaseResponse.getMessage());
 
                     Domain updatedDomain = objectMapper.convertValue(oBaseResponse.getData(), Domain.class);
 
