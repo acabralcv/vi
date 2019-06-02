@@ -80,7 +80,7 @@ public class UserController {
         User oUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
 
         if(oUser == null)
-            new ResourceNotFoundException("Não possivel encontrar o 'Peril' solicitado");
+            throw new ResourceNotFoundException("Não possivel encontrar o 'Peril' solicitado");
 
         //get profiles
         BaseResponse objResProfiles = (new ServiceProxy())

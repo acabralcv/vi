@@ -17,11 +17,12 @@
         </div>
 
 		<div class="panel panel-primary">
-		    <div class="panel-heading">Utilizadores</div>
+		    <div class="panel-heading"><span th:text="${oUser.name}">#</span></div>
 			  <div class="panel-body">
 
                     <div clas="col">
                         <span th:if="${oUser.profileImage != null}">
+                            <span th:text="${oUser.profileImage.storageId}"></span>
                             <img th:src="@{/api/storage/images-details?id={id}(id=${oUser.profileImage.storageId})}" style="width:128px;height: 128px;"/>
                         </span>
                         <span th:unless="${oUser.profileImage != null}">
@@ -34,28 +35,52 @@
 
                     <div clas="col">
                         <h4>Infomação do utilizador</h4>
-                        <div class="container">
-                            <div class="row">
-                                <div class="w-25"><strong>Nome:</strong></div>
-                                <div class="w-75"><span th:text="${oUser.name}">#</span></div>
-                            </div>
-                            <div class="row">
-                                <div class="w-25"><strong>Username:</strong></div>
-                                <div class="w-75"><span th:text="${oUser.username}">#</span></div>
-                            </div>
-                            <div class="row">
-                                <div class="w-25"><strong>Email:</strong></div>
-                                <div class="w-75"><span th:text="${oUser.email}">#</span></div>
-                            </div>
-                            <div class="row">
-                                <div class="w-25"><strong>Data de criação:</strong></div>
-                                <div class="w-75"><span th:text="${oUser.dateCreated}">#</span></div>
-                            </div>
-                            <div class="row">
-                                <div class="w-25"><strong>Ultima atualização:</strong></div>
-                                <div class="w-75"><span th:text="${oUser.dateUpdated}">#</span></div>
-                            </div>
-                        </div>
+						
+						<table class="table table-striped table-bordered">
+							<tr>
+								<th>Nome</th>
+								<td th:text="${oUser.name}">#</td>
+							</tr>
+							<tr>
+								<th>Username</th>
+								<td th:text="${oUser.username}">#</td>
+							</tr>  
+							<tr>
+								<th>Email</th>
+								<td th:text="${oUser.email}">#</td>
+							</tr>
+							<tr>
+								<th>Data de criação</th>
+								<td th:text="${oUser.dateCreated}">#</td>
+							</tr>
+							<tr>
+								<th>Ultima atualização</th>
+								<td th:text="${oUser.dateCreated}">#</td>
+							</tr>
+						</table>
+						
+                        <!-- <div class="container"> -->
+                            <!-- <div class="row"> -->
+                                <!-- <div class="w-25"><strong>Nome:</strong></div> -->
+                                <!-- <div class="w-75"><span th:text="${oUser.name}">#</span></div> -->
+                            <!-- </div> -->
+                            <!-- <div class="row"> -->
+                                <!-- <div class="w-25"><strong>Username:</strong></div> -->
+                                <!-- <div class="w-75"><span th:text="${oUser.username}">#</span></div> -->
+                            <!-- </div> -->
+                            <!-- <div class="row"> -->
+                                <!-- <div class="w-25"><strong>Email:</strong></div> -->
+                                <!-- <div class="w-75"><span th:text="${oUser.email}">#</span></div> -->
+                            <!-- </div> -->
+                            <!-- <div class="row"> -->
+                                <!-- <div class="w-25"><strong>Data de criação:</strong></div> -->
+                                <!-- <div class="w-75"><span th:text="${oUser.dateCreated}">#</span></div> -->
+                            <!-- </div> -->
+                            <!-- <div class="row"> -->
+                                <!-- <div class="w-25"><strong>Ultima atualização:</strong></div> -->
+                                <!-- <div class="w-75"><span th:text="${oUser.dateUpdated}">#</span></div> -->
+                            <!-- </div> -->
+                        <!-- </div> -->
                     </div>
 
               </div>

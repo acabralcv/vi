@@ -19,6 +19,12 @@ public class Pais extends AuditModel {
     @Size(min = 3, max = 150)
     private String nome;
 
+    @Column(name = "continente", nullable = true)
+    private String continente;
+
+    @Column(name = "capital", nullable = true)
+    private String capital;
+
     public UUID getId() {
         return id;
     }

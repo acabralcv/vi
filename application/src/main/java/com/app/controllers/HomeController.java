@@ -1,6 +1,7 @@
 package com.app.controllers;
 
 //import MyService;
+import com.library.helpers.Helper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,8 @@ public class HomeController {
      */
     @GetMapping(value = {"/", "home", "index", "default"})
     public String home(ModelMap model) {
+
+        model.addAttribute("appKey", new Helper().getUUID());
         model.addAttribute("appName","App Name Test");
         return "views/home/index";
     }
