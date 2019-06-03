@@ -10,6 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+
 
 @Controller
 public class HomeController {
@@ -29,9 +33,12 @@ public class HomeController {
      */
     @GetMapping(value = {"/", "home", "index", "default"})
     public String home(ModelMap model) {
+
         //teste evenets log
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
+        Date currentDate = calendar.getTime();
         new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
-                + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()", "Teste: Someone int the app! :) :) :) ",null, null);
+                + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()", "Test: Someone int the app! :) :) :) at " + currentDate.toString(),null, null);
 
         model.addAttribute("appKey", new Helper().getUUID());
         model.addAttribute("appName","App Name Test");
