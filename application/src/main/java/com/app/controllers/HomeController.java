@@ -58,4 +58,10 @@ public class HomeController {
         return "views/home/about";
     }
 
+
+    @GetMapping("/processos")
+    public String actionTeste() {
+        return "views/estatistica/index";
+    }
+
 }

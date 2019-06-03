@@ -120,7 +120,7 @@ public class StorageController {
 
         try {
 
-            if (file != null)
+            if (file == null)
                 throw new Exception("Nenhum documento foi enviado.");
 
             Document oDocument = new Document();
@@ -130,6 +130,7 @@ public class StorageController {
             oDocument.setImageType(extension);
             oDocument.setName(oDocument.getId() + "." + oDocument.getImageType());
             oDocument.setDescription(documentPosted.getDescription());
+            oDocument.setStatus(Helper.STATUS_ACTIVE);
 
             // Define metaData
             DBObject metaData = new BasicDBObject();
