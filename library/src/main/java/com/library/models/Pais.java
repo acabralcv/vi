@@ -26,7 +26,7 @@ public class Pais extends AuditModel {
     private String capital;
 
     @Column(name = "ordem", nullable = false, columnDefinition = "int default 100")
-    private String ordem;
+    private Integer ordem;
 
     public UUID getId() {
         return id;
@@ -60,11 +60,11 @@ public class Pais extends AuditModel {
         this.capital = capital;
     }
 
-    public String getOrdem() {
+    public Integer getOrdem() {
         return ordem;
     }
 
-    public void setOrdem(String ordem) {
+    public void setOrdem(Integer ordem) {
         this.ordem = ordem;
     }
 }

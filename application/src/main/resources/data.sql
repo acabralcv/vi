@@ -4,12 +4,20 @@
 -- DE VOLTAR A COMENTAR OD DELETES LOGO A SEGUIR À COMPILAÇÃO DO PROJETO
 -- THANK U!
 /**
-  DELETE FROM tbl_user_profiles;
-  DELETE from tbl_user;
-  DELETE FROM tbl_profile;
-  DELETE FROM tbl_recluso;
-  DELETE FROM tbl_documentos;
-  DELETE FROM tbl_domain;
+      DROP table if exists tbl_user_profiles;
+      DROP table if exists tbl_logs_event;
+      DROP table if exists tbl_profile;
+      DROP table if exists tbl_recluso_crime;
+      DROP table if exists tbl_recluso;
+      DROP table if exists tbl_documentos;
+      DROP table if exists tbl_user;
+      DROP table if exists tbl_domain;
+      DROP table if exists tbl_geografia;
+      DROP table if exists tbl_ilha;
+      DROP table if exists tbl_images;
+      DROP table if exists tbl_pais;
+      DROP table if exists tbl_tasks;
+      DROP table if exists tbl_user;
  */
 
 -- pais initialization
