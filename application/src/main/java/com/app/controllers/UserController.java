@@ -1,21 +1,20 @@
 package com.app.controllers;
 
 
+import com.app.exceptions.ResourceNotFoundException;
 import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
+import com.app.service.UserService;
 import com.library.helpers.BaseResponse;
-import com.library.helpers.Helper;
 import com.library.helpers.HelperPaging;
-import com.library.helpers.UtilsDate;
 import com.library.models.Profile;
 import com.library.models.User;
-import com.library.models.UserProfiles;
 import com.library.service.EventsLogService;
 import org.json.simple.JSONObject;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -27,8 +26,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -70,17 +67,9 @@ public class UserController {
     @RequestMapping(value = {"users/view/{id}"}, method = {RequestMethod.GET})
     public String actionView(ModelMap model, @PathVariable UUID id) {
 
-        ServiceProxy oServiceProxy = new ServiceProxy();
-        BaseResponse oBaseResponse = oServiceProxy
-                .buildParams("api/users/details", new Params().Add(new Params("id", id.toString())).Get())
-                .getTarget()
-                .get(BaseResponse.class);
-        oServiceProxy.close();
-
-        User oUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
-
+        User oUser = UserService.findOne(id.toString());
         if(oUser == null)
-            throw new ResourceNotFoundException("Não possivel encontrar o 'Peril' solicitado");
+            throw new ResourceNotFoundException("Não possivel encontrar o 'Utilizador' solicitado");
 
         //get profiles
         BaseResponse objResProfiles = (new ServiceProxy())
@@ -108,28 +97,48 @@ public class UserController {
     public String actionCreate(@Valid @ModelAttribute User objUser, BindingResult result,
                                ModelMap model, HttpServletRequest request) {
 
-        if (request.getMethod().equals("POST")) {
+            if (request.getMethod().equals("POST")) {
 
-            try {
+                if (!result.hasErrors()){
 
-                if (result.hasErrors())
-                    new Exception(result.getAllErrors().get(0).toString());
+                    BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/users/create", objUser, new ArrayList<>() );
+                    User createdUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
 
-                BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/users/create", objUser, new ArrayList<>() );
-                User createdUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
-
-                if(oBaseResponse.getStatusAction() == 1)
-                    return "redirect:/users/view/" + createdUser.getId();
-                else
-                    new Exception(oBaseResponse.getMessage());
-
-            } catch (Exception e) {
-                new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
+                    if(createdUser != null)
+                        return "redirect:/users/view/" + createdUser.getId();
+                    else
+                        throw new InternalError(oBaseResponse.getMessage());
+                }
             }
-        }
 
-        model.addAttribute("objUser", objUser);
-        return "views/user/create";
+            model.addAttribute("objUser", objUser);
+            return "views/user/create";
     }
 
+    @RequestMapping(value = {"users/update/{id"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String actionUpdate(@Valid @ModelAttribute User objUser, BindingResult result,
+                               ModelMap model, HttpServletRequest request, @PathVariable UUID id) {
+
+            if (request.getMethod().equals("POST")) {
+
+                if (!result.hasErrors()){
+
+                    BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/users/update    ", objUser, new ArrayList<>() );
+                    User createdUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
+
+                    if(createdUser != null)
+                        return "redirect:/users/view/" + createdUser.getId();
+                    else
+                        throw new InternalError(oBaseResponse.getMessage());
+                }
+            }
+
+            User oUser = UserService.findOne(id.toString());
+            if(oUser == null)
+                throw new ResourceNotFoundException("Não possivel encontrar o 'Utilizador' solicitado");
+
+            model.addAttribute("objUser", objUser);
+            return "views/user/create";
     }
+
+}

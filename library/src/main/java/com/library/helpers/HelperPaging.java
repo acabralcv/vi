@@ -38,9 +38,9 @@ public class HelperPaging {
     public HelperPaging getResponsePaging(Pageable pageable, JSONObject objResponse){
 
         HelperPaging objPaging = new HelperPaging(pageable);
-        objPaging.setNumber((Long)objResponse.get("number"));
-        objPaging.setTotalPages((Long) objResponse.get(("totalPages")));
-        objPaging.setTotalElements((Long) objResponse.get(("totalElements")));
+        objPaging.setNumber( objResponse != null ? (Long)objResponse.get("number") : 0);
+        objPaging.setTotalPages(objResponse != null ? (Long) objResponse.get(("totalPages")) : 0);
+        objPaging.setTotalElements(objResponse != null ? (Long) objResponse.get(("totalElements")) : 0);
 
         if (objPaging.getTotalPages() > 0) {
             List<Integer>  pageNumbers = IntStream.rangeClosed(1,  objPaging.getTotalPages().intValue())

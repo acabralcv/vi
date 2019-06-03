@@ -35,6 +35,9 @@ public class UsersController {
     private ProfileRepository profileRepository;
 
     @Autowired
+    private EventslogRepository eventslogRepository;
+
+    @Autowired
     private UserProfilesRepository userProfilesRepository;
 
     /**
@@ -45,16 +48,24 @@ public class UsersController {
     @RequestMapping(value = {"api/users/details"}, method = {RequestMethod.GET})
     public ResponseEntity actionDetails(@RequestParam(name = "id") UUID id) {
 
-        Optional<User> oUser = userRepository.findById(id)
-                .map(user -> {
-                    user.setProfileImage(user.getProfileImage());
-                    return user;
-                });
+        try {
 
-        if(oUser != null)
-            return ResponseEntity.ok().body(new BaseResponse(1, "ok", oUser.get()));
-        else
-            return ResponseEntity.ok().body(new BaseResponse(0, "ok", null));
+            Optional<User> oUser = userRepository.findById(id)
+                    .map(user -> {
+                        user.setProfileImage(user.getProfileImage());
+                        return user;
+                    });
+
+            if (oUser != null)
+                return ResponseEntity.ok().body(new BaseResponse(1, "ok", oUser.get()));
+            else
+                return ResponseEntity.ok().body(new BaseResponse(0, "ok", null));
+
+        }catch (Exception e){
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
 
     }
 
@@ -64,13 +75,21 @@ public class UsersController {
      * @return
      */
     @RequestMapping(value = {"api/users/users-profiles"}, method = {RequestMethod.GET})
-    public BaseResponse actionUserProfiles(@RequestParam(name = "user_id") UUID user_id) {
-        User user = new User();
-        user.setId(user_id);
+    public ResponseEntity actionUserProfiles(@RequestParam(name = "user_id") UUID user_id) {
+        try{
 
-        Set<Profile> oList = profileRepository.findProfileByStatus(1,user);
+            User user = new User();
+            user.setId(user_id);
 
-        return new BaseResponse(1, "ok", oList);
+            Set<Profile> oList = profileRepository.findProfileByStatus(1,user);
+
+            return ResponseEntity.ok().body(new BaseResponse(1, "ok", oList));
+
+        }catch (Exception e){
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
     }
 
     /**
@@ -80,14 +99,21 @@ public class UsersController {
      * @return
      */
     @RequestMapping(value = "api/users", method = RequestMethod.GET)
-    public BaseResponse actionIndex(ModelMap model, Pageable pageable) {
+    public ResponseEntity actionIndex(ModelMap model, Pageable pageable) {
 
-        Page<User> users = userRepository.findByStatus(Helper.STATUS_ACTIVE,
-                PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dateCreated")
-                        .descending()
-                        .and(Sort.by("name").ascending())));
+        try{
+                Page<User> users = userRepository.findByStatus(Helper.STATUS_ACTIVE,
+                        PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dateCreated")
+                                .descending()
+                                .and(Sort.by("name").ascending())));
 
-        return new BaseResponse().getObjResponse(1,"ok", users );
+                return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", users ));
+
+        }catch (Exception e){
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
     }
 
     /**
@@ -101,10 +127,10 @@ public class UsersController {
         try {
 
             if( userRepository.findByName(objUser.getUsername()).size() > 0)
-                new Exception("Já existe utilizador com o mesmo 'username'.");
+                throw new Exception("Já existe utilizador com o mesmo 'username'.");
 
             if( userRepository.findByName(objUser.getEmail()).size() > 0)
-                new Exception("Já existe utilizador com o mesmo 'email'.");
+                throw new Exception("Já existe utilizador com o mesmo 'email'.");
 
             objUser.setId(new Helper().getUUID());
             objUser.setAccessToken(new Helper().genToken(128)); //2 * 126 = 256
@@ -115,9 +141,10 @@ public class UsersController {
 
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", crestedUser ));
 
-        }catch(Exception e){
-            new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
-            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(0,e.getMessage(), null));
+        }catch (Exception e){
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
     }
 
@@ -127,7 +154,7 @@ public class UsersController {
      * @return
      */
     @RequestMapping(value = {"api/users/add-profile"}, method = {RequestMethod.POST})
-    public BaseResponse actionAddUserProfile(@Valid @RequestBody UserProfiles oUserProfile) {
+    public ResponseEntity actionAddUserProfile(@Valid @RequestBody UserProfiles oUserProfile) {
 
         try {
 
@@ -135,7 +162,7 @@ public class UsersController {
             Profile oProfile = profileRepository.findById(oUserProfile.getProfileId()).get();
 
             if( oUser == null || oProfile == null)
-                new Exception("Utilizador ou perfil não encontrado.");
+                throw new Exception("Utilizador ou perfil não encontrado.");
 
             Boolean isNew = true;
             Set<UserProfiles> listUserProfiles = oUser.getUserProfiles();
@@ -164,17 +191,18 @@ public class UsersController {
             //update user
             User savedUser = userRepository.save(oUser);
 
-            return new BaseResponse().getObjResponse(1,"ok", savedUser );
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", savedUser ));
 
-        }catch(Exception e){
-            new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
-            return new BaseResponse().getObjResponse(0,e.getMessage(), null);
+        }catch (Exception e){
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
     }
 
 
     @RequestMapping(value = {"api/users/add-profile-image"}, method = {RequestMethod.POST})
-    public BaseResponse actionAddUserImage(@RequestBody User userPosted) {
+    public ResponseEntity actionAddUserImage(@RequestBody User userPosted) {
 
         try {
 
@@ -182,18 +210,19 @@ public class UsersController {
             Image oImage = imageRepository.findById(userPosted.getProfileImageId()).get();
 
             if( oUser == null || oImage == null)
-                new Exception("Utilizador não encontrado.");
+                throw new Exception("Utilizador não encontrado.");
 
             oUser.setProfileImage(oImage);
 
             //update user
             User savedUser = userRepository.save(oUser);
 
-            return new BaseResponse().getObjResponse(1,"ok", savedUser );
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", savedUser ));
 
-        }catch(Exception e){
-            new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
-            return new BaseResponse().getObjResponse(0,e.getMessage(), null);
+        }catch (Exception e){
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
     }
 
@@ -204,7 +233,7 @@ public class UsersController {
      * @return
      */
     @RequestMapping(value = {"api/users/update"}, method = {RequestMethod.POST})
-    public BaseResponse actionUpdate(@Valid @RequestBody User objUser) {
+    public ResponseEntity actionUpdate(@Valid @RequestBody User objUser) {
 
         try{
 
@@ -215,11 +244,12 @@ public class UsersController {
             oUser.setDateUpdated(UtilsDate.getDateTime());
             oUser.setStatus(Helper.STATUS_ACTIVE);
             userRepository.save(oUser);
-            return new BaseResponse().getObjResponse(1,"ok", objUser);
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", objUser));
 
         }catch (Exception e){
-            new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
-            return new BaseResponse().getObjResponse(0,e.getMessage(), null);
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
     }
 
@@ -229,7 +259,7 @@ public class UsersController {
      * @return
      */
     @RequestMapping(value = {"api/users/delete"}, method = {RequestMethod.POST})
-    public BaseResponse actionDelete(@Valid @RequestBody User objUser) {
+    public ResponseEntity actionDelete(@Valid @RequestBody User objUser) {
 
         try{
 
@@ -239,11 +269,12 @@ public class UsersController {
             oUser.setDateUpdated(UtilsDate.getDateTime());
             oUser.setStatus(Helper.STATUS_DISABLED);
             userRepository.save(oUser);
-            return new BaseResponse().getObjResponse(1,"ok", objUser);
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", objUser));
 
         }catch (Exception e){
-            new EventsLogService().AddEventologs(null,"Excption in " + this.getClass().getName(), e.getMessage(),null);
-            return new BaseResponse().getObjResponse(0,e.getMessage(), null);
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
     }
 

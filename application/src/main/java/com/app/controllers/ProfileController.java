@@ -1,5 +1,6 @@
 package com.app.controllers;
 
+import com.app.exceptions.ResourceNotFoundException;
 import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
 import com.library.helpers.BaseResponse;
@@ -10,8 +11,8 @@ import com.library.service.EventsLogService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -42,27 +43,20 @@ public class ProfileController {
     @RequestMapping(value = "admin/profiles", method = RequestMethod.GET)
     public String actionIndex(ModelMap model, @PageableDefault(page = 0, size = 10) Pageable pageable) {
 
-        try {
+        //get info
+        BaseResponse objResponse = (new ServiceProxy())
+                .getJsonData("api/profiles", (new ServiceProxy()).encodePageableParams(pageable));
 
-            //get info
-            BaseResponse objResponse = (new ServiceProxy())
-                    .getJsonData("api/profiles", (new ServiceProxy()).encodePageableParams(pageable));
+        //Pageable result objt
+        JSONObject dataResponse = (JSONObject) objResponse.getData();
 
-            //Pageable result objt
-            JSONObject dataResponse = (JSONObject) objResponse.getData();
+        //check result
+        ArrayList<Profile> profiles = (ArrayList<Profile>) dataResponse.get("content");
 
-            //check result
-            ArrayList<Profile> profiles = (ArrayList<Profile>) dataResponse.get("content");
+        model.addAttribute("objPaging", (new HelperPaging().getResponsePaging(pageable, dataResponse)));
+        model.addAttribute("profiles", profiles);
 
-            model.addAttribute("objPaging", (new HelperPaging().getResponsePaging(pageable, dataResponse)));
-            model.addAttribute("profiles", profiles);
-
-            return  "/views/profile/index";
-
-        } catch (Exception e) {
-            new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
-            throw new NotFoundException("Pagina não encontrada.");
-        }
+        return  "/views/profile/index";
     }
 
 
@@ -75,28 +69,21 @@ public class ProfileController {
     @RequestMapping(value = {"admin/profiles/view/{id}"}, method = {RequestMethod.GET})
     public String actionView(ModelMap model, @PathVariable UUID id) {
 
-        try{
+        ServiceProxy oServiceProxy = new ServiceProxy();
+        BaseResponse oBaseResponse = oServiceProxy
+                    .buildParams("api/profiles/details", new Params().Add(new Params("id", id.toString())).Get())
+                    .getTarget()
+                    .get(BaseResponse.class);
+        oServiceProxy.close();
 
-            ServiceProxy oServiceProxy = new ServiceProxy();
-            BaseResponse oBaseResponse = oServiceProxy
-                        .buildParams("api/profiles/details", new Params().Add(new Params("id", id.toString())).Get())
-                        .getTarget()
-                        .get(BaseResponse.class);
-            oServiceProxy.close();
+        Profile oProfile = (Profile) BaseResponse.convertToModel(oBaseResponse, new Profile());
 
-            Profile oProfile = (Profile) BaseResponse.convertToModel(oBaseResponse, new Profile());
+        if(oProfile == null)
+            throw new ResourceNotFoundException("Não possivel encontrar o 'Peril' solicitado");
 
-            if(oProfile == null)
-                throw new ResourceNotFoundException("Não possivel encontrar o 'Peril' solicitado");
+        model.addAttribute("oProfile", oProfile);
 
-            model.addAttribute("oProfile", oProfile);
-
-            return  "/views/profile/view";
-
-        } catch (Exception e) {
-            new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
-            throw new NotFoundException("Pagina não encontrada.");
-        }
+        return  "/views/profile/view";
     }
 
     /**
@@ -114,23 +101,15 @@ public class ProfileController {
 
         if (request.getMethod().equals("POST")) {
 
-            try {
+            if (!result.hasErrors()) {
 
-                if (!result.hasErrors()) {
+                BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/profiles/create", objProfile, new ArrayList<>() );
+                Profile createdProfile = (Profile) BaseResponse.convertToModel(oBaseResponse, new Profile());
 
-                    ArrayList<Params> p = new ArrayList<>();
-                    BaseResponse objResponse = (new ServiceProxy()).postJsonData("api/profiles/create", objProfile, new ArrayList<>() );
-
-                    if(objResponse.getStatusAction() == 1)
-                        return "redirect:/admin/profiles";
-                    else
-                        throw new Exception(objResponse.getMessage());
-                }else
-                    System.out.println(result.getAllErrors());
-
-            } catch (Exception e) {
-                new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
-                new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
+                if(createdProfile == null)
+                    return "redirect:/admin/profiles/view/" + createdProfile.getId();
+                else
+                    throw new InternalError(oBaseResponse.getMessage());
             }
         }
 
@@ -153,18 +132,16 @@ public class ProfileController {
                                ModelMap model, HttpServletRequest request,
                                @PathVariable(required = true) UUID id) {
 
-        try{
-
             if (request.getMethod().equals("POST")) {
                 if (!result.hasErrors()) {
 
                     ArrayList<Params> p = new ArrayList<>();
-                    BaseResponse objResponse = (new ServiceProxy()).postJsonData("api/profiles/update", objProfile, new ArrayList<>() );
+                    BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/profiles/update", objProfile, new ArrayList<>() );
 
-                    if(objResponse.getStatusAction() == 1)
+                    if(oBaseResponse.getStatusAction() == 1)
                         return "redirect:/admin/profiles/view/" + id.toString();
                     else
-                        throw new Exception(objResponse.getMessage());
+                        throw new InternalError(oBaseResponse.getMessage());
                 }
             }
 
@@ -178,11 +155,6 @@ public class ProfileController {
             objProfile = (Profile) BaseResponse.convertToModel(oBaseResponse, new Profile());
             model.addAttribute("objProfile", objProfile);
             return "views/profile/update";
-
-        } catch (Exception e) {
-            new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
-            throw new NotFoundException("Pagina não encontrada");
-        }
     }
 
     /**
@@ -192,22 +164,16 @@ public class ProfileController {
      */
     @RequestMapping(value = {"admin/profiles/delete/{id}"}, method = {RequestMethod.GET})
     public String actionDelete(@PathVariable(required = true) UUID id) {
-        try{
 
-            Profile objProfile = new Profile();
-            objProfile.setId(id);
+        Profile objProfile = new Profile();
+        objProfile.setId(id);
 
-            ArrayList<Params> p = new ArrayList<>();
-            BaseResponse objResponse = (new ServiceProxy()).postJsonData("api/profiles/delete", objProfile, new ArrayList<>() );
+        ArrayList<Params> p = new ArrayList<>();
+        BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/profiles/delete", objProfile, new ArrayList<>() );
 
-            if(objResponse.getStatusAction() == 1)
-                return "redirect:/admin/profiles";
-            else
-                throw new Exception(objResponse.getMessage());
-
-        } catch (Exception e) {
-            new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
-            throw new NotFoundException("Pagina não encontrada.");
-        }
+        if(oBaseResponse.getStatusAction() == 1)
+            return "redirect:/admin/profiles";
+        else
+            throw new InternalError(oBaseResponse.getMessage());
     }
 }

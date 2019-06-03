@@ -8,8 +8,10 @@ import java.util.UUID;
 
 import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
+import com.library.helpers.UtilsDate;
 import com.library.models.*;
 import com.library.repository.DocumentRepository;
+import com.library.repository.EventslogRepository;
 import com.library.repository.ImageRepository;
 import com.library.repository.UserRepository;
 import com.library.service.EventsLogService;
@@ -53,6 +55,9 @@ public class StorageController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private EventslogRepository eventslogRepository;
+
     /**
      * save an image
      * @param file
@@ -71,6 +76,8 @@ public class StorageController {
             oImage.setId(new Helper().getUUID());
             oImage.setImageType(com.google.common.io.Files.getFileExtension(file.getOriginalFilename()));
             oImage.setName(oImage.getId() + "." + oImage.getImageType());
+            oImage.setStatus(Helper.STATUS_ACTIVE);
+            oImage.setDateCreated(UtilsDate.getDateTime());
 
 
             // Define metaData
@@ -95,8 +102,8 @@ public class StorageController {
             return ResponseEntity.ok().body(new BaseResponse(1, "ok", objImage));
 
         }catch (Exception e){
-            new EventsLogService().AddEventologs(null,"Excption in class '" + this.getClass().getName()
-                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null);
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
     }
@@ -145,8 +152,8 @@ public class StorageController {
             return ResponseEntity.ok().body(new BaseResponse(1, "ok", objDocument));
 
         }catch (Exception e){
-            new EventsLogService().AddEventologs(null,"Excption in class '" + this.getClass().getName()
-                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null);
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
     }
@@ -167,8 +174,8 @@ public class StorageController {
             return ResponseEntity.ok().body(new BaseResponse( 1,"ok", images));
 
         }catch (Exception e){
-            new EventsLogService().AddEventologs(null,"Excption in class '" + this.getClass().getName()
-                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null);
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
     }
@@ -199,8 +206,8 @@ public class StorageController {
                     .body(gridOperations.getResource(fileObj));
 
         }catch (Exception e){
-            new EventsLogService().AddEventologs(null,"Excption in class '" + this.getClass().getName()
-                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null);
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
     }
@@ -230,8 +237,8 @@ public class StorageController {
                     .body(gridOperations.getResource(fileObj));
 
         }catch (Exception e){
-            new EventsLogService().AddEventologs(null,"Excption in class '" + this.getClass().getName()
-                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null);
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
     }
@@ -249,8 +256,8 @@ public class StorageController {
             return ResponseEntity.ok().body(new BaseResponse(1,"ok", documents));
 
         }catch (Exception e){
-            new EventsLogService().AddEventologs(null,"Excption in class '" + this.getClass().getName()
-                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null);
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0,"ok", null));
         }
     }

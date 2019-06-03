@@ -1,17 +1,16 @@
 package com.app.controllers;
 
+import com.app.exceptions.ResourceNotFoundException;
 import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
 import com.app.service.DomainService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.library.helpers.BaseResponse;
-import com.library.helpers.Helper;
 import com.library.helpers.HelperPaging;
 import com.library.models.Domain;
 import com.library.repository.DomainRepository;
 import com.library.service.EventsLogService;
 import org.json.simple.JSONObject;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -100,23 +99,20 @@ public class DomainController {
 
         if (request.getMethod().equals("POST")) {
 
-            try {
+            if (!result.hasErrors()) {
 
-                if (!result.hasErrors()) {
+                ArrayList<Params> p = new ArrayList<>();
+                BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/domains/create", oDomain, new ArrayList<>() );
 
-                    ArrayList<Params> p = new ArrayList<>();
-                    BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/domains/create", oDomain, new ArrayList<>() );
+                if(oBaseResponse.getStatusAction() != 1 || oBaseResponse.getData() == null || oBaseResponse.getData() == "null")
+                    throw new InternalError(oBaseResponse.getMessage());
 
-                    if(oBaseResponse.getStatusAction() != 1 || oBaseResponse.getData() == null || oBaseResponse.getData() == "null")
-                        new Exception(oBaseResponse.getMessage());
+                Domain createdDomain = objectMapper.convertValue(oBaseResponse.getData(), Domain.class);
 
-                    Domain createdDomain = objectMapper.convertValue(oBaseResponse.getData(), Domain.class);
-
+                if(createdDomain != null)
                     return "redirect:/admin/domains/view/" + createdDomain.getId().toString();
-                }
-
-            } catch (Exception e) {
-                new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
+                else
+                    throw new InternalError(oBaseResponse.getMessage());
             }
         }
 
@@ -133,28 +129,24 @@ public class DomainController {
 
         if (request.getMethod().equals("POST")) {
 
-            try {
+            if (!result.hasErrors()) {
 
-                if (!result.hasErrors()) {
+                ArrayList<Params> p = new ArrayList<>();
+                BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/domains/update", oDomain, new ArrayList<>() );
 
-                    ArrayList<Params> p = new ArrayList<>();
-                    BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/domains/update", oDomain, new ArrayList<>() );
+                if(oBaseResponse.getStatusAction() != 1 || oBaseResponse.getData() == null || oBaseResponse.getData() == "null")
+                    throw new InternalError(oBaseResponse.getMessage());
 
-                    if(oBaseResponse.getStatusAction() != 1 || oBaseResponse.getData() == null || oBaseResponse.getData() == "null")
-                       throw  new Exception(oBaseResponse.getMessage());
+                Domain updatedDomain = objectMapper.convertValue(oBaseResponse.getData(), Domain.class);
 
-                    Domain updatedDomain = objectMapper.convertValue(oBaseResponse.getData(), Domain.class);
-
+                if(updatedDomain != null)
                     return "redirect:/admin/domains/view/" + updatedDomain.getId().toString();
-                }
-
-            } catch (Exception e) {
-                new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
+                else
+                    throw new InternalError(oBaseResponse.getMessage());
             }
         }
 
         model.addAttribute("oDomain", oDomain);
-
         return  "/views/domain/update";
     }
 

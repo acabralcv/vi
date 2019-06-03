@@ -1,4 +1,17 @@
 
+-- !IMPORTANTE
+-- EN CASO DE NECESSIDADE DE LIMPAR A DB, NÃO SE ESQUES
+-- DE VOLTAR A COMENTAR OD DELETES LOGO A SEGUIR À COMPILAÇÃO DO PROJETO
+-- THANK U!
+/**
+  DELETE FROM tbl_user_profiles;
+  DELETE from tbl_user;
+  DELETE FROM tbl_profile;
+  DELETE FROM tbl_recluso;
+  DELETE FROM tbl_documentos;
+  DELETE FROM tbl_domain;
+ */
+
 -- pais initialization
 INSERT into tbl_pais (id, date_created, date_updated, nome, status) values
       ('e9dc1d36-977b-40b9-b6b8-299c49e41cd3','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','Cabo Verde', 1),

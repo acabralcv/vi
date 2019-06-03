@@ -1,5 +1,6 @@
 package com.app.controllers;
 
+import com.app.exceptions.ResourceNotFoundException;
 import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
 import com.app.service.IlhaService;
@@ -45,76 +46,57 @@ public class ReclusoController {
     @RequestMapping(value = {"reclusos/view/{id}"}, method = {RequestMethod.GET})
     public String actionView(ModelMap model, @PathVariable UUID id) {
 
-        try{
-            Recluso oRecluso = ReclusoService.findOne(id.toString());
+        Recluso oRecluso = ReclusoService.findOne(id.toString());
 
-            if(oRecluso == null)
-                throw new ResourceNotFoundException("Não possivel encontrar o recluso solicitado");
+        if(oRecluso == null)
+            throw new ResourceNotFoundException("Não possivel encontrar o recluso solicitado");
 
-            model.addAttribute("oRecluso", oRecluso);
+        model.addAttribute("oRecluso", oRecluso);
 
-            return  "/views/recluso/view";
-
-        } catch (Exception e) {
-            new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
-            throw new NotFoundException(e.getMessage());
-        }
+        return  "/views/recluso/view";
     }
 
     @RequestMapping(value = "reclusos", method = RequestMethod.GET)
     public String actionIndex(ModelMap model, @PageableDefault(page = 0, size = 10) Pageable pageable) {
 
-        try{
-            //get info
-            BaseResponse objResponse = (new ServiceProxy())
-                    .getJsonData("api/reclusos", (new ServiceProxy()).encodePageableParams(pageable));
+        //get info
+        BaseResponse objResponse = (new ServiceProxy())
+                .getJsonData("api/reclusos", (new ServiceProxy()).encodePageableParams(pageable));
 
-            //Pageable result objt
-            JSONObject dataResponse = (JSONObject) objResponse.getData();
+        //Pageable result objt
+        JSONObject dataResponse = (JSONObject) objResponse.getData();
 
-            //check result
-            ArrayList<Recluso> reclusos = (ArrayList<Recluso>) dataResponse.get("content");
+        //check result
+        ArrayList<Recluso> reclusos = (ArrayList<Recluso>) dataResponse.get("content");
 
-            model.addAttribute("objPaging", (new HelperPaging().getResponsePaging(pageable, dataResponse)));
-            model.addAttribute("reclusos", reclusos);
+        model.addAttribute("objPaging", (new HelperPaging().getResponsePaging(pageable, dataResponse)));
+        model.addAttribute("reclusos", reclusos);
 
-            return  "/views/recluso/index";
-
-        } catch (Exception e) {
-            new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
-            throw new NotFoundException(e.getMessage());
-        }
+        return  "/views/recluso/index";
     }
 
     @RequestMapping(value = {"reclusos/create"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String actionCreate(@Valid @ModelAttribute Recluso objRecluso, BindingResult result,
                                ModelMap model, HttpServletRequest request) {
 
-        try {
-
             if (request.getMethod().equals("POST")) {
 
-                if (result.hasErrors())
-                    throw new Exception(result.getAllErrors().get(0).toString());
+                if ( !result.hasErrors()) {
 
-                BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/reclusos/create", objRecluso, new ArrayList<>() );
-                Recluso createdUser = (Recluso) BaseResponse.convertToModel(oBaseResponse, new Recluso());
+                    BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/reclusos/create", objRecluso, new ArrayList<>());
+                    Recluso createdUser = (Recluso) BaseResponse.convertToModel(oBaseResponse, new Recluso());
 
-                if(oBaseResponse.getStatusAction() == 1)
-                    return "redirect:/reclusos/view/" + createdUser.getId();
-                else
-                    throw new Exception(oBaseResponse.getMessage());
+                    if (createdUser != null)
+                        return "redirect:/reclusos/view/" + createdUser.getId();
+                    else
+                        throw new InternalError(oBaseResponse.getMessage());
+                }
             }
 
             model.addAttribute("paisList", new PaisService().findAll());
             model.addAttribute("ilhaList", new IlhaService().findAll());
             model.addAttribute("objRecluso", objRecluso);
             return "views/recluso/create";
-
-        } catch (Exception e) {
-            new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
-            throw new NotFoundException(e.getMessage());
-        }
     }
 
 
@@ -122,36 +104,30 @@ public class ReclusoController {
     public String actionUpdate(@Valid @ModelAttribute Recluso objRecluso, BindingResult result,
                                ModelMap model, HttpServletRequest request, @PathVariable UUID id) {
 
-        try {
+        if (request.getMethod().equals("POST")) {
 
-            if (request.getMethod().equals("POST")) {
+            if (!result.hasErrors()) {
 
-                if (!result.hasErrors()) {
+                ArrayList<Params> p = new ArrayList<>();
+                BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/reclusos/update", objRecluso, new ArrayList<>() );
 
-                    ArrayList<Params> p = new ArrayList<>();
-                    BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/reclusos/update", objRecluso, new ArrayList<>() );
+                if(oBaseResponse.getStatusAction() != 1 || oBaseResponse.getData() == null || oBaseResponse.getData() == "null")
+                    throw new InternalError(oBaseResponse.getMessage());
 
-                    if(oBaseResponse.getStatusAction() != 1 || oBaseResponse.getData() == null || oBaseResponse.getData() == "null")
-                        throw new Exception(oBaseResponse.getMessage());
-
-                    Recluso updatedRecluso = objectMapper.convertValue(oBaseResponse.getData(), Recluso.class);
-
+                Recluso updatedRecluso = objectMapper.convertValue(oBaseResponse.getData(), Recluso.class);
+                if(updatedRecluso != null)
                     return "redirect:/reclusos/view/" + updatedRecluso.getId().toString();
-                }
+                else
+                    throw new InternalError(oBaseResponse.getMessage());
             }
-
-            objRecluso = ReclusoService.findOne(id.toString());
-
-            if(objRecluso == null)
-                throw new ResourceNotFoundException("Não possivel encontrar o recluso solicitado");
-
-            model.addAttribute("objRecluso", objRecluso);
-            return  "/views/recluso/update";
-
-        } catch (Exception e) {
-            new EventsLogService().AddEventologs(null, "Excption in " + this.getClass().getName(), e.getMessage(), null);
-            throw new NotFoundException(e.getMessage());
         }
+
+        objRecluso = ReclusoService.findOne(id.toString());
+        if(objRecluso == null)
+            throw new ResourceNotFoundException("Não possivel encontrar o recluso solicitado");
+
+        model.addAttribute("objRecluso", objRecluso);
+        return  "/views/recluso/update";
     }
 
 }

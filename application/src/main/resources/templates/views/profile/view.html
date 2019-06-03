@@ -6,41 +6,41 @@
 </head>
 <body>
 
-<div class="col-xs-12 col-md-12" layout:fragment="content">
+    <div class="col-xs-12 col-md-12" layout:fragment="content">
 
-  <div clas="col">
-    <a href="/admin/profiles" class="btn btn-default">
-      Voltar
-    </a>
-    <a th:href="@{|/admin/profiles/update/${oProfile.id}|}" class="btn btn-success">
-      Atualizar
-    </a>
-    <a th:href="@{|/admin/profiles/delete/${oProfile.id}|}" class="btn btn-danger" onclick="return confirm('Tem certeza de que deseja remover este item')">
-      Remover
-    </a>
-  </div>
+      <div clas="col">
+        <a th:href="@{|/admin/profiles|}" class="btn btn-default">Voltar</a>
+        <a th:href="@{|/admin/profiles/update/${oProfile.id}|}" class="btn btn-success">Atualizar</a>
+        <a th:href="@{|/admin/profiles/delete/${oProfile.id}|}" class="btn btn-danger" onclick="return confirm('Tem certeza de que deseja remover este item')">Remover</a>
+      </div>
 
-  <div clas="col" style="margin-top: 30px">
-    <h4>Detalhes do perfil</h4>
-    <div class="container">
-      <div class="row">
-        <div class="w-25"><strong>Nome:</strong></div>
-        <div class="w-75"><span th:text="${oProfile.name}">#</span></div>
+      <div clas="col" style="margin-top: 30px">
+
+            <div class="panel panel-primary">
+                  <div class="panel-heading">Perfil - <span th:text="${oProfile.name}"></span></div>
+                  <div class="panel-body">
+
+                    <table class="table table-striped table-bordered">
+                        <tr>
+                            <th>Nome</th>
+                            <td th:text="${oProfile.name}">#</td>
+                        </tr>
+                        <tr>
+                            <th>Data de criação</th>
+                            <td th:text="${oProfile.dateCreated}">#</td>
+                        </tr>
+                        <tr>
+                            <th>Ultima atualização</th>
+                            <td th:text="${oProfile.dateCreated}">#</td>
+                        </tr>
+                    </table>
+
+                  </div>
+            </div>
+
       </div>
-      <div class="row">
-        <div class="w-25"><strong>Data criação:</strong></div>
-        <div class="w-75"><span th:text="${oProfile.dateCreated}">#</span></div>
-      </div>
-      <div class="row">
-        <div class="w-25"><strong>Ultima atualização:</strong></div>
-        <div class="w-75"><span th:text="${oProfile.dateUpdated}">#</span></div>
-      </div>
+
     </div>
-  </div>
-
-</div>
-
-</div>
 
 </body>
 </html>

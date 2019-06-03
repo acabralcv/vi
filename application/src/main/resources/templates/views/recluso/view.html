@@ -9,15 +9,9 @@
     <div class="col-xs-12 col-md-12" layout:fragment="content">
 
         <div clas="col">
-            <a href="/reclusos" class="btn btn-default">
-              Voltar
-            </a>
-            <a th:href="@{|/reclusos/update/${oRecluso.id}|}" class="btn btn-success">
-              Atualizar
-            </a>
-            <a th:href="@{|/reclusos/delete/${oRecluso.id}|}" class="btn btn-danger" onclick="return confirm('Tem certeza de que deseja remover este item')">
-              Remover
-            </a>
+            <a th:href="@{|/reclusos|}" class="btn btn-default">Voltar</a>
+            <a th:href="@{|/reclusos/update/${oRecluso.id}|}" class="btn btn-success">Atualizar</a>
+            <a th:href="@{|/reclusos/delete/${oRecluso.id}|}" class="btn btn-danger" onclick="return confirm('Tem certeza de que deseja remover este item')">Remover</a>
         </div>
 
         <div class="col" style="margin-top: 35px">

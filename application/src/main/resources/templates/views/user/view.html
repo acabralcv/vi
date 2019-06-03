@@ -13,16 +13,17 @@
         <span th:replace="/views/user/upload_image_modal:: ActionModal(${oUser})"></span>
 
         <div clas="col" style="margin:5px 0;">
-            <a href="/users" class="btn btn-default">Voltar</a>
+            <a th:href="@{|/users|}" class="btn btn-default">Voltar</a>
+            <a th:href="@{|/users/update/${oUser.id}|}" class="btn btn-success">Atualizar</a>
+            <a th:href="@{|/users/delete/${oUser.id}|}" class="btn btn-danger" onclick="return confirm('Tem certeza de que deseja remover este item')">Remover</a>
         </div>
 
 		<div class="panel panel-primary">
-		    <div class="panel-heading"><span th:text="${oUser.name}">#</span></div>
+		    <div class="panel-heading">Utilizador - <span th:text="${oUser.name}">#</span></div>
 			  <div class="panel-body">
 
                     <div clas="col">
                         <span th:if="${oUser.profileImage != null}">
-                            <span th:text="${oUser.profileImage.storageId}"></span>
                             <img th:src="@{/api/storage/images-details?id={id}(id=${oUser.profileImage.storageId})}" style="width:128px;height: 128px;"/>
                         </span>
                         <span th:unless="${oUser.profileImage != null}">
@@ -34,7 +35,6 @@
                     </div>
 
                     <div clas="col">
-                        <h4>Infomação do utilizador</h4>
 						
 						<table class="table table-striped table-bordered">
 							<tr>
