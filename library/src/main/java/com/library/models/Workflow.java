@@ -27,10 +27,6 @@ public class Workflow extends AuditModel {
     @Column(name = "target_table_id", nullable = true)
     private UUID targetTableId;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "process_code", referencedColumnName = "id")
-//    private Process process;
-//
     @OneToMany(mappedBy="workflow") /* this will look for 'workflow' property in the 'States' Entity */
     @JsonIgnore
     private Set<States> states;

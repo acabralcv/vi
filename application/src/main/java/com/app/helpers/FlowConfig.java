@@ -53,12 +53,12 @@ public class FlowConfig {
 
         o2.setStep(2);
         o2.setProcessCode("PROCESS_USER_REGISTRATION");
-        o2.setResourse("api/workflows/teste_02");
+        o2.setResourse("api/workflows/teste_01");
         o2.setName("Estado teste 02");
 
         o3.setStep(3);
         o3.setProcessCode("PROCESS_USER_REGISTRATION");
-        o3.setResourse("api/workflows/teste_03");
+        o3.setResourse("api/workflows/teste_01");
         o3.setName("Estado teste 03");
 
         processes.add(o1);

@@ -35,7 +35,7 @@ public class WorkflowsControllers {
 
         try{
 
-            Pageable pageableBuilded = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dateCreateddateCreated").descending());
+            Pageable pageableBuilded = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dateCreated").descending());
 
             Page<Workflow> workflows = workflowRepository.findByStatus(Helper.STATUS_ACTIVE, pageableBuilded);
 

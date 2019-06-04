@@ -17,5 +17,7 @@ public interface StatesRepository extends JpaRepository<States, UUID> {
 
     Page<States> findByStatus(int status, Pageable pageable);
 
+    List<States> findByWorkflow(Workflow workflow);
+
     Optional<States> findByWorkflowAndAndStep(Workflow workflow, Integer step);
 }
