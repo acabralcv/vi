@@ -32,7 +32,7 @@ public class Recluso extends AuditModel {
     private String sexo;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    @Column(name = "data_nascimento", nullable = false)
+    @Column(name = "data_nascimento", nullable = true)
     private Date dataNascimento;
 
     @Column(name = "nome_pai", nullable = true)

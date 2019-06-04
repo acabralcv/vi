@@ -81,6 +81,9 @@ public class ReclusoController {
 
             if (request.getMethod().equals("POST")) {
 
+                //eviter problema
+                objRecluso.setDataNascimento(null);
+
                 if ( !result.hasErrors()) {
 
                     BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/reclusos/create", objRecluso, new ArrayList<>());
@@ -90,7 +93,8 @@ public class ReclusoController {
                         return "redirect:/reclusos/view/" + createdUser.getId();
                     else
                         throw new InternalError(oBaseResponse.getMessage());
-                }
+                }else
+                    System.out.println(result.getAllErrors().get(0));
             }
 
             model.addAttribute("paisList", new PaisService().findAll());
