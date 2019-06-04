@@ -8,8 +8,8 @@ import com.library.models.Workflow;
 import com.library.repository.StatesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class FlowHelper {
 
@@ -49,4 +49,34 @@ public class FlowHelper {
 
         return new BaseResponse().getObjResponse(1, "ok", savedState);
     }
+
 }
+//
+//class WfProcess{
+//
+//    private String processoCode;
+//    private String name;
+//    private List<WfActivity> activities;
+//
+//    public WfProcess(){}
+//
+//    public WfProcess(String processoCode, String name, List<WfActivity> activities){
+//        this.processoCode = processoCode;
+//        this.name = name;
+//        this.activities = activities;
+//    }
+//}
+//
+//
+//class WfActivity{
+//
+//    private String name;
+//    private String resource;
+//
+//    public WfActivity(){}
+//
+//    public WfActivity(String name, String resource){
+//        this.name = name;
+//        this.resource = resource;
+//    }
+//}

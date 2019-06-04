@@ -67,7 +67,7 @@ public class ReclusoController {
         JSONObject dataResponse = (JSONObject) objResponse.getData();
 
         //check result
-        ArrayList<Recluso> reclusos = (ArrayList<Recluso>) dataResponse.get("content");
+        ArrayList<Recluso> reclusos = dataResponse != null ? (ArrayList<Recluso>) dataResponse.get("content") : null;
 
         model.addAttribute("objPaging", (new HelperPaging().getResponsePaging(pageable, dataResponse)));
         model.addAttribute("reclusos", reclusos);
