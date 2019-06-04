@@ -4,6 +4,7 @@ import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
 import com.library.models.Domain;
 import com.library.models.Eventslog;
+import com.library.models.Profile;
 import com.library.repository.EventslogRepository;
 import com.library.service.EventsLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 
-@Controller
+@RestController
 public class EventslogsController {
 
     @Autowired
@@ -56,6 +56,28 @@ public class EventslogsController {
             Optional<Eventslog> oEventslog = (Optional) eventslogRepository.findById(id);
 
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oEventslog != null ? 1 : 0,"ok", oEventslog));
+
+        }catch (Exception e){
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
+    }
+
+
+
+
+
+
+    /**
+     * TESTES WORKFLOW
+     */
+    @RequestMapping(value = {"api/workflows/teste_01"}, method = {RequestMethod.POST})
+    public ResponseEntity actionTesteFlow_01(@RequestBody Profile objProfile) {
+
+        try {
+
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", objProfile));
 
         }catch (Exception e){
             new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
