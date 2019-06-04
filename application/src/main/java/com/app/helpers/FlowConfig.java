@@ -1,11 +1,15 @@
 package com.app.helpers;
 
 import com.library.helpers.BaseResponse;
+import com.library.helpers.Helper;
+import com.library.helpers.UtilsDate;
 import com.library.models.Recluso;
 import com.library.models.Workflow;
 import com.library.repository.StatesRepository;
 import com.library.repository.WorkflowRepository;
+import com.library.service.EventsLogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +22,7 @@ public class FlowConfig {
     private String name;
     private String processCode;
     private String resourse;
-    private Object oEntity;
+    private Object objEntity;
 
     @Autowired
     private StatesRepository statesRepository;
@@ -44,14 +48,17 @@ public class FlowConfig {
 
         o1.setStep(1);
         o1.setProcessCode("PROCESS_USER_REGISTRATION");
+        o1.setResourse("api/workflows/teste_01");
         o1.setName("Estado teste 01");
 
         o2.setStep(2);
-        o1.setProcessCode("PROCESS_USER_REGISTRATION");
+        o2.setProcessCode("PROCESS_USER_REGISTRATION");
+        o2.setResourse("api/workflows/teste_02");
         o2.setName("Estado teste 02");
 
         o3.setStep(3);
-        o1.setProcessCode("PROCESS_USER_REGISTRATION");
+        o3.setProcessCode("PROCESS_USER_REGISTRATION");
+        o3.setResourse("api/workflows/teste_03");
         o3.setName("Estado teste 03");
 
         processes.add(o1);
@@ -63,47 +70,70 @@ public class FlowConfig {
 
     public BaseResponse transitionFlow(FlowConfig flowConfig){
 
-        BaseResponse oBaseResponse = new BaseResponse();
-        ArrayList<FlowConfig> flows = this.getProcess();
+        try {
 
-        for (FlowConfig oConfig: flows){
+            BaseResponse oBaseResponse = new BaseResponse();
+            ArrayList<FlowConfig> flows = this.getProcess();
 
-            if( oConfig.getProcessCode() == flowConfig.getProcessCode() && oConfig.getStep() == flowConfig.getStep()){
+            for (FlowConfig oConfig: flows){
 
-                System.out.println(flowConfig.getResourse());
+                if( oConfig.getProcessCode() == flowConfig.getProcessCode() && oConfig.getStep() == flowConfig.getStep()){
 
-                oBaseResponse = (new ServiceProxy())
-                        .postJsonData(flowConfig.getResourse(), flowConfig.getoEntity(), new ArrayList<>());
+                    System.out.println(oConfig.getResourse());
 
-                if(oBaseResponse.getStatusAction() ==  1){
+                    oBaseResponse = (new ServiceProxy())
+                            .postJsonData(oConfig.getResourse(), flowConfig.getObjEntity(), new ArrayList<>());
 
-                    //let's try to get workflow
-                    Workflow workflow = this.getWorflowByProcess(flowConfig.getProcessCode(), true, flowConfig.getStep());
+                    if(oBaseResponse.getStatusAction() ==  1){
 
-                    new FlowHelper(this.statesRepository)
-                            .updateState(workflow, flowConfig.getStep(), oConfig.getName());
+                        //let's try to get workflow
+                        Workflow workflow = this.getWorflowByProcess(flowConfig.getProcessCode());
+
+                        if(workflow == null && flowConfig.getStep() != 1)
+                            throw new Exception("Não foi possivel determinar o workflow. Processo: " + flowConfig.getProcessCode() + " :: Step: " + flowConfig.getStep());
+
+                        if(workflow == null)
+                            workflow = this.startWorkflow(flowConfig);
+
+                        new FlowHelper(this.statesRepository)
+                                .updateState(workflow, flowConfig.getStep(), oConfig.getName());
+                    }
+
+                    return  oBaseResponse;
                 }
+            };
 
-                return  oBaseResponse;
-            }
-        };
+            String message = "Cannot find the process configuration: "
+                    + " Process Code: " + flowConfig.getProcessCode() + " :: Step: " + flowConfig.getStep();
 
-        String message = "Cannot find the process configuration: "
-                + " Process Code: " + flowConfig.getProcessCode() + " :: Step: " + flowConfig.getStep();
+            return new BaseResponse().getObjResponse(0,message, null);
 
-        return new BaseResponse().getObjResponse(0,message, null);
+        }catch (Exception e){
+//            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+//                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return new BaseResponse(0, e.getMessage(), null);
+        }
     }
 
-    public Workflow getWorflowByProcess(String processCode, boolean startNew, int step) {
+    public Workflow getWorflowByProcess(String processCode) {
 
         Optional<Workflow> workflow = workflowRepository.findByProcessCode(processCode);
 
-        if(workflow == null && startNew == true){
-            //start process
-            return new Workflow();
-        }
+        return workflow.isPresent() ? workflow.get() : null;
+    }
 
-        return workflow.get();
+    public Workflow startWorkflow(FlowConfig flowConfig) {
+
+        Workflow workflow = new Workflow();
+        workflow.setId(new Helper().getUUID());
+        workflow.setStatus(Helper.STATUS_ACTIVE);
+        workflow.setDateCreated(UtilsDate.getDateTime());
+        workflow.setIsConcluded(0);
+
+        workflow.setProcessCode(flowConfig.getProcessCode());
+        workflow.setName(flowConfig.getProcessCode());
+
+        return this.workflowRepository.save(workflow);
     }
 
     public Integer getStep() {
@@ -122,12 +152,12 @@ public class FlowConfig {
         this.resourse = resourse;
     }
 
-    public Object getoEntity() {
-        return oEntity;
+    public Object getObjEntity() {
+        return objEntity;
     }
 
-    public void setoEntity(Object oEntity) {
-        this.oEntity = oEntity;
+    public void setObjEntity(Object objEntity) {
+        this.objEntity = objEntity;
     }
 
     public String getName() {

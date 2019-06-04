@@ -13,6 +13,9 @@ public class States extends AuditModel{
     @Id
     private UUID id;
 
+    @Column(name = "step", nullable = false, columnDefinition = "int default 1")
+    private Integer step;
+
     @NotBlank
     @Size(min = 3, max = 128)
     @Column(nullable = false)
@@ -57,4 +60,11 @@ public class States extends AuditModel{
         this.isViewable = isViewable;
     }
 
+    public Integer getStep() {
+        return step;
+    }
+
+    public void setStep(Integer step) {
+        this.step = step;
+    }
 }

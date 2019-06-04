@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Controller
 public class WorkflowController {
@@ -57,8 +58,7 @@ public class WorkflowController {
 
         FlowConfig config = new FlowConfig();
         config.setProcessCode("PROCESS_USER_REGISTRATION");
-        config.setResourse("api/workflows/teste_01");
-        config.setoEntity(new Profile());
+        config.setObjEntity(new Profile());
         config.setStep(1);
 
         BaseResponse oBaseResponse = new FlowConfig(statesRepository, workflowRepository)

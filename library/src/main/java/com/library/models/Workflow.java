@@ -9,8 +9,8 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "wf_process")
-public class Workflow {
+@Table(name = "wf_workflow")
+public class Workflow extends AuditModel {
 
     @Id
     private UUID id;
