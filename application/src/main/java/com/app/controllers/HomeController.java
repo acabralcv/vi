@@ -35,6 +35,8 @@ public class HomeController {
     public String home(ModelMap model) {
 
         //teste evenets log
+
+        
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
         Date currentDate = calendar.getTime();
         new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
