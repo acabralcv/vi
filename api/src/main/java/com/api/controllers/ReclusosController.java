@@ -3,9 +3,11 @@ package com.api.controllers;
 import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
 import com.library.helpers.UtilsDate;
+import com.library.models.Image;
 import com.library.models.Recluso;
 import com.library.models.User;
 import com.library.repository.EventslogRepository;
+import com.library.repository.ImageRepository;
 import com.library.repository.ReclusoRepository;
 import com.library.service.EventsLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class ReclusosController {
 
     @Autowired
     private EventslogRepository eventslogRepository;
+
+    @Autowired
+    private ImageRepository imageRepository;
 
     /** get recludo details
      * @param id
@@ -106,5 +111,37 @@ public class ReclusosController {
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
     }
+    
+    
+    
+
+    @RequestMapping(value = {"api/reclusos/add-profile-image"}, method = {RequestMethod.POST})
+    public ResponseEntity actionAddReclusoImage(@RequestBody Recluso reclusoPosted) {
+
+        try {
+
+            Recluso oRecluso = reclusoRepository.findById(reclusoPosted.getId()).get();
+
+            System.out.println(oRecluso.getProfileImage());
+
+//            Optional<Image> oImage = imageRepository.findByRecluso(oRecluso.getProfileImage());
+
+//            if( oRecluso == null || oImage == null)
+//                throw new Exception("Recluso não encontrado.");
+//
+//            oUser.setProfileImage(oImage);
+//
+//            //update user
+//            User savedUser = userRepository.save(oUser);
+
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", reclusoPosted ));
+
+        }catch (Exception e){
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
+    }
+
 
 }
