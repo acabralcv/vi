@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Workflows</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+    <div class="col-xs-12 col-md-12" layout:fragment="content">
+
+        <div clas="col" style="margin-top:20px">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Workflows</div>
+                <div class="panel-body">
+
+
+                    <table class="table table-striped table-bordered">
+                        <tr>
+                            <th>Name</th>
+                            <th>Process Type</th>
+                            <th>Target</th>
+                            <th>Data criaação</th>
+                            <th>Ultima atualização</th>
+                            <th>Ação</th>
+                        </tr>
+
+                        <div class="col">
+                            Total: <span th:if="${oPaging != null && oPaging != 'null'}" th:text="${objPaging.totalElements}"></span>
+                        </div>
+
+                        <tr th:each="oWorkflow : ${workflows}">
+                            <td th:text="${oWorkflow.name}">#</td>
+                            <td th:text="${oWorkflow.processCode}">#</td>
+                            <td th:text="${oWorkflow.targetTableId}">#</td>
+                            <td th:text="${oWorkflow.dateCreated}">#</td>
+                            <td th:text="${oWorkflow.dateUpdated}">#</td>
+                            <td>
+                                <span th:replace="/fragments/ActionColumn:: actionView('/admin/workflows/view/' + ${oWorkflow.id})"></span>
+                            </td>
+                        </tr>
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

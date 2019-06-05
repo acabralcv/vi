@@ -27,11 +27,11 @@ var modelDocument = {
 
         if (imagesInput && imagesInput.files) {
 
-            $.each(imagesInput.files, function (idx, anexoImage) {
+            $.each(imagesInput.files, function (idx, anexoFile) {
 
                 var formData = new FormData();
                 formData.append('document_type', 'OTHER');
-                formData.append('file', anexoImage);
+                formData.append('file', anexoFile);
                 formData.append('file_type', "DOCUMENT");
                 formData.append('userId', null);
                 formData.append('description', $('#documentFileObservacao').val());

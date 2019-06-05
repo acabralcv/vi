@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Logs events</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+
+<div class="col-xs-12 col-md-12" layout:fragment="content">
+
+    <div clas="col" style="margin-top:20px">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Events log</div>
+            <div class="panel-body">
+
+				<div class="col">
+					Total: <span th:text="${objPaging.totalElements}"></span>
+				</div>
+				
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <th>Mensagem</th>
+                        <th>Data de registo</th>
+                        <th>Ações</th>
+                    </tr>
+
+                    <tr th:each="oEventslog : ${eventslogs}">
+                        <td th:text="${oEventslog.message}">#</td>
+                        <td th:text="${oEventslog.dateCreated}">#</td>
+                        <td>
+                            <span th:replace="/fragments/ActionColumn:: actionView('/admin/eventslog/view/' + ${oEventslog.id})"></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <span th:replace="/fragments/pagingResult:: actionPaging(${objPaging}, '/eventslog')"></span>
+
+    </div>
+
+</div>
+
+
+
+</body>
+
+</html>

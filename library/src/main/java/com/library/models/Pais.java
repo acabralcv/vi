@@ -19,6 +19,15 @@ public class Pais extends AuditModel {
     @Size(min = 3, max = 150)
     private String nome;
 
+    @Column(name = "continente", nullable = true)
+    private String continente;
+
+    @Column(name = "capital", nullable = true)
+    private String capital;
+
+    @Column(name = "ordem", nullable = false, columnDefinition = "int default 100")
+    private Integer ordem;
+
     public UUID getId() {
         return id;
     }
@@ -33,5 +42,29 @@ public class Pais extends AuditModel {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getContinente() {
+        return continente;
+    }
+
+    public void setContinente(String continente) {
+        this.continente = continente;
+    }
+
+    public String getCapital() {
+        return capital;
+    }
+
+    public void setCapital(String capital) {
+        this.capital = capital;
+    }
+
+    public Integer getOrdem() {
+        return ordem;
+    }
+
+    public void setOrdem(Integer ordem) {
+        this.ordem = ordem;
     }
 }

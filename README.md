@@ -11,3 +11,6 @@
 
 5. Aplicação esta configurada para arancar no porto 8081 Ex. http://localhost:8081
 
+6. IMPORTANT  => fazer pull no branch 'osvanildo&hamilto'
+              
+

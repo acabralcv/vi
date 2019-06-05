@@ -4,7 +4,9 @@ import com.library.models.Ilha;
 import com.library.models.Pais;
 import com.library.helpers.Helper;
 import com.library.helpers.BaseResponse;
+import com.library.repository.EventslogRepository;
 import com.library.repository.IlhaRepository;
+import com.library.service.EventsLogService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import com.library.repository.PaisRepository;
@@ -26,27 +28,46 @@ public class PaisesController {
     @Autowired
     IlhaRepository ilhaRepository;
 
+    @Autowired
+    EventslogRepository eventslogRepository;
+
     @RequestMapping(value = {"api/paises"}, method = {RequestMethod.GET})
     public ResponseEntity actionPaises(@PageableDefault(sort = {"name"}, value = 10, page = 0) Pageable pageable) {
 
-        Pageable pageableBuilded = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome")
-                .ascending()
-                .and(Sort.by("dateCreated").descending()));
+        try{
 
-        Page<Pais> paises = paisRepository.findByStatus(Helper.STATUS_ACTIVE, pageableBuilded);
+            Pageable pageableBuilded = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome")
+                    .ascending()
+                    .and(Sort.by("dateCreated").descending()));
 
-        return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", paises ));
+            Page<Pais> paises = paisRepository.findByStatus(Helper.STATUS_ACTIVE, pageableBuilded);
+
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", paises ));
+
+        }catch (Exception e){
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
     }
 
     @RequestMapping(value = {"api/ilhas"}, method = {RequestMethod.GET})
     public ResponseEntity actionIlhas(@PageableDefault(sort = {"name"}, value = 10, page = 0) Pageable pageable) {
 
-        Pageable pageableBuilded = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome")
-                .ascending()
-                .and(Sort.by("dateCreated").descending()));
+        try{
 
-        Page<Ilha> ilhas = ilhaRepository.findByStatus(Helper.STATUS_ACTIVE, pageableBuilded);
+            Pageable pageableBuilded = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome")
+                    .ascending()
+                    .and(Sort.by("dateCreated").descending()));
 
-        return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", ilhas ));
+            Page<Ilha> ilhas = ilhaRepository.findByStatus(Helper.STATUS_ACTIVE, pageableBuilded);
+
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", ilhas ));
+
+        }catch (Exception e){
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
     }
 }

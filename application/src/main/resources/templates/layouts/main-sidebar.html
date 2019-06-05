@@ -8,9 +8,9 @@
           <!-- Sidebar user panel -->
           <div class="user-panel">
             <div class="pull-left image">
-              <img th:src="@{/img/favicon.ico}" class="img-circle" alt="User Image" style="height:32px;">
+              <img th:src="@{/dist/img/avatar3.png}" class="img-circle" alt="User Image" style="height:32px;">
             </div>
-            <div class="pull-left info"><p>Adminstrador</p></div>
+            <div class="pull-left info"><p>Osvanildo Nascimento</p></div>
           </div>
 
           <!-- sidebar menu: : style can be found in sidebar.less -->
@@ -18,18 +18,33 @@
 
             <li class="treeview">
               <a href="#">
-                <i class="fa fa-laptop"></i><span>Administrador</span>
+                <i class="fa fa-laptop"></i><span>Parametrizações</span>
                 <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
               </a>
               <ul class="treeview-menu">
-                <li><a href="/reclusos"><i class="fas fa-user-friends"></i>&nbsp;Reclusos</a></li>
-                <li><a href="/users"><i class="fas fa-user-friends"></i>&nbsp;Utilizadores</a></li>
-                <li><a href="/admin/profiles"><i class="fas fa-user-tag"></i>&nbsp;Perfils</a></li>
+                <!--<li><a href="/users"><i class="fas fa-user-friends"></i>&nbsp;Utilizadores</a></li>-->
+                <li><a href="/admin/profiles"><i class="fas fa-users"></i>&nbsp;Perfils de Acesso</a></li>
                 <li><a href="/admin/domains"><i class="fas fa-circle"></i>&nbsp;Dominios</a></li>
+                <li><a href="/admin/eventslog"><i class="fas fa-circle"></i>&nbsp;Events log</a></li>
               </ul>
             </li>
 
-              <li><a href="/documents"><i class="far fa-file-pdf"></i><span>&nbsp;Documentos</span></a></li>
+            <li class="treeview">
+              <a href="#">
+                <i class="fas fa-user-friends"></i><span>Gestão de Acesso</span>
+                <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="/users"><i class="fas fa-user-friends"></i>&nbsp;Utilizadores</a></li>
+                <li><a href="/admin/profiles"><i class="fas fa-user-tag"></i>&nbsp;Perfils</a></li>
+              </ul>
+            </li>
+
+            <li><a href="/reclusos"><i class="fa fa-user-circle-o"></i>&nbsp;Reclusos</a></li>
+            <li><a href="/estatisticas"><i class="fa fa-line-chart"></i>&nbsp;Relatório e Estatisticas</a></li>
+            <li><a href="/documents"><i class="far fa-file-pdf"></i><span>&nbsp;Documentos</span></a></li>
+              <li><a href="/processos"><i class="glyphicon glyphicon-paste"></i><span>&nbsp;Processos</span></a></li>
+              <li><a href="/notificacoes"><i class="glyphicon glyphicon-time"></i><span>&nbsp;Notificaçoes</span></a></li>
 
           </ul>
         </section>

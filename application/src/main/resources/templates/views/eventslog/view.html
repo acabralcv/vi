@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+  <title>Events log</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+    <div class="col-xs-12 col-md-12" layout:fragment="content">
+
+      <div clas="col">
+        <a th:href="@{|/admin/eventslog|}" class="btn btn-default">Voltar</a>
+      </div>
+
+      <div clas="col" style="margin-top: 30px">
+
+            <div class="panel panel-primary">
+                  <div class="panel-heading">Log - <span th:text="${oEventslog.message}"></span></div>
+                  <div class="panel-body">
+
+                    <table class="table table-striped table-bordered">
+                        <tr>
+                            <th>Mensagem</th>
+                            <td th:text="${oEventslog.message}">#</td>
+                        </tr>
+                        <tr>
+                            <th>Descrição</th>
+                            <td th:text="${oEventslog.description}">#</td>
+                        </tr>
+                        <tr>
+                            <th>Data de registo</th>
+                            <td th:text="${oEventslog.dateCreated}">#</td>
+                        </tr>
+                    </table>
+
+                  </div>
+            </div>
+
+      </div>
+
+    </div>
+
+</body>
+</html>
