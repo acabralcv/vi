@@ -36,6 +36,9 @@ public class Image extends AuditModel {
     @OneToOne(mappedBy = "profileImage")
     private User user;
 
+    @OneToOne(mappedBy = "profileImage")
+    private Recluso recluso;
+
     public UUID getId() {
         return id;
     }
@@ -82,5 +85,21 @@ public class Image extends AuditModel {
 
     public void setUserId(UUID userId) {
         this.userId = userId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Recluso getRecluso() {
+        return recluso;
+    }
+
+    public void setRecluso(Recluso recluso) {
+        this.recluso = recluso;
     }
 }
