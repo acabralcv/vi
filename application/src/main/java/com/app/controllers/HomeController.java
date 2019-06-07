@@ -60,6 +60,19 @@ public class HomeController {
         return "views/home/about";
     }
 
+    /**
+     * @return
+     */
+    @GetMapping("/agv8")
+    public String actionAngular8() {
+        //service.message
+        //return myService.message();
+
+        //service.appName
+        //return myService.appName();
+        return "webapp/index";
+    }
+
 
     @GetMapping("/processos")
     public String actionTeste() {
