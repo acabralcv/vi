@@ -6,55 +6,18 @@
 </head>
 <body>
 
-
 <div class="col-xs-12 col-md-12" layout:fragment="content">
 
-    <div clas="">
-        <a href="/cadeias/create" class="btn btn-success">Novo Cadeia</a>
-    </div>
-
     <div clas="col" style="margin-top:20px">
-
         <div class="panel panel-primary">
             <div class="panel-heading">Cadeia</div>
             <div class="panel-body">
-
-                <div class="col">
-                    Total: <span th:text="${objPaging.totalElements}"></span>
-                </div>
-
-                <table class="table table-striped table-bordered">
-                    <tr>
-                        <th>Nome</th>
-                        <th>Localização</th>
-                        <th>Data criação</th>
-                        <th>Ultima atualização</th>
-                        <th>Ações</th>
-                    </tr>
-
-                    <tr th:each="oCadeia : ${cadeias}">
-                        <td th:text="${oCadeiass.nome}">#</td>
-                        <td th:text="${oCadeias.localizacao}">#</td>
-                        <td th:text="${oCadeia.dateCreated}">#</td>
-                        <td th:text="${oCadeia.dateUpdated}">#</td>
-                        <td>
-                            <span th:replace="/fragments/ActionColumn:: actionView('/cadeias/view/' + ${oCadeia.id})"></span>
-                            <span th:replace="/fragments/ActionColumn:: actionUpdate('/cadeias/update/' + ${oCadeia.id})"></span>
-                            <span th:replace="/fragments/ActionColumn:: actionDelete('/cadeias/delete/' + ${oCadeia.id})"></span>
-                        </td>
-                    </tr>
-                </table>
+                [Para implementação]
             </div>
         </div>
-
-        <span th:replace="/fragments/pagingResult:: actionPaging(${objPaging}, '/reclusos')"></span>
-
     </div>
 
 </div>
 
-
-
 </body>
-
 </html>
