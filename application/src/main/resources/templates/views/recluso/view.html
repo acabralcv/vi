@@ -52,11 +52,11 @@
                         </tr>
                         <tr>
                             <th>Data de criação</th>
-                            <td th:text="${oRecluso.dateCreated}">#</td>
+                            <td th:text="${#dates.format(oRecluso.dateCreated, 'dd/MM/yyyy')}">#</td>
                         </tr>
                         <tr>
                             <th>Ultima atualização</th>
-                            <td th:text="${oRecluso.dateCreated}">#</td>
+                            <td th:text="${#dates.format(oRecluso.dateUpdated, 'dd/MM/yyyy')}">#</td>
                         </tr>
                     </table>
 

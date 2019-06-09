@@ -27,11 +27,11 @@
                         </tr>
                         <tr>
                             <th>Data de criação</th>
-                            <td th:text="${oProfile.dateCreated}">#</td>
+                            <td th:text="${#dates.format(oProfile.dateUpdated, 'dd/MM/yyyy')}">#</td>
                         </tr>
                         <tr>
                             <th>Ultima atualização</th>
-                            <td th:text="${oProfile.dateCreated}">#</td>
+                            <td th:text="${#dates.format(oProfile.dateUpdated, 'dd/MM/yyyy')}">#</td>
                         </tr>
                     </table>
 

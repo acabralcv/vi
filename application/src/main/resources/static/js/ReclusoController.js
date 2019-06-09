@@ -72,13 +72,15 @@ var modelRecluso = {
         
         var modelPots = {
             id: reclusoId,
-            profileImage: profile_image_id
+            profileImage: {id : profile_image_id }
         }
 
         modelApp.postJsonData("api/reclusos/add-profile-image",modelPots, {}, function (dataResponse) {
+            console.log(dataResponse)
             if(dataResponse && dataResponse.statusAction == 1){
+                alert()
                 modelApp.showSuccessMassage("Imagem do perfil do recluso associado com sucesso", false)
-                location.reload()
+               // location.reload()
             }else
                 modelApp.showErrorMassage(dataResponse.message, false)
         })
@@ -101,6 +103,7 @@ var modelRecluso = {
                 formData.append('description', $('#imageFileObservacao').val());
 
                 modelStorage.filesUploadProxy('api/storage/exchange-image', formData, function (dataResponse) {
+                    console.log(dataResponse)
                     if(dataResponse && dataResponse.data ){
                         modelRecluso.addReclusoProfileImage(reclusoId, dataResponse.data.id)
                     }

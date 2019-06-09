@@ -33,7 +33,7 @@
                 </tr>
                 <tr>
                     <th>Data de criação</th>
-                    <td th:text="${oWorkflow.dateCreated}">#</td>
+                    <td th:text="${#dates.format(oWorkflow.dateCreated, 'dd/MM/yyyy')}">#</td>
                 </tr>
             </table>
 

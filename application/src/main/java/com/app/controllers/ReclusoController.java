@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.library.helpers.BaseResponse;
 import com.library.helpers.HelperPaging;
 import com.library.models.*;
+import com.library.repository.ImageRepository;
 import com.library.repository.PaisRepository;
 import com.library.repository.ReclusoRepository;
 import com.library.service.EventsLogService;
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.NotFoundException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -40,6 +42,9 @@ public class ReclusoController {
     @Autowired
     private PaisRepository paisRepository;
 
+    @Autowired
+    private ImageRepository imageRepository;
+
     final ObjectMapper objectMapper = new ObjectMapper();
 
 
@@ -50,6 +55,10 @@ public class ReclusoController {
 
         if(oRecluso == null)
             throw new ResourceNotFoundException("Não possivel encontrar o recluso solicitado");
+
+        Optional<Image> oImage = imageRepository.findByRecluso(oRecluso);
+        if(oImage.isPresent())
+            oRecluso.setProfileImage(oImage.get());
 
         model.addAttribute("oRecluso", oRecluso);
 

@@ -15,4 +15,6 @@ public interface WorkflowRepository extends JpaRepository<Workflow, UUID> {
     Page<Workflow> findByStatus(int status, Pageable pageable);
 
     Optional<Workflow> findByProcessCode(String processCode);
+
+    Optional<Workflow> findByTargetTableId(UUID targetTableId);
 }

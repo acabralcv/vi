@@ -51,11 +51,11 @@
 							</tr>
 							<tr>
 								<th>Data de criação</th>
-								<td th:text="${oUser.dateCreated}">#</td>
+                                <td th:text="${#dates.format(oUser.dateCreated, 'dd/MM/yyyy')}">#</td>
 							</tr>
 							<tr>
 								<th>Ultima atualização</th>
-								<td th:text="${oUser.dateCreated}">#</td>
+                                <td th:text="${#dates.format(oUser.dateUpdated, 'dd/MM/yyyy')}">#</td>
 							</tr>
 						</table>
 						

@@ -45,7 +45,12 @@ public class ReclusosController {
 
         try{
 
-            Optional<Recluso> oRecluso = (Optional) reclusoRepository.findById(id);
+
+            Optional<Recluso> oRecluso  = reclusoRepository.findById(id)
+                    /*.map(recluso -> {
+                        recluso.setProfileImage(recluso.getProfileImage());
+                        return   recluso;
+                    })*/;
 
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oRecluso != null ? 1 : 0, "ok", oRecluso));
 
@@ -120,21 +125,23 @@ public class ReclusosController {
 
         try {
 
-            Recluso oRecluso = reclusoRepository.findById(reclusoPosted.getId()).get();
+            Optional<Recluso> oRecluso = (Optional) reclusoRepository.findById(reclusoPosted.getId());
 
-            System.out.println(oRecluso.getProfileImage());
+            Optional<Image> oImage = imageRepository.findById(reclusoPosted.getProfileImage().getId());
 
-//            Optional<Image> oImage = imageRepository.findByRecluso(oRecluso.getProfileImage());
+            if( !oRecluso.isPresent())
+                throw new Exception("Recluso não encontrado.");
 
-//            if( oRecluso == null || oImage == null)
-//                throw new Exception("Recluso não encontrado.");
-//
-//            oUser.setProfileImage(oImage);
-//
-//            //update user
-//            User savedUser = userRepository.save(oUser);
+            if( !oImage.isPresent())
+                throw new Exception("Imagem não encontrado.");
 
-            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", reclusoPosted ));
+            Recluso objRecluso = oRecluso.get();
+            objRecluso.setProfileImage(oImage.get());
+
+            //update user
+            Recluso savedRecluso = reclusoRepository.save(objRecluso);
+
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", savedRecluso ));
 
         }catch (Exception e){
             new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()

@@ -42,10 +42,6 @@ public class User extends AuditModel {
     @JsonIgnore
     private Set<UserProfiles> UserProfiles;
 
-    public UUID getProfileImageId() {
-        return profile_image_id;
-    }
-
     public void setProfileImageId(UUID profile_image_id) {
         this.profile_image_id = profile_image_id;
     }
@@ -112,6 +108,10 @@ public class User extends AuditModel {
 
     public Image getProfileImage() {
         return profileImage;
+    }
+
+    public UUID getProfileImageId() {
+        return profile_image_id;
     }
 
     public void setProfileImage(Image profileImage) {
