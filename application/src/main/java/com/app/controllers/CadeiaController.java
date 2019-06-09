@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class CadeiasController {
+public class CadeiaController {
 
     @RequestMapping(value = "cadeias", method = RequestMethod.GET)
     public String actionIndex(ModelMap model, @PageableDefault(sort = {"name"}, value = 10, page = 0) Pageable pageable) {
