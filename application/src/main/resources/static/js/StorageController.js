@@ -5,7 +5,7 @@ var modelStorage = {
     filesUploadProxy: function (resourse, formData, callback) {
 
         $.ajax({
-            url: modelApp.getServiceUrl(resourse, []),
+            url: serviceProxy.getServiceUrl(resourse, []),
             /*; baseUrl  config.js  + resource*/
             type: 'POST',
             data: formData,

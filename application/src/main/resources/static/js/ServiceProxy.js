@@ -1,5 +1,5 @@
 
-var modelApp = {
+var serviceProxy = {
 
     getServiceUrl: function(resource, params){
 
@@ -26,10 +26,10 @@ var modelApp = {
                 callback(null);
             }
         })
-            .fail(function (a, b, c) {
-                console.error(c);
-                callback(null);
-            })
+        .fail(function (a, b, c) {
+            console.error(c);
+            callback(null);
+        })
     },
 
     postJsonData: function(resourse, postData, params, callback) {
@@ -52,40 +52,12 @@ var modelApp = {
             data: JSON.stringify(postData),
             success: function(data) {
                 if (data && data) {
-
                     callback(data);
                 } else {
                     callback(null);
                     console.error(data)
                 }
-
             }
         });
-
-    },
-
-    showSuccessMassage: function (message, reload) {
-
-        $("#globalSuccessMessageArea").html(message).show()
-
-        if(reload)
-            location.reload();
-
-        setTimeout(function () {
-            $("#globalSuccessMessageArea").html(message).hide()
-        }, 8000)
-    },
-
-    showErrorMassage: function (message, reload) {
-
-        $("#globalAlertMessageArea").html(message).show()
-
-        if(reload)
-            location.reload();
-
-        setTimeout(function () {
-            $("#globalAlertMessageArea").html(message).hide()
-        }, 8000)
     }
-
 };

@@ -11,6 +11,10 @@ body{
     margin-bottom: 10px;
 }
 
+
+
+<!-- input files css -->
+
 input[type="file"] {
     display: block;
 }
@@ -36,6 +40,8 @@ input[type="file"] {
     border: 1px solid #17a2b8;
     border-radius: 5px;
 }
+
+
 .md-image-card{
     float: left;
     margin: 7px;
@@ -45,7 +51,8 @@ input[type="file"] {
     border-radius: 4px;
     cursor: pointer;
 }
-.documents-widget-list{
+
+.documents-widget-list, .image-widget-list{
     margin: 10px 0;
     color: #17a2b8;
 }
@@ -71,5 +78,13 @@ input[type="file"] {
 
 .skin-blue .main-header .navbar{
     background-color: #337ab7 !important;
+}
+
+
+<!-- modal -->
+.modal-content{
+    float: left;
+    width: 100%;
+    overflow: auto;
 }
 

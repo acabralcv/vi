@@ -86,7 +86,7 @@ public class Recluso extends AuditModel {
     @JoinColumn(name = "id_freguesia", referencedColumnName = "id", nullable = true)
     private Geografia freguesia;
 
-    @JsonIgnore
+    //@JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_image_id", referencedColumnName = "id")
     private Image profileImage;

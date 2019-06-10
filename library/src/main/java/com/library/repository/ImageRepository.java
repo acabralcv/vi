@@ -23,5 +23,5 @@ public interface ImageRepository extends JpaRepository<Image, UUID> {
     Page<Image> findByUserId(UUID userId, Pageable pageable);
 
     //cada recluso so pode ter uma imagem associado ao seu perfil
-    Optional<Image> findByRecluso(Recluso recluso);
+    //Optional<Image> findByRecluso(Recluso recluso);
 }

@@ -1,0 +1,55 @@
+
+<span th:fragment="ActionModal(objRecluso)">
+
+        <!-- let's configure the modal -->
+        <span id="uploadReclusoID" th:data-action-reload=true
+              th:data-recluso_image_upload_id="${objRecluso.id}"
+              th:include="/fragments/modalContainer:: ActionModal1('Images do utlizador', ~{ :: #modalContentArea})">
+
+            <!--
+                'objRecluso' não funciona apartir daqui porque estamos num outro fragmento.
+                Prajá, a solução passa por utilizar data attibutes Ex: data-recluso_image_upload_id
+            -->
+
+            <!-- The content inside this element will be used to serve modal body lcontent -->
+            <div id="modalContentArea">
+
+                <form name="uploadingImageForm" enctype="multipart/form-data" action="#" method="POST">
+
+                    <div class="" style="margin: 10px 0;">
+                        <div class="upload-files-field">
+                            <label class="control-label" for="InputImageUploads">Carregar imagens</label>
+                            <input type="file" id="InputImageUploads" class="upload-files-field" name="images" multiple  onchange="modelImage.showImagesLabels()"/>
+                        </div>
+                    </div>
+
+                    <div id="ImagesUploadWidgetFileName" class="image-widget-list"></div>
+
+
+                    <div class="form-group">
+                        <label for="imageFileObservacao">Observação:</label>
+                        <textarea rows="3" class="form-control" id="imageFileObservacao"></textarea>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                          <input type="button" id="ImagesUploadWidgetBtn" value="Carregar e defenir"
+                                  onclick="modelRecluso.uploadImages(document.getElementById('uploadReclusoID').getAttribute('data-recluso_image_upload_id'))" class="btn btn-success" />
+                        </div>
+                    </div>
+
+                </form>
+
+
+                <div clas="col" style="margin-top: 30px">
+                    <hr />
+                    <h5>Images dos reclusos</h5>
+
+                    <div id="listaReclusoImagesTable"></div>
+                </div>
+            </div>
+
+        </span>
+
+</span>

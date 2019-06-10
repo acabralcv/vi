@@ -56,10 +56,6 @@ public class ReclusoController {
         if(oRecluso == null)
             throw new ResourceNotFoundException("Não possivel encontrar o recluso solicitado");
 
-        Optional<Image> oImage = imageRepository.findByRecluso(oRecluso);
-        if(oImage.isPresent())
-            oRecluso.setProfileImage(oImage.get());
-
         model.addAttribute("oRecluso", oRecluso);
 
         return  "/views/recluso/view";

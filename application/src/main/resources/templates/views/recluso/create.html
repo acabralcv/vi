@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
 <head>
+    
+    <!-- Recluso feature scripts -->
+    <span layout:fragment="custumScripts">
+        <script th:src="@{/js/ReclusoController.js}"></script>
+    </span>
+
     <title>New recluso</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 
 <div class="col-xs-12 col-md-12" layout:fragment="content">

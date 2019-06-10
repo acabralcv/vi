@@ -31,9 +31,15 @@ public class User extends AuditModel {
     @Size(min = 3, max = 150)
     private String name;
 
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "profile_image_id", referencedColumnName = "id")
+//    private Image profileImage;
+
+
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_image_id", referencedColumnName = "id")
+    @JoinColumn(name = "profile_image_id", referencedColumnName = "id", nullable = true)
     private Image profileImage;
+
 
     @Column(name = "is_editable", nullable = false)
     private Integer isEditable  = 1;
