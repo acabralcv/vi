@@ -3,6 +3,7 @@ package com.app.controllers;
 import com.app.exceptions.ResourceNotFoundException;
 import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
+import com.app.service.WorkflowService;
 import com.library.helpers.BaseResponse;
 import com.app.helpers.FlowConfig;
 import com.library.helpers.HelperPaging;
@@ -23,10 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 public class WorkflowController {
@@ -44,19 +42,10 @@ public class WorkflowController {
     @RequestMapping(value = "admin/workflows/view/{id}", method = RequestMethod.GET)
     public String actionDetails(ModelMap model, @PathVariable UUID id) {
 
-        ServiceProxy oServiceProxy = new ServiceProxy();
-        BaseResponse oBaseResponse = oServiceProxy
-                .buildParams("api/worflows/details", new Params().Add(new Params("id", id.toString())).Get())
-                .getTarget()
-                .get(BaseResponse.class);
-        oServiceProxy.close();
-
-        Workflow oWorkflow = (Workflow) BaseResponse.convertToModel(oBaseResponse, new Workflow());
+        Workflow oWorkflow = WorkflowService.findOne(id);
 
         if(oWorkflow == null)
             throw new ResourceNotFoundException("Não possivel encontrar o 'Workflow' solicitado");
-
-        System.out.println(statesRepository.findByWorkflow(oWorkflow));
 
         model.addAttribute("wfStates", statesRepository.findByWorkflow(oWorkflow));
         model.addAttribute("oWorkflow", oWorkflow);
@@ -68,14 +57,7 @@ public class WorkflowController {
     @RequestMapping(value = "admin/workflows", method = RequestMethod.GET)
     public String actionIndex(ModelMap model, @PageableDefault(page = 0, size = 10) Pageable pageable) {
 
-        //get info
-        BaseResponse objResponse = (new ServiceProxy())
-                .getJsonData("api/worflows", (new ServiceProxy()).encodePageableParams(pageable));
-
-        //Pageable result objt
-        JSONObject dataResponse = (JSONObject) objResponse.getData();
-
-        //check result
+        JSONObject dataResponse = WorkflowService.findAll(pageable);
         ArrayList<Workflow> workflows = (ArrayList<Workflow>) dataResponse.get("content");
 
         model.addAttribute("objPaging", (new HelperPaging().getResponsePaging(pageable, dataResponse)));
@@ -89,7 +71,7 @@ public class WorkflowController {
 
         FlowConfig config = new FlowConfig();
         config.setProcessCode("PROCESS_USER_REGISTRATION");
-        config.setObjEntity(new Profile());
+        config.setObjEntity(new Workflow());
         config.setStep(1);
 
         BaseResponse oBaseResponse = new FlowConfig(statesRepository, workflowRepository)
@@ -105,7 +87,7 @@ public class WorkflowController {
 
         FlowConfig config = new FlowConfig();
         config.setProcessCode("PROCESS_USER_REGISTRATION");
-        config.setObjEntity(new Profile());
+        config.setObjEntity(new Workflow());
         config.setStep(2);
 
         BaseResponse oBaseResponse = new FlowConfig(statesRepository, workflowRepository)
@@ -120,14 +102,20 @@ public class WorkflowController {
 
         FlowConfig config = new FlowConfig();
         config.setProcessCode("PROCESS_USER_REGISTRATION");
-        config.setObjEntity(new Profile());
+        config.setObjEntity(new Workflow());
         config.setStep(3);
 
         BaseResponse oBaseResponse = new FlowConfig(statesRepository, workflowRepository)
                 .transitionFlow(config);
-        System.out.println(oBaseResponse.getMessage());
 
-        return  "/views/workflow/index";
+        LinkedHashMap<String, Object> oResponse = (LinkedHashMap) oBaseResponse.getData();
+        UUID targetTableId = UUID.fromString(oResponse.get("id").toString());
+        //Optional<Workflow> workflol = workflowRepository.findByTargetTableId(targetTableId);
+
+        Workflow workflow =  WorkflowService.findByTarget(targetTableId);
+
+        model.addAttribute("oWorkflow", workflow);
+        return  "/views/workflow/teste";
     }
 
 }

@@ -1,0 +1,7 @@
+
+
+<span th:fragment="statesView(oWorkflow)">
+    <span th:each="oWfState : ${T(com.app.service.WorkflowService).getWfStates(oWorkflow.id)}">
+        <span th:text="${oWfState.name}"></span> »»
+    </span>
+</span>

@@ -4,7 +4,7 @@ var modelUser = {
 
     data: [],
 
-    getUserProfiles: function (userId) {
+    getProfiles: function (userId) { //get user's profiles
 
         var modelGet = {
             user_id: userId,
@@ -13,7 +13,7 @@ var modelUser = {
             sort: 'dateCreated,desc'
         }
 
-        modelApp.getJsonData("api/users/users-profiles", modelGet, function (dataResponse) {
+        serviceProxy.getJsonData("api/users/users-profiles", modelGet, function (dataResponse) {
 
             if (dataResponse && dataResponse.data && dataResponse.data.length > 0) {
                 modelUser.showUserProfiles(dataResponse.data)
@@ -22,7 +22,7 @@ var modelUser = {
         })
     },
 
-    getUserImages: function (userId) {
+    getImages: function (userId) { //get list of user's images
 
         var modelGet = {
             userId: userId,
@@ -31,15 +31,15 @@ var modelUser = {
             sort: 'dateCreated,desc'
         }
         
-        modelApp.getJsonData("api/storage/user-images", modelGet, function (dataResponse) {
+        serviceProxy.getJsonData("api/storage/user-images", modelGet, function (dataResponse) {
             console.log(dataResponse)
             if (dataResponse && dataResponse.data && dataResponse.data && dataResponse.data.content.length > 0) {
-                modelUser.getUserImageDeatils(dataResponse.data.content)
+                modelUser.showImage(dataResponse.data.content)
             }
         })
     },
 
-    getUserImageDeatils: function (dataImages) {
+    showImage: function (dataImages) { //show image stream
         
         var srtImages = '';
 
@@ -56,14 +56,14 @@ var modelUser = {
         $("#listaUserImagesTable").html(srtImages)        
     },
 
-    addUserProfileImage: function (userId, profile_image_id) {
+    addProfileImage: function (userId, profile_image_id) { //add user profile image
 
         var modelPots = {
             profile_image_id: profile_image_id,
             id: userId
         }
 
-        modelApp.postJsonData("api/users/add-profile-image",modelPots, {}, function (dataResponse) {
+        serviceProxy.postJsonData("api/users/add-profile-image",modelPots, {}, function (dataResponse) {
            if(dataResponse && dataResponse.statusAction == 1){
                modelApp.showSuccessMassage("Imagem do perfil associado com sucesso", false)
                location.reload()
@@ -72,23 +72,27 @@ var modelUser = {
         })
     },
 
-    addUserProfile: function (userId) {
+    addProfile: function (userId) { //add user profiles
 
         var modelPots = {
             profileId: $("#prfile_id").val(),
             userId: userId
         }
 
-        modelApp.postJsonData("api/users/add-profile",modelPots, {}, function (dataResponse) {
+        modelApp.startLoading()
+        serviceProxy.postJsonData("api/users/add-profile",modelPots, {}, function (dataResponse) {
+
+            modelApp.stopLoading()
+
            if(dataResponse && dataResponse.statusAction == 1){
-               modelApp.showSuccessMassage("Perfil associado com sucesso", false)
-               modelUser.getUserProfiles(userId)
+               modelApp.showSuccessMassage("Perfil associado com sucesso.", false)
+               modelUser.getProfiles(userId)
            }else
                modelApp.showErrorMassage(dataResponse.message, false)
         })
     },
 
-    uploadImages: function (userId) {
+    uploadImages: function (userId) { //upload multiply images
 
         var imagesInput = document.getElementById('InputImageUploads');
 
@@ -96,29 +100,28 @@ var modelUser = {
 
             $.each(imagesInput.files, function (idx, anexoImage) {
 
-                var formData = new FormData();
-                formData.append('document_type', 'OTHER');
-                formData.append('file', anexoImage);
-                formData.append('file_type', "IMAGE");
-                formData.append('userId', userId);
-                formData.append('description', $('#imageFileObservacao').val());
+                modelApp.startLoading()
+                
+                //ImageController.js    
+                modelImage.upload(userId, imagesInput, $('#imageFileObservacao').val(), function(dataResponse){
 
-                modelStorage.filesUploadProxy('api/storage/exchange-image', formData, function (dataResponse) {
+                    modelApp.stopLoading()
+
                     if(dataResponse && dataResponse.data ){
-                        modelUser.addUserProfileImage(userId, dataResponse.data.id)
+                        //in case of multiply upload, we assign the last one as user profile
+                        modelUser.addProfileImage(userId, dataResponse.data.id)
                     }
                 })
             })
         }
     },
 
-    openUserImagesModal: function (userId) {
-
-        $("#UserImageModal").modal()
-        modelUser.getUserImages(userId);
+    openUserImagesModal: function (userId) { //open modal for user images 
+        modelModal.open() //ModalControllers.js
+        modelUser.getImages(userId);
     },
 
-    showUserProfiles: function (data) {
+    showUserProfiles: function (data) { //show user profiles list
 
         var items = '';
         $.each(data, function (idx, oPerifl) {
@@ -128,6 +131,9 @@ var modelUser = {
             items += "</tr>";
         })
 
+        if(items == '')
+            items = '&nbsp;&nbsp; <br /> [Nenhum perfil/cargo associado.]  <br /> ';
+
         $('#listaUserPerfilTable tbody').html(items)
     }
 
@@ -136,6 +142,6 @@ var modelUser = {
 
 $(document).ready(function() {
     if( $("#action_user_id") && $("#action_user_id").val()){
-        modelUser.getUserProfiles($("#action_user_id").val())
+        modelUser.getProfiles($("#action_user_id").val())
     }
 })

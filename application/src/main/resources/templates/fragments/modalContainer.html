@@ -1,0 +1,26 @@
+
+<span th:fragment="ActionModal1(title, content)">
+
+
+    <div id="AppGlobalModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 id="ModalTitle" class="modal-title">
+                        <span th:text="${title}"></span>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </h4>
+                </div>
+
+                <div id="ModalBody " class="modal-body">
+                    <span th:utext="${content}" th:remove="tag"></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</span>

@@ -69,20 +69,4 @@ public class EventslogsController {
 
 
 
-    /**
-     * TESTES WORKFLOW
-     */
-    @RequestMapping(value = {"api/workflows/teste_01"}, method = {RequestMethod.POST})
-    public ResponseEntity actionTesteFlow_01(@RequestBody Profile objProfile) {
-
-        try {
-
-            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", objProfile));
-
-        }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
-                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
-            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
-        }
-    }
 }

@@ -12,7 +12,7 @@ var modelDocument = {
             sort: 'dateCreated,desc'
         }
 
-        modelApp.getJsonData("api/users/users-profiles", modelGet, function (dataResponse) {
+        serviceProxy.getJsonData("api/users/users-profiles", modelGet, function (dataResponse) {
 
             if (dataResponse && dataResponse.data && dataResponse.data.length > 0) {
                 modelUser.showUserProfiles(dataResponse.data)

@@ -3,9 +3,11 @@ package com.api.controllers;
 import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
 import com.library.helpers.UtilsDate;
+import com.library.models.Image;
 import com.library.models.Recluso;
 import com.library.models.User;
 import com.library.repository.EventslogRepository;
+import com.library.repository.ImageRepository;
 import com.library.repository.ReclusoRepository;
 import com.library.service.EventsLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class ReclusosController {
     @Autowired
     private EventslogRepository eventslogRepository;
 
+    @Autowired
+    private ImageRepository imageRepository;
+
     /** get recludo details
      * @param id
      * @return
@@ -40,7 +45,12 @@ public class ReclusosController {
 
         try{
 
-            Optional<Recluso> oRecluso = (Optional) reclusoRepository.findById(id);
+
+            Optional<Recluso> oRecluso  = reclusoRepository.findById(id)
+                    /*.map(recluso -> {
+                        recluso.setProfileImage(recluso.getProfileImage());
+                        return   recluso;
+                    })*/;
 
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oRecluso != null ? 1 : 0, "ok", oRecluso));
 
@@ -106,5 +116,39 @@ public class ReclusosController {
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
     }
+    
+    
+    
+
+    @RequestMapping(value = {"api/reclusos/add-profile-image"}, method = {RequestMethod.POST})
+    public ResponseEntity actionAddReclusoImage(@RequestBody Recluso reclusoPosted) {
+
+        try {
+
+            Optional<Recluso> oRecluso = (Optional) reclusoRepository.findById(reclusoPosted.getId());
+
+            Optional<Image> oImage = imageRepository.findById(reclusoPosted.getProfileImage().getId());
+
+            if( !oRecluso.isPresent())
+                throw new Exception("Recluso não encontrado.");
+
+            if( !oImage.isPresent())
+                throw new Exception("Imagem não encontrado.");
+
+            Recluso objRecluso = oRecluso.get();
+            objRecluso.setProfileImage(oImage.get());
+
+            //update user
+            Recluso savedRecluso = reclusoRepository.save(objRecluso);
+
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", savedRecluso ));
+
+        }catch (Exception e){
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
+    }
+
 
 }
