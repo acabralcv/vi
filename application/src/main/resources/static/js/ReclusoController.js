@@ -1,51 +1,3 @@
-var modelImage = {
-    
-    getImageDeatils: function (dataImages, ElementBoxID) {
-
-        var srtImages = '';
-
-        $.each(dataImages, function(idx, oImage){
-
-            srtImages += '<div class="md-image-card">';
-            srtImages += '<span class="fas fa-plus-circle"></span>';
-            srtImages += '<img width="128px" height="128px" src="/api/storage/images-details?&id=' + oImage.storageId + '" />';
-            srtImages += '</div>';
-
-        })
-        
-        $(ElementBoxID).html(srtImages)
-    },
-    
-
-    uploadImages: function (userId) {
-
-        var imagesInput = document.getElementById('InputImageUploads');
-
-        if (imagesInput && imagesInput.files) {
-
-            $.each(imagesInput.files, function (idx, anexoImage) {
-
-                var formData = new FormData();
-                formData.append('document_type', 'OTHER');
-                formData.append('file', anexoImage);
-                formData.append('file_type', "IMAGE");
-                formData.append('userId', userId);
-                formData.append('description', $('#imageFileObservacao').val());
-
-                modelStorage.filesUploadProxy('api/storage/exchange-image', formData, function (dataResponse) {
-                    if(dataResponse && dataResponse.data ){
-                        modelUser.addUserProfileImage(userId, dataResponse.data.id)
-                    }
-                })
-            })
-        }
-    },
-
-    openUImagesModal: function () {
-
-        $("#UserImageModal").modal()
-    },
-}
 
 var modelRecluso = {
 
@@ -60,7 +12,7 @@ var modelRecluso = {
             sort: 'dateCreated,desc'
         }
 
-        modelApp.getJsonData("api/storage/recluso-images", modelGet, function (dataResponse) {
+        serviceProxy.getJsonData("api/storage/recluso-images", modelGet, function (dataResponse) {
             console.log(dataResponse)
             if (dataResponse && dataResponse.data && dataResponse.data && dataResponse.data.content.length > 0) {
                 modelUser.getUserImageDeatils(dataResponse.data.content)
@@ -68,14 +20,17 @@ var modelRecluso = {
         })
     },
 
-    addReclusoProfileImage: function (reclusoId, profile_image_id) {
-        
+    addProfileImage: function (reclusoId, profile_image_id) {
+
         var modelPots = {
             id: reclusoId,
-            profileImage: profile_image_id
+            profileImage: {id : profile_image_id }
         }
 
-        modelApp.postJsonData("api/reclusos/add-profile-image",modelPots, {}, function (dataResponse) {
+        modelApp.startLoading()
+        serviceProxy.postJsonData("api/reclusos/add-profile-image",modelPots, {}, function (dataResponse) {
+            modelApp.stopLoading()
+
             if(dataResponse && dataResponse.statusAction == 1){
                 modelApp.showSuccessMassage("Imagem do perfil do recluso associado com sucesso", false)
                 location.reload()
@@ -84,48 +39,28 @@ var modelRecluso = {
         })
     },
 
-
-    uploadReclusoImages: function (reclusoId) {
+    uploadImages: function (reclusoId) {
 
         var imagesInput = document.getElementById('InputImageUploads');
 
         if (imagesInput && imagesInput.files) {
 
-            $.each(imagesInput.files, function (idx, anexoImage) {
+            //ImageController.js
+            modelImage.upload(reclusoId, imagesInput, $('#imageFileObservacao').val(), function(dataResponse){
 
-                var formData = new FormData();
-                formData.append('document_type', 'OTHER');
-                formData.append('file', anexoImage);
-                formData.append('file_type', "IMAGE");
-                formData.append('reclusoId', reclusoId);
-                formData.append('description', $('#imageFileObservacao').val());
+                modelApp.stopLoading()
 
-                modelStorage.filesUploadProxy('api/storage/exchange-image', formData, function (dataResponse) {
-                    if(dataResponse && dataResponse.data ){
-                        modelRecluso.addReclusoProfileImage(reclusoId, dataResponse.data.id)
-                    }
-                })
+                if(dataResponse && dataResponse.data ){
+                    //in case of multiply upload, we assign the last one as recluso profile
+                    modelRecluso.addProfileImage(reclusoId, dataResponse.data.id)
+                }
             })
         }
     },
-    
-    
 
     openReclusoImagesModal: function (userId) {
-
-        modelImage.openUImagesModal()
-        
-        console.log(userId)
-        
-        modelUser.getUserImages(userId);
+        modelModal.open() //ModalControllers.js
+        modelRecluso.getReclusoImages(userId);
     },
 
-
 }
-
-
-$(document).ready(function() {
-    if( $("#action_user_id") && $("#action_user_id").val()){
-        modelUser.getUserProfiles($("#action_user_id").val())
-    }
-})

@@ -3,18 +3,18 @@ package com.app.helpers;
 import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
 import com.library.helpers.UtilsDate;
+import com.library.models.Domain;
 import com.library.models.Recluso;
 import com.library.models.Workflow;
 import com.library.repository.StatesRepository;
 import com.library.repository.WorkflowRepository;
 import com.library.service.EventsLogService;
+import com.mongodb.util.JSON;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class FlowConfig {
 
@@ -86,6 +86,12 @@ public class FlowConfig {
 
                     if(oBaseResponse.getStatusAction() ==  1){
 
+                        LinkedHashMap<String, Object> oResponse = (LinkedHashMap) oBaseResponse.getData();
+                        if(oResponse.get("id") == null)
+                            throw new Exception("Foi foi possivel o ID do objeto retornado do serviço");
+
+                        UUID targetTableId = UUID.fromString(oResponse.get("id").toString());
+
                         //let's try to get workflow
                         Workflow workflow = this.getWorflowByProcess(flowConfig.getProcessCode());
 
@@ -93,7 +99,7 @@ public class FlowConfig {
                             throw new Exception("Não foi possivel determinar o workflow. Processo: " + flowConfig.getProcessCode() + " :: Step: " + flowConfig.getStep());
 
                         if(workflow == null)
-                            workflow = this.startWorkflow(flowConfig);
+                            workflow = this.startWorkflow(flowConfig, targetTableId);
 
                         new FlowHelper(this.statesRepository)
                                 .updateState(workflow, flowConfig.getStep(), oConfig.getName());
@@ -122,12 +128,13 @@ public class FlowConfig {
         return workflow.isPresent() ? workflow.get() : null;
     }
 
-    public Workflow startWorkflow(FlowConfig flowConfig) {
+    public Workflow startWorkflow(FlowConfig flowConfig, UUID targetTableId) {
 
         Workflow workflow = new Workflow();
         workflow.setId(new Helper().getUUID());
         workflow.setStatus(Helper.STATUS_ACTIVE);
         workflow.setDateCreated(UtilsDate.getDateTime());
+        workflow.setTargetTableId(targetTableId);
         workflow.setIsConcluded(0);
 
         workflow.setProcessCode(flowConfig.getProcessCode());
