@@ -13,16 +13,12 @@ public class Cadeia extends AuditModel {
     private UUID id;
 
     @NotBlank
-    @Size(min = 3, max = 50)
+    @Size(min = 3, max = 150)
     private String nome;
 
-    @Size(min = 3, max = 50)
-    @Column(nullable = true)
-    private String localizacao;
-
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_image_id", referencedColumnName = "id", nullable = true)
-    private Image profileImage;
+    @JoinColumn(name = "id_ilha", referencedColumnName = "id", nullable = true)
+    private Ilha ilha;
 
     public UUID getId() {
         return id;
@@ -40,13 +36,12 @@ public class Cadeia extends AuditModel {
         this.nome = nome;
     }
 
-    public String getLocalizacao() {
-        return localizacao;
+
+    public Ilha getIlha() {
+        return ilha;
     }
 
-    public void setLocalizacao(String alcunha) {
-        this.localizacao = localizacao;
+    public void setIlha(Ilha ilha) {
+        this.ilha = ilha;
     }
-
-
 }
