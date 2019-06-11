@@ -85,6 +85,9 @@ public class WorkflowsControllers {
             ArrayList<States> states = new ArrayList<>();
             Optional<Workflow> workflowOptional = workflowRepository.findById(id);
 
+            //ultimos 6
+            Pageable pageableBuilded = PageRequest.of(0, 10, Sort.by("step").descending());
+
             if(workflowOptional.isPresent())
                 states = statesRepository.findByWorkflow(workflowOptional.get());
 

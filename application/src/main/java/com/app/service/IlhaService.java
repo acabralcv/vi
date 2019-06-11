@@ -11,10 +11,14 @@ import java.util.ArrayList;
 
 public class IlhaService {
 
+    /**
+     * Service to get all 10 Island of Cpe Verde
+     * @return
+     */
     public ArrayList<Ilha> findAll(){
 
         BaseResponse oBaseResponse = (new ServiceProxy())
-                .getJsonData("api/ilhas", (new ServiceProxy()).encodePageableParams(PageRequest.of(0,50)));
+                .getJsonData("api/ilhas", (new ServiceProxy()).encodePageableParams(PageRequest.of(0,10)));
 
         JSONObject dataResponse = (JSONObject) oBaseResponse.getData();
 

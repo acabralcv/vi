@@ -7,7 +7,11 @@ import com.library.models.Recluso;
 
 public class ReclusoService {
 
-
+    /**
+     * Service to get a single recluso
+     * @param id
+     * @return
+     */
     public static Recluso findOne(String id){
 
         Recluso oRecluso = null;

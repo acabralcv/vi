@@ -6,9 +6,18 @@ import com.library.helpers.BaseResponse;
 import com.library.models.Eventslog;
 import com.library.models.User;
 
+/**
+ * Service for app all logs
+ */
 public class EventslogService {
+
     private static final ServiceProxy oServiceProxy = new ServiceProxy();
 
+    /**
+     * Service to get a single event log
+     * @param id
+     * @return
+     */
     public static Eventslog findOne(String id){
 
         BaseResponse oBaseResponse = oServiceProxy

@@ -40,6 +40,10 @@ public class User extends AuditModel {
     @JoinColumn(name = "profile_image_id", referencedColumnName = "id", nullable = true)
     private Image profileImage;
 
+    @OneToMany(mappedBy="user") /* this will look for 'user' property in the 'Tasks' model */
+    @JsonIgnore
+    private Set<Tasks> tasks;
+
 
     @Column(name = "is_editable", nullable = false)
     private Integer isEditable  = 1;

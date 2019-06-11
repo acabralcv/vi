@@ -9,6 +9,13 @@ public class Helper {
     public static int STATUS_ACTIVE = 1;
     public static int STATUS_DISABLED = 0;
 
+    public enum TaskType {
+        TESTE, //to be removed
+        RECLUSO_PENDING_APROVING, //to be edited
+        //...
+        OTHER
+    }
+
     /**
      * Generate a unique GUUID
      * @param lenght

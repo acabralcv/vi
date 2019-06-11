@@ -1,0 +1,49 @@
+
+.progress{
+    height: 22px;
+    border-radius: 2px;
+    box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2), 0 4px 20px 0 rgba(0,0,0,0.19);
+}
+
+
+.progress-bar{
+    position: relative;
+    display: inline-block;
+    width: 25%;
+    height: 23px !important;
+    border-radius: 0;
+    position: relative;
+    float: left;
+}
+
+
+.progress-bar span {
+    position: absolute;
+    overflow: hidden;
+    width: 16px;
+    height: 16px;
+    border-radius: 25% 25%;
+    margin: 0 auto;
+    background: #f5f5f5;
+    right: -8px;
+    top: 3px;
+    z-index: 1001;
+}
+
+.wf-state-details{
+    float: left;
+    width: 100%;
+    border-top: 1px dotted #ccc;
+    margin-top: 5px;
+    padding: 5px 0;
+    font-size: 11px
+}
+
+.wf-state-info{
+    float: left;
+    position: absolute;
+    left: -9px;
+    top: 3px;
+    margin: 0 12px;
+    color: #0099ac;
+}

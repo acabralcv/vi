@@ -24,12 +24,12 @@ public class FlowHelper {
         this.statesRepository = statesRepository;
     }
 
-    public BaseResponse updateState(Workflow workflow, Integer step, String name){
+    public BaseResponse updateState(Workflow workflow, FlowConfig flowConfig, String name){
 
 
         States oStates = new States();
 
-        Optional<States> auxState = this.statesRepository.findByWorkflowAndAndStep(workflow, step);
+        Optional<States> auxState = this.statesRepository.findByWorkflowAndAndStep(workflow, flowConfig.getStep());
 
         //if the state for this process allread exist we just update it
         if(auxState.isPresent()){
@@ -41,8 +41,9 @@ public class FlowHelper {
             oStates.setDateCreated(UtilsDate.getDateTime());
             oStates.setWorkflow(workflow);
             oStates.setName(name);
+            oStates.setCssClass(flowConfig.getCssClass());
             oStates.setIsViewable(1);
-            oStates.setStep(step);
+            oStates.setStep(flowConfig.getStep());
         }
 
         States savedState = this.statesRepository.save(oStates);
@@ -51,32 +52,3 @@ public class FlowHelper {
     }
 
 }
-//
-//class WfProcess{
-//
-//    private String processoCode;
-//    private String name;
-//    private List<WfActivity> activities;
-//
-//    public WfProcess(){}
-//
-//    public WfProcess(String processoCode, String name, List<WfActivity> activities){
-//        this.processoCode = processoCode;
-//        this.name = name;
-//        this.activities = activities;
-//    }
-//}
-//
-//
-//class WfActivity{
-//
-//    private String name;
-//    private String resource;
-//
-//    public WfActivity(){}
-//
-//    public WfActivity(String name, String resource){
-//        this.name = name;
-//        this.resource = resource;
-//    }
-//}

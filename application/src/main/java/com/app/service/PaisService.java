@@ -11,10 +11,14 @@ import java.util.ArrayList;
 
 public class PaisService {
 
+    /**
+     * Service to get all countries
+     * @return
+     */
     public ArrayList<Pais> findAll(){
 
         BaseResponse oBaseResponse = (new ServiceProxy())
-                .getJsonData("api/paises", (new ServiceProxy()).encodePageableParams(PageRequest.of(0,50)));
+                .getJsonData("api/paises", (new ServiceProxy()).encodePageableParams(PageRequest.of(0,200)));
 
         JSONObject dataResponse = (JSONObject) oBaseResponse.getData();
 

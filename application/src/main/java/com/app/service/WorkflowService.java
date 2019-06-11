@@ -19,6 +19,11 @@ public class WorkflowService {
 
     private static final ServiceProxy oServiceProxy = new ServiceProxy();
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public static Workflow findOne(UUID id){
 
        ServiceProxy oServiceProxy = new ServiceProxy();
@@ -33,6 +38,11 @@ public class WorkflowService {
        return (Workflow) BaseResponse.convertToModel(oBaseResponse, new Workflow());
     }
 
+    /**
+     *
+     * @param pageable
+     * @return
+     */
     public static JSONObject findAll(org.springframework.data.domain.Pageable pageable){
 
         //get info
@@ -45,6 +55,11 @@ public class WorkflowService {
         return dataResponse;
     }
 
+    /**
+     *
+     * @param targetTableId
+     * @return
+     */
     public static Workflow findByTarget(UUID targetTableId){
 
         ServiceProxy oServiceProxy = new ServiceProxy();
@@ -59,6 +74,11 @@ public class WorkflowService {
         return oWorkflow;
     }
 
+    /**
+     *
+     * @param workflowId
+     * @return
+     */
     public static ArrayList<States> getWfStates(UUID workflowId){
 
         BaseResponse oBaseResponse = oServiceProxy

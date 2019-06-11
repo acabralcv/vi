@@ -25,6 +25,13 @@ public class DomainService {
     public static final String DOMAIN_ESTADO_CIVIL = "DOMAIN_ESTADO_CIVIL";
     public static final String DOCUMENT_TYPE = "DOCUMENT_TYPE";
 
+
+    /**
+     * Serci to get domains of a kind of domain
+     * see example of use in :: ...\views\recluso\_form.html
+     * @param domain
+     * @return
+     */
     public  static ArrayList<Domain> getDomains(String domain){
 
         ArrayList<Domain> domainList = new ArrayList<>();
@@ -44,14 +51,5 @@ public class DomainService {
         return domainList;
     }
 
-//    public  static HashMap<UUID, String> getMapedDomain(String domain){
-//
-//        HashMap<UUID, String> mapDomains = new HashMap<>();
-//
-//        for(Domain oDomain: getDomains(domain)){
-//            mapDomains.put(oDomain.getId(), oDomain.getName());
-//        }
-//        return mapDomains;
-//    }
 }
 

@@ -9,6 +9,11 @@ public class UserService {
 
     private static final ServiceProxy oServiceProxy = new ServiceProxy();
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public static User findOne(String id){
 
         BaseResponse oBaseResponse = oServiceProxy

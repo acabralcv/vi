@@ -23,6 +23,7 @@ public class FlowConfig {
     private String processCode;
     private String resourse;
     private Object objEntity;
+    private String cssClass;
 
     @Autowired
     private StatesRepository statesRepository;
@@ -49,16 +50,19 @@ public class FlowConfig {
         o1.setStep(1);
         o1.setProcessCode("PROCESS_USER_REGISTRATION");
         o1.setResourse("api/workflows/teste_01");
+        o1.setCssClass("info");
         o1.setName("Estado teste 01");
 
         o2.setStep(2);
         o2.setProcessCode("PROCESS_USER_REGISTRATION");
         o2.setResourse("api/workflows/teste_01");
+        o2.setCssClass("warning");
         o2.setName("Estado teste 02");
 
         o3.setStep(3);
         o3.setProcessCode("PROCESS_USER_REGISTRATION");
         o3.setResourse("api/workflows/teste_01");
+        o3.setCssClass("success");
         o3.setName("Estado teste 03");
 
         processes.add(o1);
@@ -101,8 +105,11 @@ public class FlowConfig {
                         if(workflow == null)
                             workflow = this.startWorkflow(flowConfig, targetTableId);
 
+                        //update the css class to be showed in the progress bar
+                        flowConfig.setCssClass(oConfig.getCssClass());
+
                         new FlowHelper(this.statesRepository)
-                                .updateState(workflow, flowConfig.getStep(), oConfig.getName());
+                                .updateState(workflow, flowConfig, oConfig.getName());
                     }
 
                     return  oBaseResponse;
@@ -181,5 +188,13 @@ public class FlowConfig {
 
     public void setProcessCode(String processCode) {
         this.processCode = processCode;
+    }
+
+    public String getCssClass() {
+        return cssClass;
+    }
+
+    public void setCssClass(String cssClass) {
+        this.cssClass = cssClass;
     }
 }
