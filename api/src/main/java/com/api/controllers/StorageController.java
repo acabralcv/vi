@@ -1,9 +1,6 @@
 package com.api.controllers;
 
 import java.io.*;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import com.library.helpers.BaseResponse;
@@ -11,17 +8,14 @@ import com.library.helpers.Helper;
 import com.library.helpers.UtilsDate;
 import com.library.models.*;
 import com.library.repository.DocumentRepository;
-import com.library.repository.EventslogRepository;
 import com.library.repository.ImageRepository;
 import com.library.repository.UserRepository;
 import com.library.service.EventsLogService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.client.gridfs.model.GridFSFile;
-import com.mongodb.gridfs.GridFSDBFile;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,10 +24,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,9 +46,6 @@ public class StorageController {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private EventslogRepository eventslogRepository;
 
     /**
      * save an image
@@ -102,7 +91,7 @@ public class StorageController {
             return ResponseEntity.ok().body(new BaseResponse(1, "ok", objImage));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -153,7 +142,7 @@ public class StorageController {
             return ResponseEntity.ok().body(new BaseResponse(1, "ok", objDocument));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -175,7 +164,7 @@ public class StorageController {
             return ResponseEntity.ok().body(new BaseResponse( 1,"ok", images));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -207,7 +196,7 @@ public class StorageController {
                     .body(gridOperations.getResource(fileObj));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -238,7 +227,7 @@ public class StorageController {
                     .body(gridOperations.getResource(fileObj));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -257,7 +246,7 @@ public class StorageController {
             return ResponseEntity.ok().body(new BaseResponse(1,"ok", documents));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0,"ok", null));
         }

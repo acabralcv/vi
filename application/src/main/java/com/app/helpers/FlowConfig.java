@@ -12,6 +12,7 @@ import com.library.service.EventsLogService;
 import com.mongodb.util.JSON;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 
 import java.util.*;
@@ -31,12 +32,23 @@ public class FlowConfig {
     @Autowired
     private WorkflowRepository workflowRepository;
 
+    @Autowired
+    private Environment env;
+
+    private final ServiceProxy oServiceProxy;
+
     public FlowConfig(){
+
+        //just to avoid error
+        this.oServiceProxy = new ServiceProxy(this.env);
     }
 
-    public FlowConfig(StatesRepository statesRepository, WorkflowRepository workflowRepository){
+    public FlowConfig(Environment _env, StatesRepository statesRepository, WorkflowRepository workflowRepository){
+        this.env = _env;
         this.statesRepository = statesRepository;
         this.workflowRepository = workflowRepository;
+
+        this.oServiceProxy = new ServiceProxy(this.env);
     }
 
     public ArrayList<FlowConfig> getProcess(){
@@ -85,7 +97,7 @@ public class FlowConfig {
 
                     System.out.println(oConfig.getResourse());
 
-                    oBaseResponse = (new ServiceProxy())
+                    oBaseResponse = oServiceProxy
                             .postJsonData(oConfig.getResourse(), flowConfig.getObjEntity(), new ArrayList<>());
 
                     if(oBaseResponse.getStatusAction() ==  1){

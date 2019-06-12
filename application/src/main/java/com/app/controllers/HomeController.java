@@ -8,6 +8,7 @@ import com.library.repository.EventslogRepository;
 import com.library.repository.UserRepository;
 import com.library.service.EventsLogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,9 @@ public class HomeController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private Environment env;
+
     public HomeController(/*MyService myService*/) {
         //this.myService = myService;
         //ok
@@ -46,16 +50,24 @@ public class HomeController {
     @GetMapping(value = {"/", "home", "index", "default"})
     public String home(ModelMap model) {
 
-//        Tasks task = new Tasks();
-//        task.setType(Helper.TaskType.RECLUSO_PENDING_APROVING.toString());
-//        task.setMessage("Recluso a aguardar aprovação");
-//        task.setDescription("Novo foi registado no sistema e encontra-se a aguardar aprovação");
-//        task.setUser(userRepository.findById(UUID.fromString("4c8c4044-7e46-4934-ab6b-58d63db1d75f")).get());
-//        task.setTargetUser(userRepository.findById(UUID.fromString("4c8c4044-7e46-4934-ab6b-58d63db1d75f")).get());
-//
-//        TasksService.addTask(task);
 
-        LOG.log(Level.INFO, "Welcome at to App" + new Date());
+        /**
+         * create a log for ELK
+         */
+        new EventsLogService().AddEventologs("Nava visita. ");
+
+
+//        Tasks task = new TasksService(env)
+//                .addUserTask(
+//                        Helper.TaskType.RECLUSO_PENDING_APROVING.toString(),
+//                        "Recluso a aguardar aprovação",
+//                        "Novo foi registado no sistema e encontra-se a aguardar aprovação",
+//                        UUID.fromString("4c8c4044-7e46-4934-ab6b-58d63db1d75f"),
+//                        UUID.fromString("4c8c4044-7e46-4934-ab6b-58d63db1d75f")
+//                );
+
+
+       // LOG.log(Level.INFO, task.getMessage() + "; Por " + task.getUser().getName() + "; Data " + new Date());
 
         //teste evenets log
         /*Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));

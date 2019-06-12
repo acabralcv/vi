@@ -21,10 +21,10 @@ public interface TasksRepository extends JpaRepository<Tasks, UUID> {
 
     Set<Tasks> findByMessage(String message);
 
-    Page<Tasks> findTasksByStatusAndUser(Integer status, User user, Pageable pageable);
+    Page<Tasks> findByStatusAndUser(Integer status, User user, Pageable pageable);
 
     @Query("SELECT t FROM Tasks t  " +
-            "WHERE t.status = ?1 and t.user = ?2 and t.targetUser =?3 and t.type = ?4 ")
-    Optional<Tasks> findIfExists(Integer status, User user, User targetUser, String type);
+            "WHERE t.status = ?1 and t.user = ?2 and t.targetUser =?3 and t.taskType = ?4 ")
+    Optional<Tasks> findIfExists(Integer status, User user, User targetUser, String taskType);
 }
 

@@ -11,6 +11,8 @@ import com.library.models.Profile;
 import com.library.models.User;
 import com.library.service.EventsLogService;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -31,6 +33,11 @@ import java.util.UUID;
 @Controller
 public class UserController {
 
+
+
+    @Autowired
+    private Environment env;
+
     /**
      *
      * @param model
@@ -41,8 +48,10 @@ public class UserController {
     public String actionIndex(ModelMap model, @PageableDefault(sort = { "name"}, value = 10, page = 0) Pageable pageable) {
 
         //get info
-        BaseResponse objResponse = (new ServiceProxy())
-                .getJsonData("api/users", (new ServiceProxy()).encodePageableParams(pageable));
+        ServiceProxy oServiceProxy = new ServiceProxy(env);
+        BaseResponse objResponse = (new ServiceProxy(env))
+                .getJsonData("api/users", oServiceProxy.encodePageableParams(pageable));
+        oServiceProxy.close();
 
         //Pageable result objt
         JSONObject dataResponse = (JSONObject) objResponse.getData();
@@ -67,13 +76,16 @@ public class UserController {
     @RequestMapping(value = {"users/view/{id}"}, method = {RequestMethod.GET})
     public String actionView(ModelMap model, @PathVariable UUID id) {
 
-        User oUser = UserService.findOne(id.toString());
+        User oUser = new UserService(env).findOne(id.toString());
         if(oUser == null)
             throw new ResourceNotFoundException("Não possivel encontrar o 'Utilizador' solicitado");
 
         //get profiles
-        BaseResponse objResProfiles = (new ServiceProxy())
-                .getJsonData("api/profiles", (new ServiceProxy()).encodePageableParams(PageRequest.of(0,50)));
+        ServiceProxy oServiceProxy = new ServiceProxy(env);
+        BaseResponse objResProfiles = oServiceProxy
+                .getJsonData("api/profiles", oServiceProxy.encodePageableParams(PageRequest.of(0,50)));
+        oServiceProxy.close();
+
         JSONObject dataResponse = (JSONObject) objResProfiles.getData();
 
         //setting the variables
@@ -101,7 +113,10 @@ public class UserController {
 
                 if (!result.hasErrors()){
 
-                    BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/users/create", objUser, new ArrayList<>() );
+                    ServiceProxy oServiceProxy = new ServiceProxy(env);
+                    BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/users/create", objUser, new ArrayList<>() );
+                    oServiceProxy.close();
+
                     User createdUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
 
                     if(createdUser != null)
@@ -123,7 +138,10 @@ public class UserController {
 
                 if (!result.hasErrors()){
 
-                    BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/users/update    ", objUser, new ArrayList<>() );
+                    ServiceProxy oServiceProxy = new ServiceProxy(env);
+                    BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/users/update    ", objUser, new ArrayList<>() );
+                    oServiceProxy.close();
+
                     User createdUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
 
                     if(createdUser != null)
@@ -133,7 +151,7 @@ public class UserController {
                 }
             }
 
-            User oUser = UserService.findOne(id.toString());
+            User oUser = new UserService(env).findOne(id.toString());
             if(oUser == null)
                 throw new ResourceNotFoundException("Não possivel encontrar o 'Utilizador' solicitado");
 
