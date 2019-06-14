@@ -130,4 +130,34 @@ public class ReclusoController {
         return  "/views/recluso/update";
     }
 
+
+    @RequestMapping(value = "reclusos/transfer/{id}", method = {RequestMethod.GET, RequestMethod.POST})
+    public String actionTransfer(@Valid @ModelAttribute Recluso objRecluso, BindingResult result,
+                               ModelMap model, HttpServletRequest request, @PathVariable UUID id) {
+
+        if (request.getMethod().equals("POST")) {
+
+            if (!result.hasErrors()) {
+
+                ArrayList<Params> p = new ArrayList<>();
+                BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/reclusos/transfer", objRecluso, new ArrayList<>() );
+
+                if(oBaseResponse.getStatusAction() != 1 || oBaseResponse.getData() == null || oBaseResponse.getData() == "null")
+                    throw new InternalError(oBaseResponse.getMessage());
+
+                Recluso updatedRecluso = objectMapper.convertValue(oBaseResponse.getData(), Recluso.class);
+                if(updatedRecluso != null)
+                    return "redirect:/reclusos/view/" + updatedRecluso.getId().toString();
+                else
+                    throw new InternalError(oBaseResponse.getMessage());
+            }
+        }
+
+        objRecluso = ReclusoService.findOne(id.toString());
+        if(objRecluso == null)
+            throw new ResourceNotFoundException("Não possivel encontrar o recluso solicitado");
+
+        model.addAttribute("objRecluso", objRecluso);
+        return  "/views/recluso/transfer";
+    }
 }
