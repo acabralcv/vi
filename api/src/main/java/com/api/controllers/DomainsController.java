@@ -4,7 +4,7 @@ import com.library.models.Domain;
 import com.library.helpers.Helper;
 import com.library.helpers.UtilsDate;
 import com.library.helpers.BaseResponse;
-import com.library.repository.EventslogRepository;
+import com.library.repository.UserRepository;
 import com.library.service.EventsLogService;
 import com.library.repository.DomainRepository;
 import org.springframework.data.domain.Page;
@@ -27,7 +27,7 @@ public class DomainsController {
     private DomainRepository domainRepository;
 
     @Autowired
-    private EventslogRepository eventslogRepository;
+    private UserRepository userRepository;
 
     /**
      *
@@ -53,7 +53,7 @@ public class DomainsController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", domains ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -70,7 +70,7 @@ public class DomainsController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oDominio != null ? 1 : 0,"ok", oDominio));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -91,7 +91,7 @@ public class DomainsController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", objDomain ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }

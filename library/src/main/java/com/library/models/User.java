@@ -31,9 +31,19 @@ public class User extends AuditModel {
     @Size(min = 3, max = 150)
     private String name;
 
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "profile_image_id", referencedColumnName = "id")
+//    private Image profileImage;
+
+
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_image_id", referencedColumnName = "id")
+    @JoinColumn(name = "profile_image_id", referencedColumnName = "id", nullable = true)
     private Image profileImage;
+
+    @OneToMany(mappedBy="user") /* this will look for 'user' property in the 'Tasks' model */
+    @JsonIgnore
+    private Set<Tasks> tasks;
+
 
     @Column(name = "is_editable", nullable = false)
     private Integer isEditable  = 1;
@@ -41,10 +51,6 @@ public class User extends AuditModel {
     @OneToMany(mappedBy="user") /* this will look for 'user' property in the 'UserProfiles' model */
     @JsonIgnore
     private Set<UserProfiles> UserProfiles;
-
-    public UUID getProfileImageId() {
-        return profile_image_id;
-    }
 
     public void setProfileImageId(UUID profile_image_id) {
         this.profile_image_id = profile_image_id;
@@ -112,6 +118,10 @@ public class User extends AuditModel {
 
     public Image getProfileImage() {
         return profileImage;
+    }
+
+    public UUID getProfileImageId() {
+        return profile_image_id;
     }
 
     public void setProfileImage(Image profileImage) {

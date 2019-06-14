@@ -20,6 +20,15 @@
       DROP table if exists tbl_user;
  */
 
+
+/*
+IMPORTANTE !caso for necessario comentar, não esqueça de voltar a comentar
+delete from tbl_recluso;
+delete from tbl_domain;
+
+*/
+
+
 -- pais initialization
 -- INSERT into tbl_pais (id, date_created, date_updated, nome, status) values
 --       ('e9dc1d36-977b-40b9-b6b8-299c49e41cd3','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','Cabo Verde', 1),
@@ -37,8 +46,8 @@ ON CONFLICT (id) DO NOTHING;
 
 -- profile domain
 INSERT into tbl_domain(id, date_created, date_updated, domain_type, name, value, ordem, status)  values
-('c9752bbb-aac5-4ec6-a7ff-32b63848ef5c','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','DOMAIN_SEXO','Maculino','M', 1 ,1),
-('94706886-96be-4f51-9cca-74d64ec60854','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','DOMAIN_SEXO','Femenino','F', 2, 1),
+('c9752bbb-aac5-4ec6-a7ff-32b63848ef5c','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','DOMAIN_SEXO','Masculino','M', 1 ,1),
+('94706886-96be-4f51-9cca-74d64ec60854','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','DOMAIN_SEXO','Feminino','F', 2, 1),
 ('128188a0-2728-4adc-b351-fac639cb5407','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','DOMAIN_SEXO','Não especificado','N/D', 3, 1),
 
 ('c707f6a9-05a6-4cd8-857f-2554f2a59659','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','DOMAIN_ESTADO_CIVIL','Solteiro','SOLTEIRO', 1, 1),
@@ -62,7 +71,7 @@ INSERT into tbl_domain(id, date_created, date_updated, domain_type, name, value,
 ('59c7c3fe-714f-4895-b2a1-3f1903cc044c','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','DOMAIN_NIVEL_ESCOLAR','Sem Habilitação','SEM_HABILITACAO', 1, 1),
 ('bba310c3-64c0-462f-b8ad-4e327b550ec4','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','DOMAIN_NIVEL_ESCOLAR','Ensino Primário','ENSINO_PRIMAR', 2, 1),
 ('e2654c60-9cac-460c-a1a0-256f527a2111','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','DOMAIN_NIVEL_ESCOLAR','Ensino Secundário','ENSINO_SECUND', 3, 1),
-('f1d745d2-aa1d-4616-9fc8-814325996fac','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','DOMAIN_NIVEL_ESCOLAR','Cicenciado','LICENCIADO', 4, 1)
+('f1d745d2-aa1d-4616-9fc8-814325996fac','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','DOMAIN_NIVEL_ESCOLAR','Licenciado','LICENCIADO', 4, 1)
 ON CONFLICT (id) DO NOTHING;
 
 

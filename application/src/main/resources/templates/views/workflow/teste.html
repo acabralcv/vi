@@ -1,0 +1,25 @@
+
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+
+    <title>FLOW TESTE </title>
+
+    <!-- User feature scripts -->
+    <span layout:fragment="custumScripts">
+    </span>
+
+</head>
+
+<div class="col-xs-12 col-md-12" layout:fragment="content">
+
+    <span th:if="oWorkflow != null">
+        <span th:replace="/views/workflow/_states_view:: statesView(${oWorkflow})"></span>
+    </span>
+
+</div>
+
+</html>
+
+
+

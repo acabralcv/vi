@@ -1,5 +1,6 @@
 package com.library.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.UUID;
@@ -32,7 +33,7 @@ public class Recluso extends AuditModel {
     private String sexo;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    @Column(name = "data_nascimento", nullable = false)
+    @Column(name = "data_nascimento", nullable = true)
     private Date dataNascimento;
 
     @Column(name = "nome_pai", nullable = true)
@@ -85,8 +86,9 @@ public class Recluso extends AuditModel {
     @JoinColumn(name = "id_freguesia", referencedColumnName = "id", nullable = true)
     private Geografia freguesia;
 
+    //@JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_image_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "profile_image_id", referencedColumnName = "id")
     private Image profileImage;
 
     public UUID getId() {

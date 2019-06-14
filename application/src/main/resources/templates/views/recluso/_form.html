@@ -36,7 +36,7 @@
                         <div class="form-group">
                            <select th:field="*{tipoDocumento}" id="tipoDocumento" class="form-control">
                                 <option value="">-- Selecionar Tipo de Documento --</option>
-                                <option th:each="domain : ${T(com.app.service.DomainService).getDomains('DOMAIN_TIPO_DOC_IDENTIF')}" th:value="${domain.id}" th:text="${domain.name}">
+                                <option th:each="domain : ${T(com.app.service.DomainService).getDomains(oServiceProxy,'DOMAIN_TIPO_DOC_IDENTIF')}" th:value="${domain.id}" th:text="${domain.name}">
                             </select>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                         <div class="form-group">
                            <select th:field="*{sexo}" id="sexo" class="form-control">
                                 <option value="">-- Selecionar Sexo --</option>
-                                <option th:each="domain : ${T(com.app.service.DomainService).getDomains('DOMAIN_SEXO')}" th:value="${domain.value}" th:text="${domain.name}">
+                                <option th:each="domain : ${T(com.app.service.DomainService).getDomains(oServiceProxy,'DOMAIN_SEXO')}" th:value="${domain.value}" th:text="${domain.name}">
                             </select>
                         </div>
                     </div>
@@ -92,13 +92,13 @@
 
 
             <div class="row">
-                <div class="col-xs-12 col-md-5">
-                    <div class="form-group">
-                        <label for="name">Data de Nascimento</label>
-                        <input type="text" th:field="*{dataNascimento}" id="dataNascimento" class="form-control" />
-                        <span class="error" th:if="${#fields.hasErrors('dataNascimento')}" th:errors="*{dataNascimento}"></span>
-                    </div>
-                </div>
+                <!--<div class="col-xs-12 col-md-5">-->
+                    <!--<div class="form-group">-->
+                        <!--<label for="name">Data de Nascimento</label>-->
+                        <!--<input type="text" th:field="*{dataNascimento}" value="2014-12-12 00:00:00 123" id="dataNascimento" class="form-control" />-->
+                        <!--<span class="error" th:if="${#fields.hasErrors('dataNascimento')}" th:errors="*{dataNascimento}"></span>-->
+                    <!--</div>-->
+                <!--</div>-->
 
                 <div class="col-xs-12 col-md-6">
                     <div class="form-group">
@@ -106,7 +106,7 @@
                         <div class="form-group">
                            <select th:field="*{estadoCivil}" id="estadoCivil" class="form-control">
                                 <option value="">-- Selecionar estado civil --</option>
-                                <option th:each="domain : ${T(com.app.service.DomainService).getDomains('DOMAIN_ESTADO_CIVIL')}" th:value="${domain.id}" th:text="${domain.name}">
+                                <option th:each="domain : ${T(com.app.service.DomainService).getDomains(oServiceProxy,'DOMAIN_ESTADO_CIVIL')}" th:value="${domain.id}" th:text="${domain.name}">
                             </select>
                         </div>
                     </div>
@@ -182,7 +182,7 @@
                         <div class="form-group">
                            <select th:field="*{profissao}" id="profissao" class="form-control">
                                 <option value="">-- Selecionar Profissão --</option>
-                                <option th:each="profissao : ${T(com.app.service.DomainService).getDomains('DOMAIN_PROFISSAO')}" th:value="${profissao.id}" th:text="${profissao.name}">
+                                <option th:each="profissao : ${T(com.app.service.DomainService).getDomains(oServiceProxy,'DOMAIN_PROFISSAO')}" th:value="${profissao.id}" th:text="${profissao.name}">
                             </select>
                         </div>
                     </div>
@@ -203,7 +203,7 @@
                         <div class="form-group">
                            <select th:field="*{nivelEscolaridade}" id="nivelEscolaridade" class="form-control">
                                 <option value="">-- Selecionar Nível Escolaridade --</option>
-                                <option th:each="domainEscolar : ${T(com.app.service.DomainService).getDomains('DOMAIN_NIVEL_ESCOLAR')}" th:value="${domainEscolar.id}" th:text="${domainEscolar.name}">
+                                <option th:each="domainEscolar : ${T(com.app.service.DomainService).getDomains(oServiceProxy,'DOMAIN_NIVEL_ESCOLAR')}" th:value="${domainEscolar.id}" th:text="${domainEscolar.name}">
                             </select>
                         </div>
                     </div>
