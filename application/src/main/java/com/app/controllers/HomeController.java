@@ -12,8 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Level;
+//import org.apache.log4j.Logger;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -25,7 +25,7 @@ import java.util.UUID;
 public class HomeController {
 
     //private final MyService myService;
-    private static final Logger LOG = Logger.getLogger(HomeController.class.getName());
+//    private static final Logger LOG = Logger.getLogger(HomeController.class.getName());
 
     @Autowired
     private EventslogRepository eventslogRepository;
@@ -55,7 +55,7 @@ public class HomeController {
 //
 //        TasksService.addTask(task);
 
-        LOG.log(Level.INFO, "Welcome at to App" + new Date());
+//        LOG.log(Level.INFO, "Welcome at to App" + new Date());
 
         //teste evenets log
         /*Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
