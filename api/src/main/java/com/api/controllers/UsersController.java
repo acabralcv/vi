@@ -35,9 +35,6 @@ public class UsersController {
     private ProfileRepository profileRepository;
 
     @Autowired
-    private EventslogRepository eventslogRepository;
-
-    @Autowired
     private UserProfilesRepository userProfilesRepository;
 
     /**
@@ -62,7 +59,7 @@ public class UsersController {
                 return ResponseEntity.ok().body(new BaseResponse(0, "ok", null));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -86,7 +83,7 @@ public class UsersController {
             return ResponseEntity.ok().body(new BaseResponse(1, "ok", oList));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -110,7 +107,7 @@ public class UsersController {
                 return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", users ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -139,10 +136,17 @@ public class UsersController {
             objUser.setStatus(Helper.STATUS_ACTIVE);
             User crestedUser = userRepository.save(objUser);
 
+            /**
+             * create a log for ELK
+             */
+            if(crestedUser != null)
+                new EventsLogService(userRepository).AddEventologs(Helper.LogsType.LOGS_USER_CREATED.toString(),
+                        "Novo recluso registrado. ", crestedUser.getName(),null, null);
+
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", crestedUser ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            (new EventsLogService(userRepository)).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -194,7 +198,7 @@ public class UsersController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", savedUser ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -220,7 +224,7 @@ public class UsersController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", savedUser ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -247,7 +251,7 @@ public class UsersController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", objUser));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -272,7 +276,7 @@ public class UsersController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", objUser));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }

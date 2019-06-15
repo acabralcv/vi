@@ -13,8 +13,13 @@ public class Tasks extends AuditModel {
     @Id
     private UUID id;
 
-    @Column(name = "type", nullable = false, columnDefinition = "varchar(64)")
-    private String type;
+    //to differentiate the various types of notifications
+    @Column(name = "action_type", nullable = false, columnDefinition = "varchar(64)")
+    private String actionType;
+
+    //to categorize the type of user tasks/notification
+    @Column(name = "task_type", nullable = false, columnDefinition = "varchar(64)")
+    private String taskType;
 
     @Column(name = "id_tabela_alvo", nullable = true)
     private UUID idTabelaAlvo;
@@ -24,6 +29,9 @@ public class Tasks extends AuditModel {
 
     @Column(name = "description", nullable = true, columnDefinition = "varchar(5000)")
     private String description;
+
+    @Column(name = "is_viewed", nullable = false, columnDefinition = "int default 0 ")
+    private Integer isViewed;
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
@@ -64,6 +72,14 @@ public class Tasks extends AuditModel {
         this.description = description;
     }
 
+    public Integer getIsViewed() {
+        return isViewed;
+    }
+
+    public void setIsViewed(Integer isViewed) {
+        this.isViewed = isViewed;
+    }
+
     public User getUser() {
         return user;
     }
@@ -88,19 +104,27 @@ public class Tasks extends AuditModel {
         this.documents = documents;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public UUID getIdTabelaAlvo() {
         return idTabelaAlvo;
     }
 
     public void setIdTabelaAlvo(UUID idTabelaAlvo) {
         this.idTabelaAlvo = idTabelaAlvo;
+    }
+
+    public String getActionType() {
+        return actionType;
+    }
+
+    public void setActionType(String actionType) {
+        this.actionType = actionType;
+    }
+
+    public String getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(String taskType) {
+        this.taskType = taskType;
     }
 }

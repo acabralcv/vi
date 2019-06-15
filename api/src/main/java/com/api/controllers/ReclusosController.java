@@ -9,6 +9,7 @@ import com.library.models.User;
 import com.library.repository.EventslogRepository;
 import com.library.repository.ImageRepository;
 import com.library.repository.ReclusoRepository;
+import com.library.repository.UserRepository;
 import com.library.service.EventsLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public class ReclusosController {
     private ReclusoRepository reclusoRepository;
 
     @Autowired
-    private EventslogRepository eventslogRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private ImageRepository imageRepository;
@@ -45,17 +46,12 @@ public class ReclusosController {
 
         try{
 
-
-            Optional<Recluso> oRecluso  = reclusoRepository.findById(id)
-                    /*.map(recluso -> {
-                        recluso.setProfileImage(recluso.getProfileImage());
-                        return   recluso;
-                    })*/;
+            Optional<Recluso> oRecluso  = reclusoRepository.findById(id);
 
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oRecluso != null ? 1 : 0, "ok", oRecluso));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -81,7 +77,7 @@ public class ReclusosController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", reclusos ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -108,10 +104,17 @@ public class ReclusosController {
 
             Recluso crestedRecluso = reclusoRepository.save(objRecluso);
 
+            /**
+             * create a log for ELK
+             */
+            if(crestedRecluso != null)
+                new EventsLogService(userRepository).AddEventologs(Helper.LogsType.LOGS_RECLUSO_CREATED.toString(),
+                        "Novo recluso registrado. ", crestedRecluso.getNome(),null, null);
+
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", crestedRecluso ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -144,7 +147,7 @@ public class ReclusosController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", savedRecluso ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(Helper.LogsType.LOGS_ERROR.toString(),"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }

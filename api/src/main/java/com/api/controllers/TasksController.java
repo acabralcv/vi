@@ -29,9 +29,6 @@ public class TasksController {
     @Autowired
     private TasksRepository tasksRepository;
 
-    @Autowired
-    private EventslogRepository eventslogRepository;
-
     /**
      * @param id
      * @return
@@ -49,7 +46,7 @@ public class TasksController {
                 return ResponseEntity.ok().body(new BaseResponse(0, "ok", null));
 
         } catch (Exception e) {
-            new EventsLogService(eventslogRepository).AddEventologs(null, "Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null, "Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()", e.getMessage(), null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -65,7 +62,7 @@ public class TasksController {
             Optional<User> user = userRepository.findById(user_id);
 
             if(user.isPresent()){
-                tasks = tasksRepository.findTasksByStatusAndUser(Helper.STATUS_ACTIVE,
+                tasks = tasksRepository.findByStatusAndUser(Helper.STATUS_ACTIVE,
                         user.get(),
                         PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dateCreated").descending()));
             }
@@ -73,7 +70,7 @@ public class TasksController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", null ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -90,7 +87,7 @@ public class TasksController {
 
         try {
 
-            Optional<Tasks> auxTask = tasksRepository.findIfExists(Helper.STATUS_ACTIVE, task.getUser(), task.getTargetUser(), task.getType());
+            Optional<Tasks> auxTask = tasksRepository.findIfExists(Helper.STATUS_ACTIVE, task.getUser(), task.getTargetUser(), task.getTaskType());
 
             if(auxTask.isPresent()){
 
@@ -110,8 +107,11 @@ public class TasksController {
                 task.setDateCreated(UtilsDate.getDateTime());
             }
 
-            if(task.getType() == null || task.getType().equalsIgnoreCase(""))
-                task.setType(Helper.TaskType.OTHER.toString());
+            if(task.getTaskType() == null || task.getTaskType().equalsIgnoreCase(""))
+                task.setTaskType(Helper.TaskType.OTHER.toString());
+
+            if(task.getIsViewed() == null)
+                task.setIsViewed(Helper.STATUS_ACTIVE);
 
 
             Tasks tasksSaved = tasksRepository.save(task);
@@ -119,7 +119,7 @@ public class TasksController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", tasksSaved ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }

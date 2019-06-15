@@ -3,13 +3,9 @@ package com.app.helpers;
 import com.library.helpers.BaseResponse;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.StandardEnvironment;
 import org.springframework.data.domain.Pageable;
 
 import java.io.UnsupportedEncodingException;
@@ -17,22 +13,23 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import javax.ws.rs.client.*;
 
-@Configuration
-@ComponentScan(basePackages = { "com.app.*" })
-@PropertySource("classpath:application.properties")
 public class ServiceProxy {
 
-    @Value("$api.service.baseUrl}")
-    private String baseUrl; // = "http://localhost:8081/";
+    @Autowired
+    private final Environment env;
 
-    public String accessToken = "access_token=Igh6KZaqq99UBUZwpY1nD-7ZpwAPpROx-ejeBMm9CMoLz4hs1WwKKgSQWgMocYNWaOQCz44kMq38uXKVr90BP7kPjyTw5QwOQ-yN96Mqg-rjH4OiBnAA_M8F3di4xZvE";
-
+    private String baseUrl;
+    private String serviceAddress;
+    private String accessToken;
     private Client client;
 
-    //To resolve ${} in @Value
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
-        return new PropertySourcesPlaceholderConfigurer();
+//    public ServiceProxy(){
+//    }
+
+    public ServiceProxy(Environment _env){
+        this.env = _env;
+        this.baseUrl = env.getProperty("api.service.baseUrl");
+        this.accessToken = env.getProperty("api.service.accessToken");
     }
 
     public ArrayList<Params> encodePageableParams(Pageable pageable)  {
@@ -50,33 +47,36 @@ public class ServiceProxy {
 
         String _params = "params=1";
 
-        try {
-            for(Params objParam: params) {
+            try {
+                for(Params objParam: params) {
                 _params = _params + "&" + objParam.name + "=" + URLEncoder.encode(objParam.value, "UTF-8").toString(); //[key];
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
 
         return baseUrl + resource + "?" + _params + "&access_token=" + accessToken;
     }
 
+
     public ServiceProxy buildParams(String resource, ArrayList<Params> params){
-        this.accessToken = this.getServiceUrl(resource, params);
+        this.serviceAddress = this.getServiceUrl(resource, params);
         return this;
     }
 
     public Invocation.Builder getTarget(){
 
         this.client = ClientBuilder.newClient();
-        WebTarget target = client.target(this.accessToken);
+        WebTarget target = client.target(this.serviceAddress);
 
         return target.request();
     }
 
     public void close(){
-        this.client.close();
+        if(this.client != null)
+            this.client.close();
     }
+
 
     public BaseResponse getJsonData(String resourse, ArrayList<Params> params) {
 
@@ -107,6 +107,8 @@ public class ServiceProxy {
             return new BaseResponse().getObjResponse(0,pe.getMessage(), null);
         }
     }
+
+
 
     public BaseResponse getModelDetails(String resourse, ArrayList<Params> params) {
 
@@ -154,12 +156,6 @@ public class ServiceProxy {
         }
     }
 
-    public String getBaseUrl() {
-        return baseUrl;
-    }
 
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
 
 }

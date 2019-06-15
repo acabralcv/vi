@@ -15,15 +15,24 @@ import com.library.models.Domain;
 import com.library.models.Profile;
 import com.library.models.User;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 public class DomainService {
 
+    @Autowired
+    private final Environment env;
+
     public static final String DOMAIN_SEXO = "DOMAIN_SEXO";
     public static final String DOMAIN_ESTADO_CIVIL = "DOMAIN_ESTADO_CIVIL";
     public static final String DOCUMENT_TYPE = "DOCUMENT_TYPE";
+
+    public DomainService(Environment _env){
+        this.env = _env;
+    }
 
 
     /**
@@ -32,7 +41,7 @@ public class DomainService {
      * @param domain
      * @return
      */
-    public  static ArrayList<Domain> getDomains(String domain){
+    public  static ArrayList<Domain> getDomains(ServiceProxy oServiceProxy, String domain){
 
         ArrayList<Domain> domainList = new ArrayList<>();
 
@@ -41,7 +50,8 @@ public class DomainService {
                 .Add(new Params("statue", String.valueOf(Helper.STATUS_ACTIVE)))
                 .Get();
 
-        BaseResponse objResponse = (new ServiceProxy()).getJsonData("api/domains", params);
+        BaseResponse objResponse = oServiceProxy.getJsonData("api/domains", params);
+        oServiceProxy.close();
 
         JSONObject dataResponse = (JSONObject) objResponse.getData();
 

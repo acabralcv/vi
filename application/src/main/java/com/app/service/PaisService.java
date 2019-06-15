@@ -5,11 +5,24 @@ import com.library.helpers.BaseResponse;
 import com.library.models.Pais;
 import com.library.models.Profile;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 
 public class PaisService {
+
+
+    @Autowired
+    private final Environment env;
+
+    private final ServiceProxy oServiceProxy;
+
+    public PaisService(Environment _env){
+        this.env = _env;
+        oServiceProxy = new ServiceProxy(this.env);
+    }
 
     /**
      * Service to get all countries
@@ -17,8 +30,8 @@ public class PaisService {
      */
     public ArrayList<Pais> findAll(){
 
-        BaseResponse oBaseResponse = (new ServiceProxy())
-                .getJsonData("api/paises", (new ServiceProxy()).encodePageableParams(PageRequest.of(0,200)));
+        BaseResponse oBaseResponse = oServiceProxy
+                .getJsonData("api/paises", oServiceProxy.encodePageableParams(PageRequest.of(0,200)));
 
         JSONObject dataResponse = (JSONObject) oBaseResponse.getData();
 

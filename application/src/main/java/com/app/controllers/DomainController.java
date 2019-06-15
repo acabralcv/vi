@@ -11,6 +11,8 @@ import com.library.models.Domain;
 import com.library.repository.DomainRepository;
 import com.library.service.EventsLogService;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -26,27 +28,34 @@ import java.util.UUID;
 @Controller
 public class DomainController {
 
+    @Autowired
     DomainRepository domainRepository;
+
     final ObjectMapper objectMapper = new ObjectMapper();
-    final ServiceProxy oServiceProxy = new ServiceProxy();
+
+    @Autowired
+    private Environment env;
 
     @RequestMapping(value = "admin/domains", method = RequestMethod.GET)
     public String actionIndex(ModelMap model, @RequestParam(name = "domainType", required = false) String domainType, @PageableDefault(sort = {"name"}, value = 10, page = 0) Pageable pageable) {
 
         ArrayList<Domain> domains = new ArrayList<>();
         HelperPaging objPaging = null;
+        ServiceProxy oServiceProxy = new ServiceProxy(env);
 
         if(domainType != null) {
             //em caso do cliente especificar o Tipo de Dominio
-            domains = DomainService.getDomains(domainType);
+            domains = DomainService.getDomains(oServiceProxy, domainType);
         }else{
             //caso contrario, vamos pegar os resultado paginados
-            BaseResponse objResponse = (new ServiceProxy()).getJsonData("api/domains", (new ServiceProxy()).encodePageableParams(pageable));
+            BaseResponse objResponse = oServiceProxy.getJsonData("api/domains", oServiceProxy.encodePageableParams(pageable));
 
             //Pageable result objt
             JSONObject dataResponse = (JSONObject) objResponse.getData();
             objPaging = (new HelperPaging().getResponsePaging(pageable, dataResponse));
             domains = (ArrayList<Domain>) dataResponse.get("content");
+
+            oServiceProxy.close();
         }
 
         model.addAttribute("objPaging", objPaging);
@@ -66,11 +75,13 @@ public class DomainController {
 
         ArrayList<Params> params = new ArrayList<>();
         params.add(new Params("id", id.toString()));
+        ServiceProxy oServiceProxy = new ServiceProxy(env);
 
         BaseResponse oBaseResponse = oServiceProxy
                 .buildParams("api/domains/details", params)
                 .getTarget()
                 .get(BaseResponse.class);
+
         oServiceProxy.close();
 
         Domain oDomain = objectMapper.convertValue(oBaseResponse.getData(), Domain.class);
@@ -79,7 +90,7 @@ public class DomainController {
             new ResourceNotFoundException("Não possivel encontrar o 'Dominio' solicitado");
 
         model.addAttribute("oDomain", oDomain);
-        model.addAttribute("domains", DomainService.getDomains(oDomain.getDomainType()));
+        model.addAttribute("domains", DomainService.getDomains(oServiceProxy, oDomain.getDomainType()));
 
         return  "/views/domain/view";
     }
@@ -97,12 +108,16 @@ public class DomainController {
                                ModelMap model, HttpServletRequest request,
                                @RequestParam(name = "domainType", required = false) String domainType) {
 
+        ServiceProxy oServiceProxy = new ServiceProxy(env);
+
         if (request.getMethod().equals("POST")) {
 
             if (!result.hasErrors()) {
 
                 ArrayList<Params> p = new ArrayList<>();
-                BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/domains/create", oDomain, new ArrayList<>() );
+                BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/domains/create", oDomain, new ArrayList<>() );
+
+                oServiceProxy.close();
 
                 if(oBaseResponse.getStatusAction() != 1 || oBaseResponse.getData() == null || oBaseResponse.getData() == "null")
                     throw new InternalError(oBaseResponse.getMessage());
@@ -117,7 +132,7 @@ public class DomainController {
         }
 
         model.addAttribute("oDomain", oDomain);
-        model.addAttribute("domains", DomainService.getDomains(domainType));
+        model.addAttribute("domains", DomainService.getDomains(oServiceProxy, domainType));
         return  "/views/domain/create";
     }
 
@@ -127,12 +142,15 @@ public class DomainController {
                                BindingResult result,
                                ModelMap model, HttpServletRequest request) {
 
+        ServiceProxy oServiceProxy = new ServiceProxy(env);
+
         if (request.getMethod().equals("POST")) {
 
             if (!result.hasErrors()) {
 
                 ArrayList<Params> p = new ArrayList<>();
-                BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/domains/update", oDomain, new ArrayList<>() );
+                BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/domains/update", oDomain, new ArrayList<>() );
+                oServiceProxy.close();
 
                 if(oBaseResponse.getStatusAction() != 1 || oBaseResponse.getData() == null || oBaseResponse.getData() == "null")
                     throw new InternalError(oBaseResponse.getMessage());
