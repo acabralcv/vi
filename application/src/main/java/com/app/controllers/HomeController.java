@@ -3,12 +3,15 @@ package com.app.controllers;
 //import MyService;
 import com.app.service.TasksService;
 import com.library.helpers.Helper;
+import com.library.helpers.UtilsDate;
 import com.library.models.Tasks;
+import com.library.models.User;
 import com.library.repository.EventslogRepository;
 import com.library.repository.UserRepository;
 import com.library.service.EventsLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
-import java.util.UUID;
+import java.util.*;
 
 
 @Controller
@@ -51,20 +51,21 @@ public class HomeController {
     public String home(ModelMap model) {
 
 
+        User user = new User();
+        user.setId(UUID.fromString("d7224655-312a-40fe-ac2b-d02ae239846f"));
+
+        ArrayList<Tasks> userTasks = new TasksService(env).getUserTasks(user, PageRequest.of(0,10));
+        if(userTasks.size() == 0 || userTasks == null)
+            return "redirect:/task"; //let's create tasks for test
+
+
         /**
          * create a log for ELK
          */
-        new EventsLogService().AddEventologs("Nava visita. ");
+        new EventsLogService().AddEventologs("Nava visita.");
 
 
-//        Tasks task = new TasksService(env)
-//                .addUserTask(
-//                        Helper.TaskType.RECLUSO_PENDING_APROVING.toString(),
-//                        "Recluso a aguardar aprovação",
-//                        "Novo foi registado no sistema e encontra-se a aguardar aprovação",
-//                        UUID.fromString("4c8c4044-7e46-4934-ab6b-58d63db1d75f"),
-//                        UUID.fromString("4c8c4044-7e46-4934-ab6b-58d63db1d75f")
-//                );
+
 
 
        // LOG.log(Level.INFO, task.getMessage() + "; Por " + task.getUser().getName() + "; Data " + new Date());
@@ -77,6 +78,7 @@ public class HomeController {
 */
         model.addAttribute("appKey", new Helper().getUUID());
         model.addAttribute("appName","App Name Test");
+        model.addAttribute("userTasks",userTasks);
         return "views/home/index";
     }
 
@@ -85,6 +87,10 @@ public class HomeController {
      */
     @GetMapping("/about")
     public String actionAbout() {
+		
+		String response = "Welcome to JavaInUse" + new Date();
+		LOG.log(Level.INFO, response);
+
         //service.message
         //return myService.message();
 
@@ -98,6 +104,29 @@ public class HomeController {
     @GetMapping("/processos")
     public String actionTeste() {
         return "views/estatistica/index";
+    }
+
+
+    @GetMapping("/task")
+    public String actionTask() {
+
+        new TasksService(env).addUserTask(
+                Helper.TaskType.RECLUSO_PENDING_APROVING.toString(),
+                "Recluso a aguardar aprovação at " + UtilsDate.getDateTime(),
+                "Novo foi registado no sistema e encontra-se a aguardar aprovação",
+                UUID.fromString("d7224655-312a-40fe-ac2b-d02ae239846f"),
+                UUID.fromString("d7224655-312a-40fe-ac2b-d02ae239846f")
+            );
+
+        new TasksService(env).addUserTask(
+                        Helper.TaskType.OTHER.toString(),
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit at " + UtilsDate.getDateTime(),
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
+                        UUID.fromString("d7224655-312a-40fe-ac2b-d02ae239846f"),
+                        UUID.fromString("d7224655-312a-40fe-ac2b-d02ae239846f")
+                );
+
+        return "redirect:/home";
     }
 
 }

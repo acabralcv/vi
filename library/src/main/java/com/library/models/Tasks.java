@@ -33,6 +33,9 @@ public class Tasks extends AuditModel {
     @Column(name = "is_viewed", nullable = false, columnDefinition = "int default 0 ")
     private Integer isViewed;
 
+    @Column(name = "is_removable", nullable = false, columnDefinition = "int default 0 ")
+    private Integer isRemovable;
+
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
     //@JsonIgnore
@@ -126,5 +129,13 @@ public class Tasks extends AuditModel {
 
     public void setTaskType(String taskType) {
         this.taskType = taskType;
+    }
+
+    public Integer getIsRemovable() {
+        return isRemovable;
+    }
+
+    public void setIsRemovable(Integer isRemovable) {
+        this.isRemovable = isRemovable;
     }
 }

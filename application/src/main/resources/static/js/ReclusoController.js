@@ -39,6 +39,21 @@ var modelRecluso = {
         })
     },
 
+    remove: function (reclusoId) {
+
+        var modelPots = {id: reclusoId}
+        modelApp.startLoading()
+        serviceProxy.postJsonData("api/reclusos/delete",modelPots, {}, function (dataResponse) {
+            modelApp.stopLoading()
+
+            if(dataResponse && dataResponse.statusAction == 1){
+                modelApp.showSuccessMassage("Tarefa removido com sucesso", false)
+                location.reload()
+            }else
+                modelApp.showErrorMassage(dataResponse.message, false)
+        })
+    },
+
     uploadImages: function (reclusoId) {
 
         var imagesInput = document.getElementById('InputImageUploads');

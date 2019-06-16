@@ -1,0 +1,29 @@
+
+<span th:fragment="TaskView(userTasks)">
+
+    <tr th:each="oTask : ${userTasks}">
+
+        <div class="panel box-notification" style="border-radius: 0;margin-bottom: 10px;">
+            <div class="panel-heading rpend" style="padding: 5px">
+                <div class="">
+                    <span class="progress progress-bar-warning" style="color:#fff"><i class="glyphicon glyphicon-ok"></i></span>
+                    <span title="Ver tarefa" class="btn btn-link">
+                        <a th:href="${T(com.app.helpers.TaskHelper).getLinkByType(oTask.taskType, (oTask.targetUser != null) ? oTask.targetUser.id : null)}">
+                            <strong><span th:text="${oTask.message}">#</span></strong>
+                        </a>
+                    </span>
+                    <span th:data-task_id="${oTask.id}" class="pull-right" onclick="modelTask.remove(this.getAttribute('data-task_id'))">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </tr>
+
+    <style>
+
+
+</style>
+
+</span>
