@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.*;
 
 
@@ -37,11 +39,7 @@ public class HomeController {
     @Autowired
     private Environment env;
 
-    public HomeController(/*MyService myService*/) {
-        //this.myService = myService;
-        //ok
-        //ok
-    }
+    public HomeController(/*MyService myService*/) { }
 
     /**
      * @param model
@@ -50,6 +48,26 @@ public class HomeController {
     @GetMapping(value = {"/", "home", "index", "default"})
     public String home(ModelMap model) {
 
+        model.addAttribute("appKey", new Helper().getUUID());
+        model.addAttribute("appName","App Name Test");
+        return "views/home/index";
+    }
+
+    /**
+     * @return
+     */
+    @GetMapping("/about")
+    public String actionAbout() {
+
+        return "views/home/about";
+    }
+
+
+    /**
+     * @return
+     */
+    @GetMapping("/teste")
+    public String actionTeste() {
 
         User user = new User();
         user.setId(UUID.fromString("d7224655-312a-40fe-ac2b-d02ae239846f"));
@@ -62,13 +80,23 @@ public class HomeController {
         /**
          * create a log for ELK
          */
-        new EventsLogService().AddEventologs("Nava visita.");
+        new EventsLogService().AddEventologs("Nava visita. ");
+
+        /*
+
+                Tasks task = new TasksService(env)
+                        .addUserTask(
+                                Helper.TaskType.RECLUSO_PENDING_APROVING.toString(),
+                                "Recluso a aguardar aprovação",
+                                "Novo foi registado no sistema e encontra-se a aguardar aprovação",
+                                UUID.fromString("4c8c4044-7e46-4934-ab6b-58d63db1d75f"),
+                                UUID.fromString("4c8c4044-7e46-4934-ab6b-58d63db1d75f")
+                        );
+        */
 
 
 
-
-
-       // LOG.log(Level.INFO, task.getMessage() + "; Por " + task.getUser().getName() + "; Data " + new Date());
+        // LOG.log(Level.INFO, task.getMessage() + "; Por " + task.getUser().getName() + "; Data " + new Date());
 
         //teste evenets log
         /*Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
@@ -81,13 +109,19 @@ public class HomeController {
         model.addAttribute("userTasks",userTasks);
         return "views/home/index";
     }
+        /*
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
+            Date currentDate = calendar.getTime();
+            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()", "Test: Someone int the app! :) :) :) at " + currentDate.toString(),null, null);
+        */
 
     /**
      * @return
      */
     @GetMapping("/about")
     public String actionAbout() {
-		
+
 		String response = "Welcome to JavaInUse" + new Date();
 		LOG.log(Level.INFO, response);
 
@@ -102,7 +136,7 @@ public class HomeController {
 
 
     @GetMapping("/processos")
-    public String actionTeste() {
+    public String actionTeste1() {
         return "views/estatistica/index";
     }
 
