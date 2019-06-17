@@ -154,9 +154,19 @@
             <div class="row">
                 <div class="col-xs-12 col-md-12">
                     <div class="form-group">
-                        <label for="contactoFamiliar">Residência</label>
-                        <textarea rows="2" th:field="*{residencia}" id="residencia" class="form-control" />
-                        <span class="error" th:if="${#fields.hasErrors('residencia')}" th:errors="*{residencia}"></span>
+                        <label for="contactoFamiliar">Zona</label>
+                        <textarea rows="2" th:field="*{zona}" id="zona" class="form-control" />
+                        <span class="error" th:if="${#fields.hasErrors('zona')}" th:errors="*{zona}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12">
+                    <div class="form-group">
+                        <label for="contactoFamiliar">bairo</label>
+                        <textarea rows="2" th:field="*{bairo}" id="bairo" class="form-control" />
+                        <span class="error" th:if="${#fields.hasErrors('bairo')}" th:errors="*{bairo}"></span>
                     </div>
                 </div>
             </div>
