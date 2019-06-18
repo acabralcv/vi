@@ -37,10 +37,10 @@ public class HomeController {
         //teste evenets log
 
         
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
-        Date currentDate = calendar.getTime();
-        new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
-                + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()", "Test: Someone int the app! :) :) :) at " + currentDate.toString(),null, null);
+//        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
+//        Date currentDate = calendar.getTime();
+//        new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+//                + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()", "Test: Someone int the app! :) :) :) at " + currentDate.toString(),null, null);
 
         model.addAttribute("appKey", new Helper().getUUID());
         model.addAttribute("appName","App Name Test");

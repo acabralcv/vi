@@ -159,7 +159,7 @@ public class ReclusoController {
             if (!result.hasErrors()) {
 
                 ArrayList<Params> p = new ArrayList<>();
-                BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/reclusos/transfer", objRecluso, new ArrayList<>() );
+                BaseResponse oBaseResponse = (new ServiceProxy(env)).postJsonData("api/reclusos/transfer", objRecluso, new ArrayList<>() );
 
                 if(oBaseResponse.getStatusAction() != 1 || oBaseResponse.getData() == null || oBaseResponse.getData() == "null")
                     throw new InternalError(oBaseResponse.getMessage());
@@ -172,7 +172,7 @@ public class ReclusoController {
             }
         }
 
-        objRecluso = ReclusoService.findOne(id.toString());
+        objRecluso = new ReclusoService(env).findOne(id.toString());
         if(objRecluso == null)
             throw new ResourceNotFoundException("Não possivel encontrar o recluso solicitado");
 
