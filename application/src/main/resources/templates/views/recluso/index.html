@@ -21,7 +21,6 @@
 				<div class="col">
 					Total: <span th:text="${objPaging.totalElements}"></span>
 				</div>
-				
                 <table class="table table-striped table-bordered">
                     <tr>
                         <th>Nome</th>
@@ -31,7 +30,6 @@
                         <th>Ultima atualização</th>
                         <th>Ações</th>
                     </tr>
-
                     <tr th:each="oRecluso : ${reclusos}">
                         <td th:text="${oRecluso.nome}">#</td>
                         <td th:text="${oRecluso.sexo}">#</td>

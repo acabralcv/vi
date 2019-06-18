@@ -31,6 +31,31 @@
             <div class="panel panel-primary">
                   <div class="panel-heading">Recluso - <span th:text="${oRecluso.nome}"></span></div>
                   <div class="panel-body">
+					  <div clas="col" align="center">
+						  <a class="btn" href="#">
+							  <i class="fas fa-balance-scale fa-2x"></i> Decisão Judicial</a>
+						  <a class="btn" href="#">
+							  <i class="fas fa-receipt fa-2x"></i> Titulo Judiciario</a>
+						  <a class="btn" href="#">
+						  <i class="fas fa-gavel fa-2x"></i> Mandado Libertação</a>
+						  <a class="btn" href="#">
+							  <i class="fas fa-user-injured fa-2x"></i> Ocorrências</a>
+						  <a class="btn" href="#">
+							  <i class="fas fa-user-clock fa-2x"></i> Pena Prisão</a>
+						  <a class="btn" th:href="@{|/reclusos/transfer/${oRecluso.id}|}">
+							  <i class="fas fa-bus-alt fa-2x"></i> Transferência</a>
+						  <a class="btn" href="#">
+							  <i class="fas fa-address-card fa-2x"></i> Registro Criminal</a>
+						  <a class="btn" href="#">
+							  <i class="fas fa-hand-holding-usd fa-2x"></i>Valores Apreendidos</a>
+						  <a class="btn" href="#">
+							  <i class="fas fa-user-lock fa-2x"></i> Medida Segurança</a>
+						  <a class="btn" href="#">
+							  <i class="fas fa-medkit fa-2x"></i> Saude, Internamento</a>
+						  <a class="btn" href="#">
+							  <i class="fas fa-hands-helping fa-2x"></i></i>Serviços Voluntários</a>
+						  <a class="btn" href="#">
+							  <i class="fas fa-user-graduate fa-2x"></i></i>Formação</a>
 
                     <div clas="col">
                         <span th:if="${oRecluso.profileImage != null}">
