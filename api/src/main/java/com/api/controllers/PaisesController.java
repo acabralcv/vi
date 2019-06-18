@@ -4,8 +4,8 @@ import com.library.models.Ilha;
 import com.library.models.Pais;
 import com.library.helpers.Helper;
 import com.library.helpers.BaseResponse;
-import com.library.repository.EventslogRepository;
 import com.library.repository.IlhaRepository;
+import com.library.repository.UserRepository;
 import com.library.service.EventsLogService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -23,13 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaisesController {
 
     @Autowired
-    PaisRepository paisRepository;
+    private PaisRepository paisRepository;
 
     @Autowired
-    IlhaRepository ilhaRepository;
+    private IlhaRepository ilhaRepository;
 
     @Autowired
-    EventslogRepository eventslogRepository;
+    private UserRepository userRepository;
 
     @RequestMapping(value = {"api/paises"}, method = {RequestMethod.GET})
     public ResponseEntity actionPaises(@PageableDefault(sort = {"name"}, value = 10, page = 0) Pageable pageable) {
@@ -45,7 +45,7 @@ public class PaisesController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", paises ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -65,7 +65,7 @@ public class PaisesController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", ilhas ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }

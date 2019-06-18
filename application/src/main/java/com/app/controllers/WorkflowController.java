@@ -15,6 +15,7 @@ import com.library.repository.StatesRepository;
 import com.library.repository.WorkflowRepository;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -38,11 +39,14 @@ public class WorkflowController {
     @Autowired
     private WorkflowRepository workflowRepository;
 
+    @Autowired
+    private Environment env;
+
 
     @RequestMapping(value = "admin/workflows/view/{id}", method = RequestMethod.GET)
     public String actionDetails(ModelMap model, @PathVariable UUID id) {
 
-        Workflow oWorkflow = WorkflowService.findOne(id);
+        Workflow oWorkflow = new WorkflowService(env).findOne(id);
 
         if(oWorkflow == null)
             throw new ResourceNotFoundException("Não possivel encontrar o 'Workflow' solicitado");
@@ -57,7 +61,7 @@ public class WorkflowController {
     @RequestMapping(value = "admin/workflows", method = RequestMethod.GET)
     public String actionIndex(ModelMap model, @PageableDefault(page = 0, size = 10) Pageable pageable) {
 
-        JSONObject dataResponse = WorkflowService.findAll(pageable);
+        JSONObject dataResponse = new WorkflowService(env).findAll(pageable);
         ArrayList<Workflow> workflows = (ArrayList<Workflow>) dataResponse.get("content");
 
         model.addAttribute("objPaging", (new HelperPaging().getResponsePaging(pageable, dataResponse)));
@@ -74,7 +78,7 @@ public class WorkflowController {
         config.setObjEntity(new Workflow());
         config.setStep(1);
 
-        BaseResponse oBaseResponse = new FlowConfig(statesRepository, workflowRepository)
+        BaseResponse oBaseResponse = new FlowConfig(env, statesRepository, workflowRepository)
                 .transitionFlow(config);
         System.out.println(oBaseResponse.getMessage());
 
@@ -90,7 +94,7 @@ public class WorkflowController {
         config.setObjEntity(new Workflow());
         config.setStep(2);
 
-        BaseResponse oBaseResponse = new FlowConfig(statesRepository, workflowRepository)
+        BaseResponse oBaseResponse = new FlowConfig(env, statesRepository, workflowRepository)
                 .transitionFlow(config);
         System.out.println(oBaseResponse.getMessage());
 
@@ -105,14 +109,14 @@ public class WorkflowController {
         config.setObjEntity(new Workflow());
         config.setStep(3);
 
-        BaseResponse oBaseResponse = new FlowConfig(statesRepository, workflowRepository)
+        BaseResponse oBaseResponse = new FlowConfig(env, statesRepository, workflowRepository)
                 .transitionFlow(config);
 
         LinkedHashMap<String, Object> oResponse = (LinkedHashMap) oBaseResponse.getData();
         UUID targetTableId = UUID.fromString(oResponse.get("id").toString());
         //Optional<Workflow> workflol = workflowRepository.findByTargetTableId(targetTableId);
 
-        Workflow workflow =  WorkflowService.findByTarget(targetTableId);
+        Workflow workflow =  new WorkflowService(env).findByTarget(targetTableId);
 
         model.addAttribute("oWorkflow", workflow);
         return  "/views/workflow/teste";

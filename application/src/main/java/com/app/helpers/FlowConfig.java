@@ -12,6 +12,7 @@ import com.library.service.EventsLogService;
 import com.mongodb.util.JSON;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 
 import java.util.*;
@@ -23,6 +24,7 @@ public class FlowConfig {
     private String processCode;
     private String resourse;
     private Object objEntity;
+    private String cssClass;
 
     @Autowired
     private StatesRepository statesRepository;
@@ -30,12 +32,23 @@ public class FlowConfig {
     @Autowired
     private WorkflowRepository workflowRepository;
 
+    @Autowired
+    private Environment env;
+
+    private final ServiceProxy oServiceProxy;
+
     public FlowConfig(){
+
+        //just to avoid error
+        this.oServiceProxy = new ServiceProxy(this.env);
     }
 
-    public FlowConfig(StatesRepository statesRepository, WorkflowRepository workflowRepository){
+    public FlowConfig(Environment _env, StatesRepository statesRepository, WorkflowRepository workflowRepository){
+        this.env = _env;
         this.statesRepository = statesRepository;
         this.workflowRepository = workflowRepository;
+
+        this.oServiceProxy = new ServiceProxy(this.env);
     }
 
     public ArrayList<FlowConfig> getProcess(){
@@ -49,16 +62,19 @@ public class FlowConfig {
         o1.setStep(1);
         o1.setProcessCode("PROCESS_USER_REGISTRATION");
         o1.setResourse("api/workflows/teste_01");
+        o1.setCssClass("info");
         o1.setName("Estado teste 01");
 
         o2.setStep(2);
         o2.setProcessCode("PROCESS_USER_REGISTRATION");
         o2.setResourse("api/workflows/teste_01");
+        o2.setCssClass("warning");
         o2.setName("Estado teste 02");
 
         o3.setStep(3);
         o3.setProcessCode("PROCESS_USER_REGISTRATION");
         o3.setResourse("api/workflows/teste_01");
+        o3.setCssClass("success");
         o3.setName("Estado teste 03");
 
         processes.add(o1);
@@ -81,7 +97,7 @@ public class FlowConfig {
 
                     System.out.println(oConfig.getResourse());
 
-                    oBaseResponse = (new ServiceProxy())
+                    oBaseResponse = oServiceProxy
                             .postJsonData(oConfig.getResourse(), flowConfig.getObjEntity(), new ArrayList<>());
 
                     if(oBaseResponse.getStatusAction() ==  1){
@@ -101,8 +117,11 @@ public class FlowConfig {
                         if(workflow == null)
                             workflow = this.startWorkflow(flowConfig, targetTableId);
 
+                        //update the css class to be showed in the progress bar
+                        flowConfig.setCssClass(oConfig.getCssClass());
+
                         new FlowHelper(this.statesRepository)
-                                .updateState(workflow, flowConfig.getStep(), oConfig.getName());
+                                .updateState(workflow, flowConfig, oConfig.getName());
                     }
 
                     return  oBaseResponse;
@@ -181,5 +200,13 @@ public class FlowConfig {
 
     public void setProcessCode(String processCode) {
         this.processCode = processCode;
+    }
+
+    public String getCssClass() {
+        return cssClass;
+    }
+
+    public void setCssClass(String cssClass) {
+        this.cssClass = cssClass;
     }
 }

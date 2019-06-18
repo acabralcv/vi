@@ -42,9 +42,6 @@ public class Recluso extends AuditModel {
     @Column(name = "nome_mae", nullable = true)
     private String nomeMae;
 
-    @Column(name = "residencia", nullable = true)
-    private String residencia;
-
     @Column(name = "contacto_familiar", nullable = true)
     private String contactoFamiliar;
 
@@ -85,6 +82,12 @@ public class Recluso extends AuditModel {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_freguesia", referencedColumnName = "id", nullable = true)
     private Geografia freguesia;
+
+    @Column(name = "zona", nullable = true)
+    private String zona;
+
+    @Column(name = "bairo", nullable = true)
+    private String bairo;
 
     //@JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
@@ -195,14 +198,6 @@ public class Recluso extends AuditModel {
         this.alcunha = alcunha;
     }
 
-    public String getResidencia() {
-        return residencia;
-    }
-
-    public void setResidencia(String residencia) {
-        this.residencia = residencia;
-    }
-
     public String getContactoFamiliar() {
         return contactoFamiliar;
     }
@@ -249,5 +244,21 @@ public class Recluso extends AuditModel {
 
     public void setIlha(Ilha ilha) {
         this.ilha = ilha;
+    }
+
+    public String getZona() {
+        return zona;
+    }
+
+    public void setZona(String zona) {
+        this.zona = zona;
+    }
+
+    public String getBairo() {
+        return bairo;
+    }
+
+    public void setBairo(String bairo) {
+        this.bairo = bairo;
     }
 }

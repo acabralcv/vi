@@ -1,7 +1,19 @@
-
-
 <span th:fragment="statesView(oWorkflow)">
-    <span th:each="oWfState : ${T(com.app.service.WorkflowService).getWfStates(oWorkflow.id)}">
-        <span th:text="${oWfState.name}"></span> »»
-    </span>
-</span>
+   
+    <span class="progress">
+        <span th:each="oWfState : ${T(com.app.service.WorkflowService).getWfStates(oWorkflow.id)}">
+            <div th:class="${'progress-bar progress-bar-' + oWfState.cssClass + '' }" role="progressbar" style="width:20%">
+                
+                <div th:text="${oWfState.name}">#</div>
+                <span>#</span> 
+                <!-- <i class="wf-state-info glyphicon glyphicon-info-sign"
+                    style="margin:0 12px"
+                    role="button"
+                    data-toggle="collapse"
+                    th:href="${'#collapseWfState_idx'}"
+                    aria-expanded="false"
+                    aria-controls="collapseWfState_idx"></i> -->
+            </div>
+        </span> 
+    </span>      
+</span>       

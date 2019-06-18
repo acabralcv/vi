@@ -10,6 +10,7 @@ import com.library.repository.ProfileRepository;
 import com.library.service.EventsLogService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,9 @@ public class ProfileController {
     @Autowired
     private ProfileRepository profileRepository;
 
+    @Autowired
+    private Environment env;
+
     /**
      * get profiles
      * @param model
@@ -43,9 +47,11 @@ public class ProfileController {
     @RequestMapping(value = "admin/profiles", method = RequestMethod.GET)
     public String actionIndex(ModelMap model, @PageableDefault(page = 0, size = 10) Pageable pageable) {
 
+        ServiceProxy oServiceProxy = new ServiceProxy(env);
         //get info
-        BaseResponse objResponse = (new ServiceProxy())
-                .getJsonData("api/profiles", (new ServiceProxy()).encodePageableParams(pageable));
+        BaseResponse objResponse = oServiceProxy
+                .getJsonData("api/profiles", oServiceProxy.encodePageableParams(pageable));
+        oServiceProxy.close();
 
         //Pageable result objt
         JSONObject dataResponse = (JSONObject) objResponse.getData();
@@ -69,7 +75,7 @@ public class ProfileController {
     @RequestMapping(value = {"admin/profiles/view/{id}"}, method = {RequestMethod.GET})
     public String actionView(ModelMap model, @PathVariable UUID id) {
 
-        ServiceProxy oServiceProxy = new ServiceProxy();
+        ServiceProxy oServiceProxy = new ServiceProxy(env);
         BaseResponse oBaseResponse = oServiceProxy
                     .buildParams("api/profiles/details", new Params().Add(new Params("id", id.toString())).Get())
                     .getTarget()
@@ -103,7 +109,9 @@ public class ProfileController {
 
             if (!result.hasErrors()) {
 
-                BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/profiles/create", objProfile, new ArrayList<>() );
+                ServiceProxy oServiceProxy = new ServiceProxy(env);
+                BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/profiles/create", objProfile, new ArrayList<>() );
+                oServiceProxy.close();
                 Profile createdProfile = (Profile) BaseResponse.convertToModel(oBaseResponse, new Profile());
 
                 if(createdProfile == null)
@@ -136,7 +144,9 @@ public class ProfileController {
                 if (!result.hasErrors()) {
 
                     ArrayList<Params> p = new ArrayList<>();
-                    BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/profiles/update", objProfile, new ArrayList<>() );
+                    ServiceProxy oServiceProxy = new ServiceProxy(env);
+                    BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/profiles/update", objProfile, new ArrayList<>() );
+                    oServiceProxy.close();
 
                     if(oBaseResponse.getStatusAction() == 1)
                         return "redirect:/admin/profiles/view/" + id.toString();
@@ -145,7 +155,7 @@ public class ProfileController {
                 }
             }
 
-            ServiceProxy oServiceProxy = new ServiceProxy();
+        ServiceProxy oServiceProxy = new ServiceProxy(env);
             BaseResponse oBaseResponse = oServiceProxy
                     .buildParams("api/profiles/details", new Params().Add(new Params("id", id.toString())).Get())
                     .getTarget()
@@ -169,7 +179,9 @@ public class ProfileController {
         objProfile.setId(id);
 
         ArrayList<Params> p = new ArrayList<>();
-        BaseResponse oBaseResponse = (new ServiceProxy()).postJsonData("api/profiles/delete", objProfile, new ArrayList<>() );
+        ServiceProxy oServiceProxy = new ServiceProxy(env);
+        BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/profiles/delete", objProfile, new ArrayList<>() );
+        oServiceProxy.close();
 
         if(oBaseResponse.getStatusAction() == 1)
             return "redirect:/admin/profiles";

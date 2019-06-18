@@ -3,6 +3,9 @@ package com.app.helpers;
 import com.library.helpers.BaseResponse;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.StandardEnvironment;
 import org.springframework.data.domain.Pageable;
 
 import java.io.UnsupportedEncodingException;
@@ -12,10 +15,22 @@ import javax.ws.rs.client.*;
 
 public class ServiceProxy {
 
-    private String serviceAddress = "";
-    public String baseUrl = "http://localhost:8081/";
-    public String serviceAccessToken = "access_token=Igh6KZaqq99UBUZwpY1nD-7ZpwAPpROx-ejeBMm9CMoLz4hs1WwKKgSQWgMocYNWaOQCz44kMq38uXKVr90BP7kPjyTw5QwOQ-yN96Mqg-rjH4OiBnAA_M8F3di4xZvE";
+    @Autowired
+    private final Environment env;
+
+    private String baseUrl;
+    private String serviceAddress;
+    private String accessToken;
     private Client client;
+
+//    public ServiceProxy(){
+//    }
+
+    public ServiceProxy(Environment _env){
+        this.env = _env;
+        this.baseUrl = env.getProperty("api.service.baseUrl");
+        this.accessToken = env.getProperty("api.service.accessToken");
+    }
 
     public ArrayList<Params> encodePageableParams(Pageable pageable)  {
 
@@ -40,7 +55,7 @@ public class ServiceProxy {
                 e.printStackTrace();
             }
 
-        return baseUrl + resource + "?" + _params + "&access_token=" + serviceAccessToken;
+        return baseUrl + resource + "?" + _params + "&access_token=" + accessToken;
     }
 
 
@@ -58,7 +73,8 @@ public class ServiceProxy {
     }
 
     public void close(){
-        this.client.close();
+        if(this.client != null)
+            this.client.close();
     }
 
 

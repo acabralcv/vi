@@ -21,9 +21,12 @@
  */
 
 
+/*
+IMPORTANTE !caso for necessario comentar, não esqueça de voltar a comentar
+delete from tbl_recluso;
+delete from tbl_domain;
 
-DROP TABLE IF EXISTS tbl_states;
-DROP TABLE IF EXISTS tbl_workflow;
+*/
 
 
 -- pais initialization
@@ -39,6 +42,11 @@ INSERT into tbl_profile (id, date_created, date_updated, name, is_editable,force
 ('e9dc1d36-977b-40b9-b6b8-299c49e41cd3','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','Administrador', 0, 1, 1),
 ('882d378f-f581-482f-a63c-e4411bbb1e00','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','Utilizador', 1,1, 1),
 ('f5ec16b5-9594-4b05-b3a2-0ee0b6dd4e74','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','Guarda Prisional',1, 1, 1)
+ON CONFLICT (id) DO NOTHING;
+
+--
+INSERT INTO tbl_user (id, date_created, date_updated, name, username, email, profile_image_id, access_token, is_editable, status) VALUES
+('d7224655-312a-40fe-ac2b-d02ae239846f','2019-01-01 00:00:00.000000','2019-01-01 00:00:00.000000','Administrador', 'admin', 'admin@sigp.cv', null, '642befc13a6c41faae330fa49f0e5d65df2bfbecc4a44e399f3f6fe1336edb51894ed29aa77fcb667272166e5f02a7091c23940598c3a60015c1759d625ce3b3cc431d3f2d6fe66afd395460e02e3f0979a35e437198ea969c3b355a9689bea64f8afbdaef51d6091070475ced655202826f1f2edc22a2ba4a49f8f55e1595d6', 0, 1)
 ON CONFLICT (id) DO NOTHING;
 
 -- profile domain

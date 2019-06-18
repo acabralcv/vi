@@ -9,9 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.*;
 
 public class UtilsDate {
 
@@ -24,6 +22,17 @@ public class UtilsDate {
         Date currentDate = calendar.getTime();
 
         return currentDate;
+    }
+
+    public static String getStrDateTime(@Nullable String format){
+
+        if(format == null || format.equalsIgnoreCase(""))
+            format = "d-MM-YYYY";
+
+        GregorianCalendar calendarExpected = new GregorianCalendar(TimeZone.getTimeZone("GMT+3:00"), new Locale("pt", "PT"));
+        String data = calendarExpected.toZonedDateTime().format(DateTimeFormatter.ofPattern("d-MM-YYYY"));
+
+        return data;
     }
 
     /**

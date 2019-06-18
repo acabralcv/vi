@@ -3,12 +3,13 @@
 
 	<div layout:fragment="content">
 
-		<br />
-		
-		<div>Indentity: <span th:text="${appKey}"></span></div>
-		
-		<br />
-		<br />
+
+        <!-- USER TAKS -->
+        <div>
+            <h4><strong>Tarefas</strong></h4>
+            <!--span th:text="${userTasks == null}">[Sem tarefas]</span-->
+            <span th:replace="/views/task/task_view:: TaskView(${userTasks})"></span>
+        </div>
 
 		<div class="row">
 
@@ -72,6 +73,9 @@
 		<!-- /.col -->
 
 		</div>
+
+
+
 
 		<div class="row">
 
@@ -162,7 +166,6 @@
 			  </div>
 			  <!-- /.box -->
 			</div>
-		
 
 			<!-- Left col -->
 			<div class="col-md-6">
@@ -304,6 +307,13 @@
 		</div>
 
 
+
+		<br />
+
+		<div>Indentity: <span th:text="${appKey}"></span></div>
+
+		<br />
+		<br />
 
 	</div>
 	

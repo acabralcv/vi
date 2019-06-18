@@ -24,7 +24,7 @@ public class WorkflowsControllers {
     private WorkflowRepository workflowRepository;
 
     @Autowired
-    private EventslogRepository eventslogRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private StatesRepository statesRepository;
@@ -44,7 +44,7 @@ public class WorkflowsControllers {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", workflows ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -68,7 +68,7 @@ public class WorkflowsControllers {
             return ResponseEntity.ok().body(new BaseResponse(workflow != null ? 1 : 0, "ok", workflow));
 
         } catch (Exception e) {
-            new EventsLogService(eventslogRepository).AddEventologs(null, "Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null, "Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()", e.getMessage(), null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -85,13 +85,16 @@ public class WorkflowsControllers {
             ArrayList<States> states = new ArrayList<>();
             Optional<Workflow> workflowOptional = workflowRepository.findById(id);
 
+            //ultimos 6
+            Pageable pageableBuilded = PageRequest.of(0, 10, Sort.by("step").descending());
+
             if(workflowOptional.isPresent())
                 states = statesRepository.findByWorkflow(workflowOptional.get());
 
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", states ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -114,7 +117,7 @@ public class WorkflowsControllers {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", pais));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }

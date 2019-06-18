@@ -24,49 +24,6 @@ import java.util.UUID;
 @RestController
 public class EventslogsController {
 
-    @Autowired
-    EventslogRepository eventslogRepository;
-
-    @RequestMapping(value = {"api/eventslog"}, method = {RequestMethod.GET})
-    public ResponseEntity actionDetails(@PageableDefault(sort = {"message"}, value = 10, page = 0) Pageable pageable) {
-
-        try  {
-
-
-            Pageable pageableBuilded = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dateCreated")
-                    .descending()
-                    .and(Sort.by("message").ascending()));
-            Page<Eventslog> eventslog = eventslogRepository.findByStatus(Helper.STATUS_ACTIVE, pageableBuilded);
-
-            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", eventslog ));
-
-        }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
-                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
-            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
-        }
-    }
-
-
-    @RequestMapping(value = {"api/eventslog/details"}, method = {RequestMethod.GET})
-    public ResponseEntity actionDetails(@RequestParam(name = "id") UUID id) {
-
-        try {
-
-            Optional<Eventslog> oEventslog = (Optional) eventslogRepository.findById(id);
-
-            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oEventslog != null ? 1 : 0,"ok", oEventslog));
-
-        }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
-                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
-            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
-        }
-    }
-
-
-
-
 
 
 }

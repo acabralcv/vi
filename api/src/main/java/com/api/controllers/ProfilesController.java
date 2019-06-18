@@ -4,8 +4,8 @@ import com.library.helpers.BaseResponse;
 import com.library.helpers.Helper;
 import com.library.helpers.UtilsDate;
 import com.library.models.Profile;
-import com.library.repository.EventslogRepository;
 import com.library.repository.ProfileRepository;
+import com.library.repository.UserRepository;
 import com.library.service.EventsLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,7 +27,7 @@ public class ProfilesController {
     private ProfileRepository profileRepository;
 
     @Autowired
-    private EventslogRepository eventslogRepository;
+    private UserRepository userRepository;
 
     /**
      *
@@ -44,7 +44,7 @@ public class ProfilesController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oProfile != null ? 1 : 0,"ok", oProfile));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -68,7 +68,7 @@ public class ProfilesController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", profiles ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -95,7 +95,7 @@ public class ProfilesController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", objProfile ));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -122,7 +122,7 @@ public class ProfilesController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", objProfile));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
@@ -148,7 +148,7 @@ public class ProfilesController {
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", objProfile));
 
         }catch (Exception e){
-            new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }

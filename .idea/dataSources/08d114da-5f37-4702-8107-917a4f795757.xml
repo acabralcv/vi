@@ -54,8 +54,8 @@
     </role>
     <schema id="12" parent="2" name="public">
       <ObjectId>2200</ObjectId>
-      <IntrospectionTimestamp>2019-06-09.15:38:03.177</IntrospectionTimestamp>
-      <IntrospectionStateNumber>7289</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2019-06-15.21:20:16.007</IntrospectionTimestamp>
+      <IntrospectionStateNumber>7397</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -124,11 +124,11 @@
     </table>
     <table id="30" parent="12" name="tbl_tasks">
       <ObjectId>67601</ObjectId>
-      <StateNumber>7103</StateNumber>
+      <StateNumber>7394</StateNumber>
     </table>
     <table id="31" parent="12" name="tbl_user">
       <ObjectId>61142</ObjectId>
-      <StateNumber>7187</StateNumber>
+      <StateNumber>7390</StateNumber>
     </table>
     <table id="32" parent="12" name="tbl_user_profiles">
       <ObjectId>61147</ObjectId>
@@ -136,7 +136,7 @@
     </table>
     <table id="33" parent="12" name="wf_states">
       <ObjectId>67786</ObjectId>
-      <StateNumber>7289</StateNumber>
+      <StateNumber>7388</StateNumber>
     </table>
     <table id="34" parent="12" name="wf_workflow">
       <ObjectId>67794</ObjectId>
@@ -1197,94 +1197,126 @@ value</ColNames>
       <StateNumber>7102</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <index id="191" parent="30" name="tbl_tasks_pkey">
+    <column id="191" parent="30" name="id_tabela_alvo">
+      <Position>9</Position>
+      <DataType>uuid|0</DataType>
+      <StateNumber>7386</StateNumber>
+      <TypeId>2950</TypeId>
+    </column>
+    <column id="192" parent="30" name="is_viewed">
+      <Position>12</Position>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>7393</StateNumber>
+      <DefaultExpression>0</DefaultExpression>
+      <TypeId>23</TypeId>
+    </column>
+    <index id="193" parent="30" name="tbl_tasks_pkey">
       <ObjectId>67607</ObjectId>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="192" parent="30" name="tbl_tasks_pkey">
+    <key id="194" parent="30" name="tbl_tasks_pkey">
       <ObjectId>67608</ObjectId>
       <ColNames>id</ColNames>
       <UnderlyingIndexName>tbl_tasks_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <column id="193" parent="31" name="id">
+    <foreign-key id="195" parent="30" name="fk9qa4o7ub0m6y6tsb30nag56u2">
+      <ObjectId>67811</ObjectId>
+      <ColNames>target_user_id</ColNames>
+      <RefTableId>61142</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>tbl_user</RefTableName>
+      <RefKeyName>tbl_user_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="196" parent="30" name="fk8jlsssr2kyavia5ixja3ine5q">
+      <ObjectId>67816</ObjectId>
+      <ColNames>user_id</ColNames>
+      <RefTableId>61142</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>tbl_user</RefTableName>
+      <RefKeyName>tbl_user_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="197" parent="31" name="id">
       <Position>1</Position>
       <DataType>uuid|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7007</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <column id="194" parent="31" name="date_created">
+    <column id="198" parent="31" name="date_created">
       <Position>2</Position>
       <DataType>timestamp|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7007</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <column id="195" parent="31" name="date_updated">
+    <column id="199" parent="31" name="date_updated">
       <Position>3</Position>
       <DataType>timestamp|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7007</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <column id="196" parent="31" name="status">
+    <column id="200" parent="31" name="status">
       <Position>4</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7007</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="197" parent="31" name="access_token">
+    <column id="201" parent="31" name="access_token">
       <Position>5</Position>
       <DataType>varchar(256)|0</DataType>
       <StateNumber>7007</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="198" parent="31" name="is_editable">
+    <column id="202" parent="31" name="is_editable">
       <Position>6</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7007</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="199" parent="31" name="name">
+    <column id="203" parent="31" name="name">
       <Position>7</Position>
       <DataType>varchar(150)|0</DataType>
       <StateNumber>7007</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="200" parent="31" name="username">
+    <column id="204" parent="31" name="username">
       <Position>8</Position>
       <DataType>varchar(30)|0</DataType>
       <StateNumber>7007</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="201" parent="31" name="email">
+    <column id="205" parent="31" name="email">
       <Position>9</Position>
       <DataType>varchar(30)|0</DataType>
       <StateNumber>7057</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="202" parent="31" name="profile_image_id">
+    <column id="206" parent="31" name="profile_image_id">
       <Position>10</Position>
       <DataType>uuid|0</DataType>
       <StateNumber>7075</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <index id="203" parent="31" name="tbl_user_pkey">
+    <index id="207" parent="31" name="tbl_user_pkey">
       <ObjectId>61145</ObjectId>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="204" parent="31" name="tbl_user_pkey">
+    <key id="208" parent="31" name="tbl_user_pkey">
       <ObjectId>61146</ObjectId>
       <ColNames>id</ColNames>
       <UnderlyingIndexName>tbl_user_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="205" parent="31" name="fk5cij49lay14rii7ufktck2vl7">
+    <foreign-key id="209" parent="31" name="fk5cij49lay14rii7ufktck2vl7">
       <ObjectId>67596</ObjectId>
       <ColNames>profile_image_id</ColNames>
       <RefTableId>67558</RefTableId>
@@ -1293,35 +1325,35 @@ value</ColNames>
       <RefKeyName>tbl_images_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="206" parent="32" name="id">
+    <column id="210" parent="32" name="id">
       <Position>1</Position>
       <DataType>uuid|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7008</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <column id="207" parent="32" name="date_created">
+    <column id="211" parent="32" name="date_created">
       <Position>2</Position>
       <DataType>timestamp|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7008</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <column id="208" parent="32" name="date_updated">
+    <column id="212" parent="32" name="date_updated">
       <Position>3</Position>
       <DataType>timestamp|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7008</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <column id="209" parent="32" name="status">
+    <column id="213" parent="32" name="status">
       <Position>4</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7008</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="210" parent="32" name="force_access_check">
+    <column id="214" parent="32" name="force_access_check">
       <Position>5</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
@@ -1329,7 +1361,7 @@ value</ColNames>
       <DefaultExpression>0</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="211" parent="32" name="is_editable">
+    <column id="215" parent="32" name="is_editable">
       <Position>6</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
@@ -1337,32 +1369,32 @@ value</ColNames>
       <DefaultExpression>1</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="212" parent="32" name="profile_id">
+    <column id="216" parent="32" name="profile_id">
       <Position>7</Position>
       <DataType>uuid|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7008</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <column id="213" parent="32" name="user_id">
+    <column id="217" parent="32" name="user_id">
       <Position>8</Position>
       <DataType>uuid|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7008</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <index id="214" parent="32" name="tbl_user_profiles_pkey">
+    <index id="218" parent="32" name="tbl_user_profiles_pkey">
       <ObjectId>61152</ObjectId>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="215" parent="32" name="tbl_user_profiles_pkey">
+    <key id="219" parent="32" name="tbl_user_profiles_pkey">
       <ObjectId>61153</ObjectId>
       <ColNames>id</ColNames>
       <UnderlyingIndexName>tbl_user_profiles_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="216" parent="32" name="fkreokjx7owhsqfatl27vj6kciv">
+    <foreign-key id="220" parent="32" name="fkreokjx7owhsqfatl27vj6kciv">
       <ObjectId>61170</ObjectId>
       <ColNames>profile_id</ColNames>
       <RefTableId>61129</RefTableId>
@@ -1371,7 +1403,7 @@ value</ColNames>
       <RefKeyName>tbl_profile_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="217" parent="32" name="fk8brvep1gpu2byfd1dg9jw7nic">
+    <foreign-key id="221" parent="32" name="fk8brvep1gpu2byfd1dg9jw7nic">
       <ObjectId>61175</ObjectId>
       <ColNames>user_id</ColNames>
       <RefTableId>61142</RefTableId>
@@ -1380,28 +1412,28 @@ value</ColNames>
       <RefKeyName>tbl_user_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="218" parent="33" name="id">
+    <column id="222" parent="33" name="id">
       <Position>1</Position>
       <DataType>uuid|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7287</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <column id="219" parent="33" name="date_created">
+    <column id="223" parent="33" name="date_created">
       <Position>2</Position>
       <DataType>timestamp|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7287</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <column id="220" parent="33" name="date_updated">
+    <column id="224" parent="33" name="date_updated">
       <Position>3</Position>
       <DataType>timestamp|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7287</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <column id="221" parent="33" name="status">
+    <column id="225" parent="33" name="status">
       <Position>4</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
@@ -1409,21 +1441,21 @@ value</ColNames>
       <DefaultExpression>1</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="222" parent="33" name="is_viewable">
+    <column id="226" parent="33" name="is_viewable">
       <Position>5</Position>
       <DataType>integer|0</DataType>
       <StateNumber>7287</StateNumber>
       <DefaultExpression>1</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="223" parent="33" name="name">
+    <column id="227" parent="33" name="name">
       <Position>6</Position>
       <DataType>varchar(128)|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7287</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="224" parent="33" name="step">
+    <column id="228" parent="33" name="step">
       <Position>7</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
@@ -1431,24 +1463,31 @@ value</ColNames>
       <DefaultExpression>1</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="225" parent="33" name="workflow_id">
+    <column id="229" parent="33" name="workflow_id">
       <Position>8</Position>
       <DataType>uuid|0</DataType>
       <StateNumber>7287</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <index id="226" parent="33" name="wf_states_pkey">
+    <column id="230" parent="33" name="css_class">
+      <Position>9</Position>
+      <DataType>varchar(256)|0</DataType>
+      <StateNumber>7388</StateNumber>
+      <DefaultExpression>&apos;default&apos;::character varying</DefaultExpression>
+      <TypeId>1043</TypeId>
+    </column>
+    <index id="231" parent="33" name="wf_states_pkey">
       <ObjectId>67792</ObjectId>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="227" parent="33" name="wf_states_pkey">
+    <key id="232" parent="33" name="wf_states_pkey">
       <ObjectId>67793</ObjectId>
       <ColNames>id</ColNames>
       <UnderlyingIndexName>wf_states_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="228" parent="33" name="fkkapkufbel7rhsl3tiv3gkyqno">
+    <foreign-key id="233" parent="33" name="fkkapkufbel7rhsl3tiv3gkyqno">
       <ObjectId>67801</ObjectId>
       <ColNames>workflow_id</ColNames>
       <RefTableId>67794</RefTableId>
@@ -1457,28 +1496,28 @@ value</ColNames>
       <RefKeyName>wf_workflow_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="229" parent="34" name="id">
+    <column id="234" parent="34" name="id">
       <Position>1</Position>
       <DataType>uuid|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7288</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <column id="230" parent="34" name="date_created">
+    <column id="235" parent="34" name="date_created">
       <Position>2</Position>
       <DataType>timestamp|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7288</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <column id="231" parent="34" name="date_updated">
+    <column id="236" parent="34" name="date_updated">
       <Position>3</Position>
       <DataType>timestamp|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7288</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <column id="232" parent="34" name="status">
+    <column id="237" parent="34" name="status">
       <Position>4</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
@@ -1486,39 +1525,39 @@ value</ColNames>
       <DefaultExpression>1</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="233" parent="34" name="is_concluded">
+    <column id="238" parent="34" name="is_concluded">
       <Position>5</Position>
       <DataType>integer|0</DataType>
       <StateNumber>7288</StateNumber>
       <DefaultExpression>0</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="234" parent="34" name="name">
+    <column id="239" parent="34" name="name">
       <Position>6</Position>
       <DataType>varchar(128)|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7288</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="235" parent="34" name="process_code">
+    <column id="240" parent="34" name="process_code">
       <Position>7</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>7288</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="236" parent="34" name="target_table_id">
+    <column id="241" parent="34" name="target_table_id">
       <Position>8</Position>
       <DataType>uuid|0</DataType>
       <StateNumber>7288</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <index id="237" parent="34" name="wf_workflow_pkey">
+    <index id="242" parent="34" name="wf_workflow_pkey">
       <ObjectId>67799</ObjectId>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="238" parent="34" name="wf_workflow_pkey">
+    <key id="243" parent="34" name="wf_workflow_pkey">
       <ObjectId>67800</ObjectId>
       <ColNames>id</ColNames>
       <UnderlyingIndexName>wf_workflow_pkey</UnderlyingIndexName>
