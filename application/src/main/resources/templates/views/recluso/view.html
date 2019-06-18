@@ -64,9 +64,9 @@
                         <span th:unless="${oRecluso.profileImage != null}">
                             <div style="width:128px;height: 128px;background-color: #ccc">Foto</div>
                         </span>
-                        <button th:data-user_image_id="${oRecluso.id}" class="btn btn-default" onclick="modelRecluso.openReclusoImagesModal(this.getAttribute('data-user_image_id'))" style="position: absolute;left: 101px;top: 133px;">
-                            <i class="fas fa-pencil-alt" alt="Alterar a foto do perfil do recluso"></i>
-                        </button>
+                        <!--<button th:data-user_image_id="${oRecluso.id}" class="btn btn-default" onclick="modelRecluso.openReclusoImagesModal(this.getAttribute('data-user_image_id'))" style="position: absolute;left: 101px;top: 133px;">-->
+                            <!--<i class="fas fa-pencil-alt" alt="Alterar a foto do perfil do recluso"></i>-->
+                        <!--</button>-->
                     </div>
 
                     <hr />
@@ -132,7 +132,7 @@
 
                         <tr>
                             <th>Residência</th>
-                            <td th:text="${oRecluso.residencia}">#</td>
+                            <td th:text="${oRecluso.bairro}">#</td>
                         </tr>
 
                     </table>

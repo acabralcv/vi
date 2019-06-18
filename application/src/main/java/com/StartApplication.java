@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing
-@EnableAutoConfiguration
+//@EnableAutoConfiguration
 @SpringBootApplication(scanBasePackages = {"com.app", "com.api"})
 @EntityScan(basePackages = {"com.library.models"})  // scan JPA entities
 public class StartApplication {
