@@ -3,6 +3,8 @@ package com.library.service;
 import com.library.helpers.Helper;
 import com.library.helpers.UtilsDate;
 import com.library.models.Eventslog;
+import com.library.models.Pais;
+import com.library.models.Recluso;
 import com.library.models.User;
 import com.library.repository.EventslogRepository;
 import com.library.repository.UserRepository;
@@ -106,5 +108,32 @@ public class EventsLogService {
                 + " Target: " + targetName);
 
         return message;
+    }
+
+
+
+    public String addReclusoLog(Recluso recluso){
+
+        if(recluso == null) return "";
+
+
+        String nome = recluso.getNome(),
+                pais = recluso.getNacionalidade() != null ? recluso.getNacionalidade().getNome() : "[Não especificado]",
+                ilha = recluso.getIlha() != null ? recluso.getIlha().getNome() : "[Não especificado]",
+                concelho = recluso.getConcelho() != null ? recluso.getConcelho().getNome() : "[Não especificado]",
+                freguesia = recluso.getFreguesia() != null ? recluso.getFreguesia().getNome() : "[Não especificado]",
+                zona = recluso.getZona() != null ? recluso.getZona() : "[Não especificado]",
+                bairo = recluso.getBairo() != null ? recluso.getBairo() : "[Não especificado]",
+                dataRegisto = UtilsDate.getStrDateTime(null),
+                dataNascimento = UtilsDate.getStrDateTime(null);
+
+
+        new EventsLogService(userRepository).AddEventologs(Helper.LogsType.LOGS_RECLUSO_CREATED.toString(),"Novo recluso registrado. ", recluso.getNome(),null, null);
+        String reclusoLog = String.format("USER_LOG at : %1$s; %2$s; %3$s; %4$s; %5$s; %6$s; %7$s; %8$s; %9$s", dataRegisto, nome, pais, ilha, concelho, freguesia, zona, bairo, dataNascimento);
+
+        System.out.println(reclusoLog);
+        LOG.log(Level.INFO, reclusoLog);
+
+        return  "";
     }
 }

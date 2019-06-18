@@ -60,6 +60,8 @@ public class ReclusoController {
         if(oRecluso == null)
             throw new ResourceNotFoundException("Não possivel encontrar o recluso solicitado");
 
+        new EventsLogService().addReclusoLog(oRecluso);
+
         model.addAttribute("oRecluso", oRecluso);
 
         return  "/views/recluso/view";

@@ -53,7 +53,7 @@ public class TasksController {
 
     }
 
-    @RequestMapping(value = "api/user-tasks", method = RequestMethod.GET)
+    @RequestMapping(value = "api/tasks/user-tasks", method = RequestMethod.GET)
     public ResponseEntity actionIndex(ModelMap model, @RequestParam(name = "user_id") UUID user_id, Pageable pageable) {
 
         try{
@@ -67,7 +67,7 @@ public class TasksController {
                         PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dateCreated").descending()));
             }
 
-            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", null ));
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", tasks ));
 
         }catch (Exception e){
             new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
@@ -115,6 +115,34 @@ public class TasksController {
 
 
             Tasks tasksSaved = tasksRepository.save(task);
+
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", tasksSaved ));
+
+        }catch (Exception e){
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
+    }
+
+
+    /**
+     *
+     * @param task
+     * @return
+     */
+    @RequestMapping(value = {"api/tasks/delete"}, method = {RequestMethod.POST})
+    public ResponseEntity actionDelete(@RequestBody Tasks task) {
+
+        try {
+
+            Tasks oTask = tasksRepository.findById(task.getId())
+                    .orElseThrow(() -> new Exception("Tarefa não encontrada '" + task.getId().toString() + "'"));
+
+            oTask.setStatus(Helper.STATUS_DISABLED);
+            oTask.setDateUpdated(UtilsDate.getDateTime());
+
+            Tasks tasksSaved = tasksRepository.save(oTask);
 
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", tasksSaved ));
 
