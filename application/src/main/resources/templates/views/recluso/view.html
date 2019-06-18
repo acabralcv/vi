@@ -107,45 +107,13 @@
                             <th>Estado civil</th>
                             <td th:text="${oRecluso.estadoCivil != null ? oRecluso.estadoCivil.name : '' }">#</td>
                         </tr>
-                    </table>
-
-
-                    <!-- Endereço e contatos -->
-                    <table class="table table-striped table-bordered">
-                        <tr>
-                            <th colspan="2">
-                                <h4>
-                                    <strong>Endereço e contatos</strong>
-                                </h4>
-                            </th>
-                        </tr>
-
                         <tr>
                             <th>Nacionalidade</th>
                             <td th:text="${oRecluso.nacionalidade != null ? oRecluso.nacionalidade.nome : ''}">#</td>
                         </tr>
-
                         <tr>
                             <th>Ilha</th>
                             <td th:text="${oRecluso.ilha != null ? oRecluso.ilha.nome : ''}">#</td>
-                        </tr>
-
-                        <tr>
-                            <th>Residência</th>
-                            <td th:text="${oRecluso.bairro}">#</td>
-                        </tr>
-
-                    </table>
-
-
-                    <!-- Outras informações -->
-                    <table class="table table-striped table-bordered">
-                        <tr>
-                            <th colspan="2">
-                                <h4>
-                                    <strong>Outras Informações</strong>
-                                </h4>
-                            </th>
                         </tr>
 
                         <tr>
@@ -166,9 +134,7 @@
                             <th>Ultima atualização</th>
                             <td th:text="${#dates.format(oRecluso.dateUpdated, 'dd/MM/yyyy')}">#</td>
                         </tr>
-
                     </table>
-
                   </div>
             </div>
         </div>
@@ -178,3 +144,6 @@
 
 </body>
 </html>
+
+
+

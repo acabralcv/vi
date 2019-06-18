@@ -1,63 +1,49 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
 <head>
-    <title>Recluso - <span th:text="${oCadeia.nome}"></span></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Profile feature scripts -->
+    <span layout:fragment="custumScripts">
+        <!-- <script th:src="@{/js/ReclusoController.js}"></script> -->
+    </span>
+
+    <title>Cadeias</title>
+
 </head>
 <body>
 
 <div class="col-xs-12 col-md-12" layout:fragment="content">
 
-    <!-- TO BE USED TO GET PROFILES -->
-    <input type="hidden" th:value="${oCadeia.id}" id="action_user_id" class="form-control" />
-
-    <span th:replace="/views/cadeia/upload_image_modal:: ActionModal(${oCadeia})"></span>
-
     <div clas="col">
-        <a th:href="@{|/cadeias|}" class="btn btn-default">Voltar</a>
-        <a th:href="@{|/cadeias/update/${oCadeia.id}|}" class="btn btn-success">Atualizar</a>
-        <a th:href="@{|/cadeias/delete/${oCadeia.id}|}" class="btn btn-danger" onclick="return confirm('Tem certeza de que deseja remover este cadeia')">Remover</a>
+        <a th:href="@{|/admin/cadeias|}" class="btn btn-default">Voltar</a>
+        <a th:href="@{|/admin/cadeias/update/${oCadeia.id}|}" class="btn btn-success">Atualizar</a>
+        <a th:href="@{|/admin/cadeias/delete/${oCadeia.id}|}" class="btn btn-danger" onclick="return confirm('Tem certeza de que deseja remover este item')">Remover</a>
     </div>
 
-    <div class="col" style="margin-top: 35px">
+    <div clas="col" style="margin-top: 30px">
+
         <div class="panel panel-primary">
-            <div class="panel-heading">Cadeia - <span th:text="${oCadeia.nome}"></span></div>
+            <div class="panel-heading">Perfil - <span th:text="${oCadeia.name}"></span></div>
             <div class="panel-body">
-
-                <div clas="col">
-                        <span th:if="${oCadeia.profileImage != null}">
-                            <img th:src="@{/api/storage/images-details?id={id}(id=${oCadeia.profileImage.storageId})}" style="width:128px;height: 128px;"/>
-                        </span>
-                    <span th:unless="${oCadeia.profileImage != null}">
-                            <div style="width:128px;height: 128px;background-color: #ccc">Foto</div>
-                        </span>
-                    <button th:data-user_image_id="${oCadeia.id}" class="btn btn-default" onclick="modelCadeia.openCadeiaImagesModal(this.getAttribute('data-user_image_id'))" style="position: absolute;left: 101px;top: 133px;">
-                        <i class="fas fa-pencil-alt" alt="Alterar a foto do perfil da cadeia"></i>
-                    </button>
-                </div>
-
 
                 <table class="table table-striped table-bordered">
                     <tr>
                         <th>Nome</th>
-                        <td th:text="${oCadeia.nome}">#</td>
-                    </tr>
-                    <tr>
-                        <th>Sexo</th>
-                        <td th:text="${oCadeia.localizacao}">#</td>
+                        <td th:text="${oCadeia.name}">#</td>
                     </tr>
                     <tr>
                         <th>Data de criação</th>
-                        <td th:text="${oCadeia.dateCreated}">#</td>
+                        <td th:text="${#dates.format(oCadeia.dateUpdated, 'dd/MM/yyyy')}">#</td>
                     </tr>
                     <tr>
                         <th>Ultima atualização</th>
-                        <td th:text="${oCadeia.dateCreated}">#</td>
+                        <td th:text="${#dates.format(oCadeia.dateUpdated, 'dd/MM/yyyy')}">#</td>
                     </tr>
                 </table>
 
             </div>
         </div>
+
     </div>
 
 </div>
