@@ -1,0 +1,34 @@
+<span th:fragment="formComplexo(objComplexo)">
+
+   <form action="#" th:object="${objComplexo}" method="post">
+
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" th:field="*{nome}" id="name" class="form-control" required/>
+                    <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+            <div class="form-group">
+                <label for="cadeia">Localização</label>
+                <div class="form-group">
+                   <select th:field="*{cadeia}" id="cadeia" class="form-control">
+                        <option value="">-- Selecionar cadeia --</option>
+                        <option th:each="objCadeia : ${cadeiaList}" th:value="${objCadeia.id}" th:text="${objCadeia.nome}">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+             <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+
+    </form>
+
+</span>

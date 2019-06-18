@@ -25,6 +25,9 @@ public class States extends AuditModel{
     @JoinColumn(name = "workflow_id", referencedColumnName = "id")
     private Workflow workflow;
 
+    @Column(name = "css_class", nullable = true, columnDefinition = "varchar(256) default 'default' ")
+    private String cssClass;;
+
     @Column(name = "is_viewable", nullable = true, columnDefinition = "int default 1")
     private Integer isViewable;
 
@@ -66,5 +69,13 @@ public class States extends AuditModel{
 
     public void setStep(Integer step) {
         this.step = step;
+    }
+
+    public String getCssClass() {
+        return cssClass;
+    }
+
+    public void setCssClass(String cssClass) {
+        this.cssClass = cssClass;
     }
 }

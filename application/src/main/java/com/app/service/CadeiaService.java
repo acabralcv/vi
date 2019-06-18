@@ -4,11 +4,22 @@ import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
 import com.library.helpers.BaseResponse;
 import com.library.models.Cadeia;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 
 public class CadeiaService {
-    private static final ServiceProxy oServiceProxy = new ServiceProxy();
 
-    public static Cadeia findOne(String id){
+    @Autowired
+    private final Environment env;
+
+    private final ServiceProxy oServiceProxy;
+
+    public CadeiaService(Environment _env){
+        this.env = _env;
+        oServiceProxy = new ServiceProxy(this.env);
+    }
+
+    public Cadeia findOne(String id){
 
         BaseResponse oBaseResponse = oServiceProxy
                 .buildParams("api/cadeias/details", new Params().Add(new Params("id", id)).Get())
@@ -16,8 +27,8 @@ public class CadeiaService {
                 .get(BaseResponse.class);
         oServiceProxy.close();
 
-        Cadeia oCadeia = (Cadeia) BaseResponse.convertToModel(oBaseResponse, new Cadeia());
-
-        return oCadeia;
+        return (Cadeia) BaseResponse.convertToModel(oBaseResponse, new Cadeia());
     }
+
+
 }

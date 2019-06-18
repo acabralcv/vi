@@ -8,6 +8,8 @@ import com.library.models.User;
 import com.library.models.Workflow;
 import net.bytebuddy.agent.builder.AgentBuilder;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 
 import java.awt.print.Pageable;
 import java.util.ArrayList;
@@ -17,11 +19,22 @@ import java.util.UUID;
 
 public class WorkflowService {
 
-    private static final ServiceProxy oServiceProxy = new ServiceProxy();
+    @Autowired
+    private final Environment env;
 
-    public static Workflow findOne(UUID id){
+    private final ServiceProxy oServiceProxy;
 
-       ServiceProxy oServiceProxy = new ServiceProxy();
+    public WorkflowService(Environment _env){
+        this.env = _env;
+        oServiceProxy = new ServiceProxy(this.env);
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public Workflow findOne(UUID id){
 
         BaseResponse oBaseResponse = oServiceProxy
                 .buildParams("api/worflows/details", new Params().Add(new Params("id", id.toString())).Get())
@@ -33,11 +46,16 @@ public class WorkflowService {
        return (Workflow) BaseResponse.convertToModel(oBaseResponse, new Workflow());
     }
 
-    public static JSONObject findAll(org.springframework.data.domain.Pageable pageable){
+    /**
+     *
+     * @param pageable
+     * @return
+     */
+    public JSONObject findAll(org.springframework.data.domain.Pageable pageable){
 
         //get info
-        BaseResponse objResponse = (new ServiceProxy())
-                .getJsonData("api/worflows", (new ServiceProxy()).encodePageableParams(pageable));
+        BaseResponse objResponse = oServiceProxy
+                .getJsonData("api/worflows", oServiceProxy.encodePageableParams(pageable));
 
         //Pageable result objt
         JSONObject dataResponse = (JSONObject) objResponse.getData();
@@ -45,13 +63,18 @@ public class WorkflowService {
         return dataResponse;
     }
 
-    public static Workflow findByTarget(UUID targetTableId){
+    /**
+     *
+     * @param targetTableId
+     * @return
+     */
+    public Workflow findByTarget(UUID targetTableId){
 
-        ServiceProxy oServiceProxy = new ServiceProxy();
         BaseResponse oBaseResponse = oServiceProxy
                 .buildParams("api/worflows/details", new Params().Add(new Params("targetTableId", targetTableId.toString())).Get())
                 .getTarget()
                 .get(BaseResponse.class);
+
         oServiceProxy.close();
 
         Workflow oWorkflow = (Workflow) BaseResponse.convertToModel(oBaseResponse, new Workflow());
@@ -59,12 +82,18 @@ public class WorkflowService {
         return oWorkflow;
     }
 
-    public static ArrayList<States> getWfStates(UUID workflowId){
+    /**
+     *
+     * @param workflowId
+     * @return
+     */
+    public ArrayList<States> getWfStates(UUID workflowId){
 
         BaseResponse oBaseResponse = oServiceProxy
                 .buildParams("api/worflows/states", new Params().Add(new Params("id", workflowId.toString())).Get())
                 .getTarget()
                 .get(BaseResponse.class);
+
         oServiceProxy.close();
 
         //the result si type of ArrayList<States>

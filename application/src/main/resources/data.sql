@@ -21,9 +21,12 @@
  */
 
 
+/*
+IMPORTANTE !caso for necessario comentar, não esqueça de voltar a comentar
+delete from tbl_recluso;
+delete from tbl_domain;
 
-DROP TABLE IF EXISTS tbl_states;
-DROP TABLE IF EXISTS tbl_workflow;
+*/
 
 
 -- pais initialization
