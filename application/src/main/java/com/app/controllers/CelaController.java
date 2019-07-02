@@ -2,16 +2,14 @@ package com.app.controllers;
 
 
 import com.app.exceptions.ResourceNotFoundException;
-import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
+import com.app.service.CelaService;
 import com.app.service.CadeiaService;
-import com.app.service.ComplexoService;
 import com.library.helpers.BaseResponse;
 import com.library.helpers.HelperPaging;
-import com.library.models.Cadeia;
-import com.library.models.Complexo;
-import com.library.models.Profile;
 import org.json.simple.JSONObject;
+import com.library.models.Ala;
+import com.library.models.Cela;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +28,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @Controller
-public class ComplexoController {
+public class CelaController {
 
 
 
@@ -43,26 +41,26 @@ public class ComplexoController {
      * @param pageable
      * @return
      */
-    @RequestMapping(value = "admin/complexos", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/celas", method = RequestMethod.GET)
     public String actionIndex(ModelMap model, @PageableDefault(sort = { "name"}, value = 10, page = 0) Pageable pageable) {
 
 
         ServiceProxy oServiceProxy = new ServiceProxy(env);
         //get info
         BaseResponse objResponse = oServiceProxy
-                .getJsonData("api/complexos", oServiceProxy.encodePageableParams(pageable));
+                .getJsonData("api/celas", oServiceProxy.encodePageableParams(pageable));
         oServiceProxy.close();
 
         //Pageable result objt
         JSONObject dataResponse = (JSONObject) objResponse.getData();
         if(dataResponse != null) {
         //check result
-        ArrayList<Complexo> Listacomplexos = (ArrayList<Complexo>) dataResponse.get("content");
+        ArrayList<Cela> Listacelas = (ArrayList<Cela>) dataResponse.get("content");
 
             model.addAttribute("objPaging", (new HelperPaging().getResponsePaging(pageable, dataResponse)));
-            model.addAttribute("complexos", Listacomplexos);
+            model.addAttribute("celas", Listacelas);
             }
-        return  "/views/complexo/index";
+        return  "/views/cela/index";
     }
 
     /**
@@ -71,30 +69,30 @@ public class ComplexoController {
      * @param id
      * @return
      */
-    @RequestMapping(value = {"admin/complexos/view/{id}"}, method = {RequestMethod.GET})
+    @RequestMapping(value = {"admin/celas/view/{id}"}, method = {RequestMethod.GET})
     public String actionView(ModelMap model, @PathVariable UUID id) {
 
-        Complexo oComplexo = new ComplexoService(env).findOne(id.toString());
+        Cela oCela = new CelaService(env).findOne(id.toString());
 
-        if(oComplexo == null)
-            throw new ResourceNotFoundException("Não possivel encontrar informaçao do 'Complexo' solicitado");
+        if(oCela == null)
+            throw new ResourceNotFoundException("Não possivel encontrar informaçao do 'Cela' solicitado");
 
-        //ArrayList<Setor> sectorList = new SectorService(env).findAllByComplexo(id);
+        //ArrayList<Cela> CelaList = new CelaService(env).findAllByAla(id);
 
-        model.addAttribute("oComplexo", oComplexo);
-        return  "/views/complexo/view";
+        model.addAttribute("oCela", oCela);
+        return  "/views/cela/view";
     }
 
     /**
      *
-     * @param objComplexo
+     * @param objCela
      * @param result
      * @param model
      * @param request
      * @return
      */
-    @RequestMapping(value = {"admin/complexos/create"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String actionCreate(@Valid @ModelAttribute Complexo objComplexo, BindingResult result,
+    @RequestMapping(value = {"admin/celas/create"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String actionCreate(@Valid @ModelAttribute Cela objCela, BindingResult result,
                                ModelMap model, HttpServletRequest request) {
 
         if (request.getMethod().equals("POST")) {
@@ -102,35 +100,35 @@ public class ComplexoController {
             if (!result.hasErrors()){
 
                 ServiceProxy oServiceProxy = new ServiceProxy(env);
-                BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/complexos/create", objComplexo, new ArrayList<>() );
+                BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/celas/create", objCela, new ArrayList<>() );
                 oServiceProxy.close();
 
-                Complexo createdCadeia = (Complexo) BaseResponse.convertToModel(oBaseResponse, new Complexo());
+                Cela createdCela = (Cela) BaseResponse.convertToModel(oBaseResponse, new Cela());
 
-                if(createdCadeia != null)
-                    return "redirect:/admin/complexos/view/" + createdCadeia.getId();
+                if(createdCela != null)
+                    return "redirect:/admin/celas/view/" + createdCela.getId();
                 else
                     throw new InternalError(oBaseResponse.getMessage());
             }
         }
 
-        model.addAttribute("objComplexo", objComplexo);
-        model.addAttribute("cadeiaList", new CadeiaService(env).findAll(30));
+        model.addAttribute("objCela", objCela);
+        model.addAttribute("alaList", new CadeiaService(env).findAll(30));
 
-        return "views/complexo/create";
+        return "views/cela/create";
     }
 
 
     /**
      *
-     * @param objComplexo
+     * @param objCela
      * @param result
      * @param model
      * @param request
      * @return
      */
-    @RequestMapping(value = {"admin/complexos/update/{id}"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String actionUpdate(@ModelAttribute Complexo objComplexo, @PathVariable UUID id, BindingResult result,
+    @RequestMapping(value = {"admin/celas/update/{id}"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String actionUpdate(@ModelAttribute Cela objCela, @PathVariable UUID id, BindingResult result,
                                ModelMap model, HttpServletRequest request) {
 
         if (request.getMethod().equals("POST")) {
@@ -138,28 +136,26 @@ public class ComplexoController {
             if (!result.hasErrors()){
 
                 ServiceProxy oServiceProxy = new ServiceProxy(env);
-                BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/complexos/update", objComplexo, new ArrayList<>() );
+                BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/celas/update", objCela, new ArrayList<>() );
                 oServiceProxy.close();
 
-                Complexo updatedCadeia = (Complexo) BaseResponse.convertToModel(oBaseResponse, new Complexo());
+                Cela updatedCela = (Cela) BaseResponse.convertToModel(oBaseResponse, new Cela());
 
-                if(updatedCadeia != null)
-                    return "redirect:/admin/complexos/view/" + updatedCadeia.getId();
+                if(updatedCela != null)
+                    return "redirect:/admin/celas/view/" + updatedCela.getId();
                 else
                     throw new InternalError(oBaseResponse.getMessage());
             }
         }
+        /**objSetor = new SetorService(env).findOne(id.toString());*/
 
-        objComplexo = new ComplexoService(env).findOne(id.toString());
+        if(objCela == null)
+            throw new ResourceNotFoundException("Não possivel encontrar informaçao do 'Cela' solicitado");
 
-        if(objComplexo == null)
-            throw new ResourceNotFoundException("Não possivel encontrar informaçao do 'Complexo' solicitado");
+        model.addAttribute("objCela", objCela);
+        model.addAttribute("alaList", new CadeiaService(env).findAll(30));
 
-        model.addAttribute("objComplexo", objComplexo);
-        model.addAttribute("cadeiaList", new CadeiaService(env).findAll(30));
-
-        return "views/complexo/update";
-
+        return "views/Cela/update";
 
     }
 

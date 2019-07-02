@@ -1,6 +1,7 @@
-<span th:fragment="formCadeia(objCadeia)">
+<span th:fragment="formAla(objAla)">
 
-   <form action="#" th:object="${objCadeia}" method="post">
+
+   <form action="#" th:object="${objAla}" method="post">
 
         <div class="row">
             <div class="col-xs-12 col-md-6">
@@ -15,11 +16,11 @@
         <div class="row">
             <div class="col-xs-12 col-md-6">
                 <div class="form-group">
-                    <label for="ilha">Localização</label>
+                    <label for="setor">Localização</label>
                     <div class="form-group">
-                       <select th:field="*{ilha}" id="ilha" class="form-control">
-                            <option value="">-- Selecionar Ilha --</option>
-                            <option th:each="objIlha : ${ilhaList}" th:value="${objIlha.id}" th:text="${objIlha.nome}">
+                       <select th:field="*{setor}" id="setor" class="form-control">
+                            <option value="">-- Selecionar Setor --</option>
+                            <option th:each="objSetor : ${setorList}" th:value="${objSetor.id}" th:text="${objSetor.nome}">
                         </select>
                     </div>
                 </div>

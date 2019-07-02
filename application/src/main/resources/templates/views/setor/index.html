@@ -9,7 +9,7 @@
 <div class="col-xs-12 col-md-12" layout:fragment="content">
 
     <div clas="">
-        <a href="/admin/setores/create" class="btn btn-success">Novo Setores</a>
+        <a href="/admin/setores/create" class="btn btn-success">Novo setor</a>
     </div>
 
     <div clas="col" style="margin-top:20px">
@@ -22,27 +22,8 @@
                     Total: <!--span th:text="${objPaging.totalElements}"></span-->
                 </div>
 
-                <table class="table table-striped table-bordered">
-                    <tr>
-                        <th>Nome</th>
-                        <th>Complexos</th>
-                        <th>Data criação</th>
-                        <th>Ultima atualização</th>
-                        <th>Ações</th>
-                    </tr>
+                <span th:replace="/views/setor/_index_view:: indexView(${setores})"></span>
 
-                    <tr th:each="oSetor : ${setores}">
-                        <td th:text="${oSetor.nome}">#</td>
-                        <td th:text="${oSetor.cadeia != null ? oComplexo.cadeia.nome : '' }">#</td>
-                        <td th:text="${oSetor.dateCreated}">#</td>
-                        <td th:text="${oSetor.dateUpdated}">#</td>
-                        <td>
-                            <span th:replace="/fragments/ActionColumn:: actionView('/reclusos/view/' + ${oComplexo.id})"></span>
-                            <span th:replace="/fragments/ActionColumn:: actionUpdate('/reclusos/update/' + ${oComplexo.id})"></span>
-                            <span th:replace="/fragments/ActionColumn:: actionDelete('/reclusos/delete/' + ${oComplexo.id})"></span>
-                        </td>
-                    </tr>
-                </table>
             </div>
         </div>
 

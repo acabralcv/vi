@@ -37,9 +37,9 @@
                         <td th:text="${oCadeia.dateCreated}">#</td>
                         <td th:text="${oCadeia.dateUpdated}">#</td>
                         <td>
-                            <span th:replace="/fragments/ActionColumn:: actionView('/reclusos/view/' + ${oCadeia.id})"></span>
-                            <span th:replace="/fragments/ActionColumn:: actionUpdate('/reclusos/update/' + ${oCadeia.id})"></span>
-                            <span th:replace="/fragments/ActionColumn:: actionDelete('/reclusos/delete/' + ${oCadeia.id})"></span>
+                            <span th:replace="/fragments/ActionColumn:: actionView('/admin/cadeias/view/' + ${oCadeia.id})"></span>
+                            <span th:replace="/fragments/ActionColumn:: actionUpdate('/admin/cadeias/update/' + ${oCadeia.id})"></span>
+                            <span th:replace="/fragments/ActionColumn:: actionDelete('/admin/cadeias/delete/' + ${oCadeia.id})"></span>
                         </td>
                     </tr>
                 </table>

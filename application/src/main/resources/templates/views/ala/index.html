@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
 <head>
-    <meta charset="UTF-8">
     <title>Alas</title>
 </head>
 <body>
 
+
+<div class="col-xs-12 col-md-12" layout:fragment="content">
+
+    <div clas="">
+        <a href="/admin/alas/create" class="btn btn-success">Novo ala</a>
+    </div>
+
+    <div clas="col" style="margin-top:20px">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Alas</div>
+            <div class="panel-body">
+
+                <div class="col">
+                    Total: <!--span th:text="${objPaging.totalElements}"></span-->
+                </div>
+
+                <span th:replace="/views/ala/_index_view:: indexView(${alas})"></span>
+
+            </div>
+        </div>
+
+        <span th:replace="/fragments/pagingResult:: actionPaging(${objPaging}, '/admin/alas')"></span>
+
+    </div>
+
+</div>
+
+
+
 </body>
+
 </html>

@@ -1,9 +1,10 @@
 <span th:fragment="formSetor(objSetor)">
 
+
    <form action="#" th:object="${objSetor}" method="post">
 
         <div class="row">
-            <div class="col-xs-12 col-md-12">
+            <div class="col-xs-12 col-md-6">
                 <div class="form-group">
                     <label for="name">Nome</label>
                     <input type="text" th:field="*{nome}" id="name" class="form-control" required/>
@@ -12,21 +13,30 @@
             </div>
         </div>
 
-        <div class="col-xs-12 col-md-6">
-            <div class="form-group">
-                <label for="complexo">Localização</label>
+        <!--<div class="row">-->
+            <!--<div class="col-xs-12 col-md-6">-->
+                <!--<div class="form-group">-->
+                    <!--<label for="complexo">Localização</label>-->
+                    <!--<div class="form-group">-->
+                       <!--<select th:field="*{complexo}" id="complexo" class="form-control">-->
+                            <!--<option value="">&#45;&#45; Selecionar Complexo &#45;&#45;</option>-->
+                            <!--<option th:each="objComplexo : ${complexoList}" th:value="${objComplexo.id}" th:text="${objComplexo.nome}">-->
+                        <!--</select>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+
+
+
+
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
                 <div class="form-group">
-                   <select th:field="*{complexo}" id="complexo" class="form-control">
-                        <option value="">-- Selecionar complexo --</option>
-                        <option th:each="objComplexo : ${complexoList}" th:value="${objComplexo.id}" th:text="${objComplexo.nome}">
-                    </select>
+                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
             </div>
-        </div>
-
-
-        <div class="form-group">
-             <button type="submit" class="btn btn-primary">Guardar</button>
         </div>
 
     </form>

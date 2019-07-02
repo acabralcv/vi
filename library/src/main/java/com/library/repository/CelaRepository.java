@@ -1,7 +1,7 @@
 package com.library.repository;
 
-import com.library.models.Complexo;
-import com.library.models.Setor;
+import com.library.models.Cela;
+import com.library.models.Ala;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @Repository
-public interface SetorRepository extends JpaRepository<Setor, UUID> {
+public interface CelaRepository extends JpaRepository<Cela, UUID> {
 
-    Page<Setor> findByStatus(int status, Pageable pageable);
+    Page<Cela> findByStatus(int status, Pageable pageable);
 
-    ArrayList<Setor> findByComplexo(Complexo complexo);
+
 }

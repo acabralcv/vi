@@ -1,20 +1,18 @@
 
-<span th:fragment="indexView(profiles,objPaging)">
+<span th:fragment="indexView(complexos)">
 
     <table class="table table-striped table-bordered">
         <tr>
             <th>Nome</th>
+            <th>Cadeia</th>
             <th>Data criação</th>
             <th>Ultima atualização</th>
-            <th>Ação</th>
+            <th>Ações</th>
         </tr>
 
-        <div class="col">
-            Total: <span th:if="${oPaging != null && oPaging != 'null'}" th:text="${objPaging.totalElements}"></span>
-        </div>
-
-        <tr th:each="oComplexo : ${profiles}">
-            <td th:text="${oComplexo.name}">#</td>
+        <tr th:each="oComplexo : ${complexos}">
+            <td th:text="${oComplexo.nome}">#</td>
+            <td th:text="${oComplexo.cadeia != null ? oComplexo.cadeia.nome : '' }">#</td>
             <td th:text="${oComplexo.dateCreated}">#</td>
             <td th:text="${oComplexo.dateUpdated}">#</td>
             <td>
@@ -24,8 +22,5 @@
             </td>
         </tr>
     </table>
-
-
-    <span th:replace="/fragments/pagingResult:: actionPaging(${objPaging}, '/admin/complexos')"></span>
 
 </span>

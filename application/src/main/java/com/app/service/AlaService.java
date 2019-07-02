@@ -3,47 +3,46 @@ package com.app.service;
 import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
 import com.library.helpers.BaseResponse;
-import com.library.models.Setor;
-import com.library.models.Setor;
+import com.library.models.Ala;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class SetorService {
+public class AlaService {
 
     @Autowired
     private final Environment env;
 
     private final ServiceProxy oServiceProxy;
 
-    public SetorService(Environment _env){
+    public AlaService(Environment _env){
         this.env = _env;
         oServiceProxy = new ServiceProxy(this.env);
     }
 
-    public Setor findOne(String id){
+    public Ala findOne(String id){
 
         BaseResponse oBaseResponse = oServiceProxy
-                .buildParams("api/setores/details", new Params().Add(new Params("id", id)).Get())
+                .buildParams("api/alas/details", new Params().Add(new Params("id", id)).Get())
                 .getTarget()
                 .get(BaseResponse.class);
         oServiceProxy.close();
 
-        return (Setor) BaseResponse.convertToModel(oBaseResponse, new Setor());
+        return (Ala) BaseResponse.convertToModel(oBaseResponse, new Ala());
     }
 
-    public ArrayList<Setor> findAllByComplexo(UUID id_complexo){
+    public ArrayList<Ala> findAllBySetor(UUID id_setor){
 
         BaseResponse oBaseResponse = oServiceProxy
-                .buildParams("api/setores", new Params().Add(new Params("id_complexo", id_complexo.toString())).Get())
+                .buildParams("api/alas", new Params().Add(new Params("id_setor", id_setor.toString())).Get())
                 .getTarget()
                 .get(BaseResponse.class);
         oServiceProxy.close();
 
         //Pageable result objt
-        ArrayList<Setor> dataResponse = (ArrayList<Setor>) oBaseResponse.getData();
+        ArrayList<Ala> dataResponse = (ArrayList<Ala>) oBaseResponse.getData();
 
         return dataResponse;
     }

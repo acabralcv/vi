@@ -1,5 +1,7 @@
 package com.library.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -19,6 +21,7 @@ public class Setor extends AuditModel {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_complexo", referencedColumnName = "id", nullable = true)
     private Complexo complexo;
+
     public UUID getId() {
         return id;
     }
@@ -37,12 +40,11 @@ public class Setor extends AuditModel {
 
 
     public Complexo getComplexo() {
-
         return complexo;
     }
 
-    public void setCadeia(Complexo complexo) {
-
+    public void setComplexo(Complexo complexo) {
         this.complexo = complexo;
     }
+
 }

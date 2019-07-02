@@ -1,7 +1,14 @@
 package com.app.controllers;
 
 
+import com.app.helpers.Params;
+import com.app.service.ComplexoService;
+import com.app.service.ReclusoService;
 import com.library.models.Cadeia;
+import com.library.models.Complexo;
+import com.library.models.Profile;
+import com.library.models.Recluso;
+import com.library.service.EventsLogService;
 import org.json.simple.JSONObject;
 import com.app.service.IlhaService;
 import com.app.helpers.ServiceProxy;
@@ -64,7 +71,37 @@ public class CadeiaController {
     }
 
 
+    /**
+     *
+     * @param model
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = {"admin/cadeias/view/{id}"}, method = {RequestMethod.GET})
+    public String actionView(ModelMap model, @PathVariable UUID id) {
 
+        Cadeia oCadeia = new CadeiaService(env).findOne(id.toString());
+
+        if(oCadeia == null)
+            throw new ResourceNotFoundException("Não possivel encontrar informaçao da 'Cadeia' solicitado");
+
+        //ArrayList<Complexo> complexosList = new ComplexoService(env).findAllCadeia(id);
+
+        model.addAttribute("oCadeia", oCadeia);
+        //model.addAttribute("complexosList", complexosList);
+
+        return  "/views/cadeia/view";
+    }
+
+
+    /**
+     *
+     * @param objCadeia
+     * @param result
+     * @param model
+     * @param request
+     * @return
+     */
     @RequestMapping(value = {"admin/cadeias/create"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String actionCreate(@Valid @ModelAttribute Cadeia objCadeia, BindingResult result,
                                ModelMap model, HttpServletRequest request) {
@@ -91,4 +128,56 @@ public class CadeiaController {
         return "views/cadeia/create";
     }
 
+    @RequestMapping(value = {"admin/cadeias/update/{id}"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String actionUpdate(@PathVariable UUID id, @Valid @ModelAttribute Cadeia objCadeia, BindingResult result,
+                               ModelMap model, HttpServletRequest request) {
+
+        if (request.getMethod().equals("POST")) {
+
+            if (!result.hasErrors()){
+
+                ServiceProxy oServiceProxy = new ServiceProxy(env);
+                BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/cadeias/update", objCadeia, new ArrayList<>() );
+                oServiceProxy.close();
+
+                Cadeia updatedCadeia = (Cadeia) BaseResponse.convertToModel(oBaseResponse, new Cadeia());
+
+                if(updatedCadeia != null)
+                    return "redirect:/admin/cadeias/view/" + updatedCadeia.getId();
+                else
+                    throw new InternalError(oBaseResponse.getMessage());
+            }
+        }
+
+        objCadeia = new CadeiaService(env).findOne(id.toString());
+
+        if(objCadeia == null)
+            throw new ResourceNotFoundException("Não possivel encontrar informaçao da 'Cadeia' solicitado");
+
+        model.addAttribute("objCadeia", objCadeia);
+        model.addAttribute("ilhaList", new IlhaService(env).findAll());
+        return "views/cadeia/update";
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = {"admin/cadeias/delete/{id}"}, method = {RequestMethod.GET})
+    public String actionDelete(@PathVariable(required = true) UUID id) {
+
+        Cadeia objCadeia = new Cadeia();
+        objCadeia.setId(id);
+
+        ArrayList<Params> p = new ArrayList<>();
+        ServiceProxy oServiceProxy = new ServiceProxy(env);
+        BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/cadeias/delete", objCadeia, new ArrayList<>() );
+        oServiceProxy.close();
+
+        if(oBaseResponse.getStatusAction() == 1)
+            return "redirect:/admin/cadeias";
+        else
+            throw new InternalError(oBaseResponse.getMessage());
+    }
 }

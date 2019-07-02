@@ -3,11 +3,12 @@
 <head>
     <title>Novo setor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Recluso feature scripts -->
     <span layout:fragment="custumScripts">
         <script th:src="@{/js/SetorController.js}"></script>
     </span>
-</head>
 
+</head>
 
 <div class="col-xs-12 col-md-12" layout:fragment="content">
 
@@ -17,7 +18,7 @@
 
 
     <div class="panel panel-primary">
-        <div class="panel-heading">Novo complexo</div>
+        <div class="panel-heading">Novo setor</div>
         <div class="panel-body">
             <span th:replace="/views/setor/_form:: formSetor(objSetor)"></span>
         </div>

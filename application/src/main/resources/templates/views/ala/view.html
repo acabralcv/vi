@@ -7,7 +7,7 @@
         <!-- <script th:src="@{/js/ReclusoController.js}"></script> -->
     </span>
 
-    <title>Complexo</title>
+    <title>Ala</title>
 
 </head>
 <body>
@@ -15,33 +15,33 @@
 <div class="col-xs-12 col-md-12" layout:fragment="content">
 
     <div clas="col">
-        <a th:href="@{|/admin/complexos|}" class="btn btn-default">Voltar</a>
-        <a th:href="@{|/admin/complexos/update/${oComplexo.id}|}" class="btn btn-success">Atualizar</a>
-        <a th:href="@{|/admin/complexos/delete/${oComplexo.id}|}" class="btn btn-danger" onclick="return confirm('Tem certeza de que deseja remover este item')">Remover</a>
+        <a th:href="@{|/admin/alas|}" class="btn btn-default">Voltar</a>
+        <a th:href="@{|/admin/alas/update/${oAla.id}|}" class="btn btn-success">Atualizar</a>
+        <a th:href="@{|/admin/alas/delete/${oAla.id}|}" class="btn btn-danger" onclick="return confirm('Tem certeza de que deseja remover este item')">Remover</a>
     </div>
 
     <div clas="col" style="margin-top: 30px">
 
         <div class="panel panel-primary">
-            <div class="panel-heading">Complexo - <span th:text="${oComplexo.nome}"></span></div>
+            <div class="panel-heading">Ala - <span th:text="${oAla.nome}"></span></div>
             <div class="panel-body">
 
                 <table class="table table-striped table-bordered">
                     <tr>
                         <th>Nome</th>
-                        <td th:text="${oComplexo.nome}">#</td>
+                        <td th:text="${oAla.nome}">#</td>
                     </tr>
                     <tr>
-                        <th>Cadeia</th>
-                        <td th:text="${oComplexo.cadeia != null ? oComplexo.cadeia.nome : '' }">#</td>
+                        <th>Setor</th>
+                        <td th:text="${oAla.setor != null ? oAla.setor.nome : '' }">#</td>
                     </tr>
                     <tr>
                         <th>Data de criação</th>
-                        <td th:text="${#dates.format(oComplexo.dateUpdated, 'dd/MM/yyyy')}">#</td>
+                        <td th:text="${#dates.format(oAla.dateUpdated, 'dd/MM/yyyy')}">#</td>
                     </tr>
                     <tr>
                         <th>Ultima atualização</th>
-                        <td th:text="${#dates.format(oComplexo.dateUpdated, 'dd/MM/yyyy')}">#</td>
+                        <td th:text="${#dates.format(oAla.dateUpdated, 'dd/MM/yyyy')}">#</td>
                     </tr>
                 </table>
 

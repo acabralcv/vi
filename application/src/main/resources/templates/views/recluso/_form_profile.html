@@ -1,0 +1,42 @@
+<span th:fragment="formUserProfile(oUser, oProfile, profileList)">
+
+   <form action="#" th:object="${oProfile}" method="post">
+
+        <div class="row">
+            <div class="col-xs-6 col-md-6">
+               <div class="form-group">
+                   <div class="form-group">
+                       <select th:field="*{id}" id="prfile_id" class="form-control">
+                            <option th:each="profile : ${profileList}" th:value="${profile.id}" th:text="${profile.name}">
+                            </option>
+                        </select>
+                   </div>
+               </div>
+            </div>
+
+            <div class="col-xs-1 col-md-1" style="width: auto;padding: 0;">
+                <!-- https://my.oschina.net/u/2312080/blog/2878183 -->
+                <button id="btnAddProfile" type="button" class="btn btn-default" style="margin: 0 10px;">
+                    <span th:data-user_id="${oUser.id}" class="fas fa-plus-circle" onclick="modelUser.addProfile(this.getAttribute('data-user_id'))"></span>
+                </button>
+            </div>
+        </div>
+
+        <!--div class="w-50 float-left">
+            <div class="form-group">
+               <select th:field="*{id}" id="prfile_id" class="form-control">
+                    <option th:each="profile : ${profileList}" th:value="${profile.id}" th:text="${profile.name}">
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        < !-- https://my.oschina.net/u/2312080/blog/2878183 -- >
+        <button id="btnAddProfile" type="button" class="btn btn-default" style="margin: 0 10px;">
+            <span th:data-user_id="${oUser.id}" class="fas fa-plus-circle" onclick="modelUser.addProfile(this.getAttribute('data-user_id'))"></span>
+        </button-->
+
+
+   </form>
+
+</span>
