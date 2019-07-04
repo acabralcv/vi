@@ -40,6 +40,8 @@ public class HomeController {
 
     public HomeController(/*MyService myService*/) {
         //this.myService = myService;
+        //ok
+        //ok
     }
 
     /**
@@ -63,15 +65,15 @@ public class HomeController {
         new EventsLogService(eventslogRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                 + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()", "Test: Someone int the app! :) :) :) at " + currentDate.toString(),null, null);
 */
-//        User user = new User();
-//        user.setId(UUID.fromString("d7224655-312a-40fe-ac2b-d02ae239846f"));
-//       ArrayList<Tasks> userTasks = new TasksService(env).getUserTasks(user, PageRequest.of(0,10));
-//       if(userTasks.size() == 0)
-//           return "redirect:/task/";
+        User user = new User();
+        user.setId(UUID.fromString("d7224655-312a-40fe-ac2b-d02ae239846f"));
+       ArrayList<Tasks> userTasks = new TasksService(env).getUserTasks(user, PageRequest.of(0,10));
+       if(userTasks.size() == 0)
+           return "redirect:/task/";
 
         model.addAttribute("appKey", new Helper().getUUID());
         model.addAttribute("appName","App Name Test");
-        //model.addAttribute("userTasks",userTasks);
+        model.addAttribute("userTasks",userTasks);
         return "views/home/index";
     }
         /*

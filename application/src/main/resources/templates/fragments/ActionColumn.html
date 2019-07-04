@@ -7,13 +7,13 @@
 
 <span th:fragment="actionUpdate(baseUrl)">
     <a th:href="@{{baseUrl}(baseUrl=${baseUrl})}" class="btn btn-default btn-sm">
-        <span title="Editar" class="fas fa-pencil-alt"></span>
+        <span title="Ver" class="fas fa-pencil-alt"></span>
     </a>
 </span>
 
 <span th:fragment="actionDelete(baseUrl)">
     <a th:href="@{{baseUrl}(baseUrl=${baseUrl})}" onclick="return confirm('Tem certeza de que deseja remover este item')" class="btn btn-default btn-sm">
-        <span title="Eleminar" class="fas fa-minus-circle"></span>
+        <span title="Ver" class="fas fa-minus-circle"></span>
     </a>
 </span>
 
