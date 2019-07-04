@@ -58,3 +58,15 @@ setTimeout(function(){
 setTimeout(function(){
     modelApp.stopLoading()
 }, 1000)
+
+function printPDF() {
+    var divContents = $("#dvContainer").html();
+    var printWindow = window.open('', '', 'height=400,width=800');
+    printWindow.document.write('<html><head><title>SIGP-GR</title>');
+    printWindow.document.write('</head><body >');
+    printWindow.document.write('<img src="/dist/img/cabecalhoPrintSIGP.PNG" alt="Cabeçalho Impressão do SIGP" height="" width="">');
+    printWindow.document.write(divContents);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+}

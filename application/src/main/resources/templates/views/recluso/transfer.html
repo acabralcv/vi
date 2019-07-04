@@ -8,13 +8,13 @@
     <div class="col-xs-12 col-md-12" layout:fragment="content">
 
         <div clas="col" style="margin: 10px 0">
-            <a th:href="@{|/reclusos|}" class="btn btn-default">Voltar</a>
+            <a th:href="@{|/reclusos/view/${objRecluso.id}|}" class="btn btn-default">Voltar</a>
         </div>
 
 
         <div class="panel panel-primary">
             <div class="panel-heading"><span th:text="${objRecluso.nome}"></span> - Transferências</div>
-            <div class="panel-body">
+            <div class="panel-body" id="dvContainer" >
                 <table class="table table-striped">
                     <tr>
                         <th>Nome Cadeias</th><th>Localização</th><th>Motivo </th> <th>Data</th> <th>Meios/Recursos utilizados</th><th>Custo total</th>
@@ -62,16 +62,18 @@
                         </td>
                     </tr>
                 </table>
-
+            </div>
                 <div clas="col">
                     <a class="btn" th:href="@{|/reclusos/transfer/${objRecluso.id}|}">
                         <i class="fas fa-bus-alt fa-2x"></i> Transferir Recluso</a>
-                    <a class="btn" th:href="@{|/reclusos/transfer/${objRecluso.id}|}">
+                    <a class="btn" onclick="return  printPDF();">
                         <i class="fas fa-print fa-2x"></i> Imprimir</a>
                 </div>
-            </div>
+
         </div>
     </div>
+<script type="text/javascript">
 
+</script>
 
 </html>
