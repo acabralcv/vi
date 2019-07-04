@@ -3,9 +3,9 @@
     https://www.baeldung.com/get-user-in-spring-security
 
  -->
-
 <html xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      taglib prefix="security" uri="http://www.springframework.org/security/tags">
 
     <head>
 
@@ -18,7 +18,10 @@
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <base href="/">
 
+
         <link rel="icon" th:href="@{/img/favicon.ico}" />
+        <link rel="shortcut icon" th:href="@{/img/favicon.ico}" />
+        <link rel="icon" th:href="@{/img/icone.jpg}" />
         <link rel="shortcut icon" th:href="@{/img/favicon.ico}" />
 
         <link th:href="@{/css/core.css}" rel="stylesheet" media="screen" />
@@ -42,16 +45,14 @@
 
         <div layout:fragment="custumScripts">
             <!--
-                CUSTUM SCRIPT AREA
-                OUUTRSO SCRIPTS DEVEM SER AQUI. EXEMPLO DE UTILIZAÇÃO
+            CUSTUM SCRIPT AREA
+            OUUTRSO SCRIPTS DEVEM SER AQUI. EXEMPLO DE UTILIZAÇÃO
 
-                <span layout:fragment="custumScripts">
-                    <script th:src="@{/js/UserController.js}"></script>
-                    <script th:src="@{/js/ImageControllers.js}"></script>
-                </span>
-
+            <span layout:fragment="custumScripts">
+                <script th:src="@{/js/UserController.js}"></script>
+                <script th:src="@{/js/ImageControllers.js}"></script>
+            </span>
             -->
-
         </div>
 
 
@@ -104,90 +105,41 @@
             </div>
         </div>
 
-
-                  <style>
-                    .loader {
-                      border: 6px solid #f3f3f3;
-                      border-radius: 50%;
-                      border-top: 6px solid #3498db;
-                      width: 60px;
-                      height: 60px;
-                      -webkit-animation: spin 2s linear infinite;
-                      /* Safari */
-                      animation: spin 2s linear infinite;
-                    }
-
-                    .cor {
-                      background-color: #2d2d2d;
-                    }
-
-                    .color {
-                      background-color: #000000;
-                    }
-
-                    /* Safari */
-                    @-webkit-keyframes spin {
-                      0% {
-                        -webkit-transform: rotate(0deg);
-                      }
-
-                      100% {
-                        -webkit-transform: rotate(360deg);
-                      }
-                    }
-
-                    @keyframes spin {
-                      0% {
-                        transform: rotate(0deg);
-                      }
-
-                      100% {
-                        transform: rotate(360deg);
-                      }
-                    }
-                  </style>
-
-
-
-
         <div class="wrapper" style="background-color:#ecf0f5">
-
         <!-- header fragment -->
-        <span th:replace="/layouts/main-header:: ActionView()"></span>
+            <span th:replace="/layouts/main-header:: ActionView()"></span>
 
-        <!-- side fragment -->
-        <span th:replace="/layouts/main-sidebar:: ActionView()"></span>
+            <!-- side fragment -->
+            <span th:replace="/layouts/main-sidebar:: ActionView()"></span>
 
-          <!-- Content Wrapper. Contains page content -->
-          <div class="content-wrapper" style="padding-left: 40px;float: left;width: 83%;">
+			<!-- Content Wrapper. Contains page content -->
+			<div class="content-wrapper" style="padding-left: 40px;float: left;width: 83%;">
 
-            <!-- Fragment document upload modal -->
-            <span th:replace="/fragments/documentUpload:: ActionModal()"></span>
+				<!-- Fragment document upload modal -->
+				<span th:replace="/fragments/documentUpload:: ActionModal()"></span>
 
-            <!-- global message area -->
-            <div class="col-md-12" style="margin:10px">
+				<!-- global message area -->
+				<div class="col-md-12" style="margin:10px">
 
-                <div class="row">
-                    <div id="globalSuccessMessageArea" class="w-100 alert alert-success" role="alert" style="display:none">
-                      Ok!
-                    </div>
-                    <div id="globalAlertMessageArea" class="w-100 alert alert-danger" role="alert" style="display:none">
-                      Erro!
-                    </div>
-                </div>
+					<div class="row">
+						<div id="globalSuccessMessageArea" class="w-100 alert alert-success" role="alert" style="display:none">
+						  Ok!
+						</div>
+						<div id="globalAlertMessageArea" class="w-100 alert alert-danger" role="alert" style="display:none">
+						  Erro!
+						</div>
+					</div>
 
-            </div>
+				</div>
 
-            <!-- content area -->
-            <div class="col-md-12">
-                <div layout:fragment="content"></div>
-            </div>
+				<!-- content area -->
+				<div class="col-md-12">
+					<div layout:fragment="content"></div>
+				</div>
 
-          </div>
+			</div>
 
-      </div>
-
-
+		</div>
 
         <!-- jQuery 3 -->
         <script th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>

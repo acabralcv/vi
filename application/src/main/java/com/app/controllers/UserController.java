@@ -48,7 +48,7 @@ public class UserController {
      * @param pageable
      * @return
      */
-    @RequestMapping(value = "users", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/users", method = RequestMethod.GET)
     public String actionIndex(ModelMap model, @PageableDefault(sort = { "name"}, value = 10, page = 0) Pageable pageable) {
 
         //get info
@@ -76,7 +76,7 @@ public class UserController {
      * @param id
      * @return
      */
-    @RequestMapping(value = {"users/view/{id}"}, method = {RequestMethod.GET})
+    @RequestMapping(value = {"admin/users/view/{id}"}, method = {RequestMethod.GET})
     public String actionView(ModelMap model, @PathVariable UUID id) {
 
         User oUser = new UserService(env).findOne(id.toString());
@@ -108,7 +108,7 @@ public class UserController {
      * @param request
      * @return
      */
-    @RequestMapping(value = {"users/create"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"admin/users/create"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String actionCreate(@Valid @ModelAttribute User objUser, BindingResult result,
                                ModelMap model, HttpServletRequest request) {
 
@@ -123,7 +123,7 @@ public class UserController {
                     User createdUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
 
                     if(createdUser != null)
-                        return "redirect:/users/view/" + createdUser.getId();
+                        return "redirect:/admin/users/view/" + createdUser.getId();
                     else
                         throw new InternalError(oBaseResponse.getMessage());
                 }
@@ -133,7 +133,7 @@ public class UserController {
             return "views/user/create";
     }
 
-    @RequestMapping(value = {"users/update/{id"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"admin/users/update/{id"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String actionUpdate(@Valid @ModelAttribute User objUser, BindingResult result,
                                ModelMap model, HttpServletRequest request, @PathVariable UUID id) {
 
@@ -148,7 +148,7 @@ public class UserController {
                     User createdUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
 
                     if(createdUser != null)
-                        return "redirect:/users/view/" + createdUser.getId();
+                        return "redirect:/admin/users/view/" + createdUser.getId();
                     else
                         throw new InternalError(oBaseResponse.getMessage());
                 }
@@ -162,4 +162,25 @@ public class UserController {
             return "views/user/create";
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = {"admin/users/delete/{id}"}, method = {RequestMethod.GET})
+    public String actionDelete(@PathVariable(required = true) UUID id) {
+
+        User objUser = new User();
+        objUser.setId(id);
+
+        ArrayList<Params> p = new ArrayList<>();
+        ServiceProxy oServiceProxy = new ServiceProxy(env);
+        BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/users/delete", objUser, new ArrayList<>() );
+        oServiceProxy.close();
+
+        if(oBaseResponse.getStatusAction() == 1)
+            return "redirect:/admin/users";
+        else
+            throw new InternalError(oBaseResponse.getMessage());
+    }
 }

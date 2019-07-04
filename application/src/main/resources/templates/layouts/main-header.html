@@ -2,6 +2,10 @@
 
 <div th:fragment="ActionView()">
 
+
+  <html xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
       <header class="main-header">
         <!-- Logo -->
         <a href="/home" class="logo" style="background-color: #337ab7">
@@ -27,49 +31,52 @@
                   <span class="label label-success">4</span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li class="header">You have 4 messages</li>
+                  <li class="header">Você tem 4 mensagens</li>
                   <li>
                     <!-- inner menu: contains the actual data -->
                     <ul class="menu">
                       <li>
                         <a href="#">
                           <div class="pull-left">
-                            <img th:src="@{/img/favicon.ico}" class="img-circle" alt="User Image">
+                            <img th:src="@{/img/logo.png}" class="img-circle" alt="User Image">
                           </div>
                           <h4>
-                            Developers
-                            <small><i class="fa fa-clock-o"></i> Today</small>
+                            Desenvolvedores
+                            <small><i class="fa fa-clock-o"></i> Hoje</small>
                           </h4>
-                          <p>Why not buy a new awesome theme?</p>
+                          <p>Por que não comprar um novo tema incrível?</p>
                         </a>
                       </li>
                       <li>
                         <a href="#">
                           <div class="pull-left">
-                            <img th:src="@{/img/favicon.ico}" class="img-circle" alt="User Image">
+                            <img th:src="@{/img/logo.png}" class="img-circle" alt="User Image">
                           </div>
                           <h4>
-                            Sales Department
-                            <small><i class="fa fa-clock-o"></i> Yesterday</small>
+                            Departamento de vendas
+                            <small><i class="fa fa-clock-o"></i>
+                              Ontem</small>
                           </h4>
-                          <p>Why not buy a new awesome theme?</p>
+                          <p>
+                            Por que não comprar um novo tema incrível?</p>
                         </a>
                       </li>
                       <li>
                         <a href="#">
                           <div class="pull-left">
-                            <img th:src="@{/img/favicon.ico}" class="img-circle" alt="User Image">
+                            <img th:src="@{/img/logo.png}" class="img-circle" alt="User Image">
                           </div>
                           <h4>
-                            Reviewers
-                            <small><i class="fa fa-clock-o"></i> 2 days</small>
+                            Revisores
+                            <small><i class="fa fa-clock-o"></i> 2
+                              dias</small>
                           </h4>
-                          <p>Why not buy a new awesome theme?</p>
+                          <p>Por que não comprar um novo tema incrível?</p>
                         </a>
                       </li>
                     </ul>
                   </li>
-                  <li class="footer"><a href="#">See All Messages</a></li>
+                  <li class="footer"><a href="#">Ver todas as mensagens</a></li>
                 </ul>
               </li>
               <!-- Notifications: style can be found in dropdown.less -->
@@ -79,62 +86,66 @@
                   <span class="label label-warning">10</span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li class="header">You have 10 notifications</li>
+                  <li class="header">Você tem 10 notificações</li>
                   <li>
                     <!-- inner menu: contains the actual data -->
                     <ul class="menu">
                       <li>
                         <a href="#">
-                          <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                          <i class="fa fa-users text-aqua"></i> 5 novos membros se juntaram hoje
                         </a>
                       </li>
                       <li>
                         <a href="#">
-                          <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
-                          page and may cause design problems
+                          <i class="fa fa-warning text-yellow"></i>
+                          Muito longa descrição aqui que pode não caber no
+                          página e pode causar problemas de design
                         </a>
                       </li>
                       <li>
                         <a href="#">
-                          <i class="fa fa-users text-red"></i> 5 new members joined
+                          <i class="fa fa-users text-red"></i>
+                          5 novos membros juntaram-se
                         </a>
                       </li>
                       <li>
                         <a href="#">
-                          <i class="fa fa-shopping-cart text-green"></i> 25 sales made
+                          <i class="fa fa-shopping-cart text-green"></i> 25 vendas feitas
                         </a>
                       </li>
                       <li>
                         <a href="#">
-                          <i class="fa fa-user text-red"></i> You changed your username
+                          <i class="fa fa-user text-red"></i> Você mudou seu nome de usuário
                         </a>
                       </li>
                     </ul>
                   </li>
-                  <li class="footer"><a href="#">View all</a></li>
+                  <li class="footer"><a href="#">
+                    Ver tudo</a></li>
                 </ul>
               </li>
               <!-- Tasks: style can be found in dropdown.less -->
               <li class="dropdown tasks-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-flag-o"></i>
-                  <span class="label label-danger">9</span>
+                  <span class="label label-danger">10</span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li class="header">You have 9 tasks</li>
+                  <li class="header">Você tem 10 tarefas</li>
                   <li>
                     <!-- inner menu: contains the actual data -->
                     <ul class="menu">
                       <li><!-- Task item -->
                         <a href="#">
                           <h3>
-                            Design some buttons
+
+                            Projetar alguns botões
                             <small class="pull-right">20%</small>
                           </h3>
                           <div class="progress xs">
                             <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar"
                                  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">20% Complete</span>
+                              <span class="sr-only">20% Completo</span>
                             </div>
                           </div>
                         </a>
@@ -143,13 +154,13 @@
                       <li><!-- Task item -->
                         <a href="#">
                           <h3>
-                            Create a nice theme
+                            Crie um tema legal
                             <small class="pull-right">40%</small>
                           </h3>
                           <div class="progress xs">
                             <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar"
                                  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">40% Complete</span>
+                              <span class="sr-only">40% Completo</span>
                             </div>
                           </div>
                         </a>
@@ -158,13 +169,14 @@
                       <li><!-- Task item -->
                         <a href="#">
                           <h3>
-                            Some task I need to do
+
+                            Alguma tarefa que preciso fazer
                             <small class="pull-right">60%</small>
                           </h3>
                           <div class="progress xs">
                             <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar"
                                  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">60% Complete</span>
+                              <span class="sr-only">60% Completo</span>
                             </div>
                           </div>
                         </a>
@@ -172,14 +184,13 @@
                       <!-- end task item -->
                       <li><!-- Task item -->
                         <a href="#">
-                          <h3>
-                            Make beautiful transitions
+                          <h3> Faça belas transições
                             <small class="pull-right">80%</small>
                           </h3>
                           <div class="progress xs">
                             <div class="progress-bar progress-bar-yellow" style="width: 80%" role="progressbar"
                                  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">80% Complete</span>
+                              <span class="sr-only">80% Completo</span>
                             </div>
                           </div>
                         </a>
@@ -188,27 +199,32 @@
                     </ul>
                   </li>
                   <li class="footer">
-                    <a href="#">View all tasks</a>
+                    <a href="#">
+                      Visualizar todas as tarefas</a>
                   </li>
                 </ul>
               </li>
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img th:src="@{/dist/img/avatar3.png}" class="user-image" alt="User Image">
                   <!--<span sec:authorize="isAuthenticated()">-->
                     <!--<span sec:authentication="name"></span>-->
                   <!--</span>-->
+                  <img th:src="@{/dist/img/logo.png}" class="user-image" alt="User Image">
+                  <span sec:authorize="isAuthenticated()">
+                      <span class="hidden-xs">
+                        [[${#httpServletRequest.remoteUser}]]
+                      </span>
+                  </span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
-                    <img th:src="@{/img/favicon.ico}" class="img-circle">
-                    <!--<p>-->
-                      <!--<div sec:authorize="isAuthenticated()">-->
-                        <!--<span sec:authentication="name"></span>-->
-                      <!--</div>-->
-                    <!--</p>-->
+                    <img th:src="@{/dist/img/logo.png}" class="user-image" alt="User Image">
+
+                    <p>
+                      [[${#httpServletRequest.remoteUser}]]
+                    </p>
                   </li>
 
                   <!-- Menu Footer-->
@@ -220,6 +236,16 @@
                       </span>
                     </div>
                     <div class="pull-right">
+                      IS ADMIN: <span th:text="${#httpServletRequest.userPrincipal.getAuthorities()[0].getAuthority() == 'ROLE_admin' ? 'YES' : 'NO'}"></span> |
+                      IS TESTE<span th:text="${T(com.app.helpers.Helper).isAdmin(#httpServletRequest.userPrincipal.getAuthorities())}"></span>
+                      IS ADMIN1: <span th:text="${#httpServletRequest.userPrincipal.getAuthorities()[0].getAuthority() == 'ROLE_admin' ? 'YES' : 'NO'}"></span> |
+
+                      <span sec:authorize="isAuthenticated()">
+                      <span sec:authentication="name"></span>
+                      </span>
+
+                      <br />
+
                       <span sec:authorize="isAuthenticated()">
                         <a class="btn btn-default btn-flat" href="/logout">Terminar seção</a>
                       </span>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Setores</title>
+</head>
+<body>
+
+
+<div class="col-xs-12 col-md-12" layout:fragment="content">
+
+    <div clas="">
+        <a href="/admin/setores/create" class="btn btn-success">Novo setor</a>
+    </div>
+
+    <div clas="col" style="margin-top:20px">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Setores</div>
+            <div class="panel-body">
+
+                <div class="col">
+                    Total: <!--span th:text="${objPaging.totalElements}"></span-->
+                </div>
+
+                <span th:replace="/views/setor/_index_view:: indexView(${setores})"></span>
+
+            </div>
+        </div>
+
+        <span th:replace="/fragments/pagingResult:: actionPaging(${objPaging}, '/admin/setores')"></span>
+
+    </div>
+
+</div>
+
+
+
+</body>
+
+</html>

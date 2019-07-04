@@ -14,6 +14,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Order(1)
 @Configuration
 @EnableWebSecurity
+//http://blog.florian-hopf.de/2017/08/spring-security.html
+//https://www.programcreek.com/java-api-examples/index.php?api=org.springframework.security.provisioning.InMemoryUserDetailsManager
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Order(1)
@@ -36,8 +38,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
 
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withDefaultPasswordEncoder().username("admin").password("123").roles("admin").build());
-        manager.createUser(User.withDefaultPasswordEncoder().username("user").password("123").roles("user").build());
+        manager.createUser(User.withDefaultPasswordEncoder().username("Administrador").password("123").roles("admin").build());
+        manager.createUser(User.withDefaultPasswordEncoder().username("Osvanildo").password("123").roles("user").build());
+        manager.createUser(User.withDefaultPasswordEncoder().username("Hamilton").password("123").roles("user").build());
+//        manager.createUser(User.withDefaultPasswordEncoder().username("user").password("123").roles("user").build());
 
         return manager;
     }

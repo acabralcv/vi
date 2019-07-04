@@ -58,11 +58,11 @@ public class HomeController {
         //ok
     }
 
-    @RequestMapping(value = "/username", method = RequestMethod.GET)
-    @ResponseBody
-    public String currentUserName(Principal principal) {
-        return principal.getName();
-    }
+//    @RequestMapping(value = "/username", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String currentUserName(Principal principal) {
+//        return principal.getName();
+//    }
 
     /**
      * @param model
