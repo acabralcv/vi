@@ -59,14 +59,23 @@ setTimeout(function(){
     modelApp.stopLoading()
 }, 1000)
 
-function printPDF() {
+function Sleep(){return;} // Does nothing.
+var goToSleep = Sleep(); // Create the object.
+function printPDF(titulo) {
     var divContents = $("#dvContainer").html();
-    var printWindow = window.open('', '', 'height=400,width=800');
+    var printWindow = window.open('', '');
     printWindow.document.write('<html><head><title>SIGP-GR</title>');
     printWindow.document.write('</head><body >');
-    printWindow.document.write('<img src="/dist/img/cabecalhoPrintSIGP.PNG" alt="Cabeçalho Impressão do SIGP" height="" width="">');
+    printWindow.document.write('<img src="/dist/img/cabecalho.png" alt="Cabeçalho Impressão do SIGP" height="" width="">');
+    var node = document.getElementById('dvTitulo');
+    printWindow.document.write('<p align="left"><h2>');
+    printWindow.document.write(node.textContent);
+    printWindow.document.write('</p></h2>');
     printWindow.document.write(divContents);
     printWindow.document.write('</body></html>');
     printWindow.document.close();
+    setTimeout(goToSleep, 2000); // Go to sleep for n milliseconds.
     printWindow.print();
 }
+
+
