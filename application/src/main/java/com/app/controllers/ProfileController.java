@@ -114,7 +114,7 @@ public class ProfileController {
                 oServiceProxy.close();
                 Profile createdProfile = (Profile) BaseResponse.convertToModel(oBaseResponse, new Profile());
 
-                if(createdProfile == null)
+                if(createdProfile != null)
                     return "redirect:/admin/profiles/view/" + createdProfile.getId();
                 else
                     throw new InternalError(oBaseResponse.getMessage());

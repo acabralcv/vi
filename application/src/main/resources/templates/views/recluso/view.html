@@ -32,13 +32,13 @@
                   <div class="panel-heading">Recluso - <span th:text="${oRecluso.nome}"></span></div>
                   <div class="panel-body">
 					  <div clas="col" align="center">
-						  <a class="btn" href="#">
+						  <a class="btn" th:href="@{|/reclusos/decisaoJudicial/${oRecluso.id}|}">
 							  <i class="fas fa-balance-scale fa-2x"></i> Decisão Judicial</a>
 						  <a class="btn" href="#">
 							  <i class="fas fa-receipt fa-2x"></i> Titulo Judiciario</a>
 						  <a class="btn" href="#">
 						  <i class="fas fa-gavel fa-2x"></i> Mandado Libertação</a>
-						  <a class="btn" href="#">
+						  <a class="btn" th:href="@{|/reclusos/ocorencia/${oRecluso.id}|}">
 							  <i class="fas fa-user-injured fa-2x"></i> Ocorrências</a>
 						  <a class="btn" href="#">
 							  <i class="fas fa-user-clock fa-2x"></i> Pena Prisão</a>
@@ -64,6 +64,9 @@
                         <span th:unless="${oRecluso.profileImage != null}">
                             <div style="width:128px;height: 128px;background-color: #ccc">Foto</div>
                         </span>
+                        <!--<button th:data-user_image_id="${oRecluso.id}" class="btn btn-default" onclick="modelRecluso.openReclusoImagesModal(this.getAttribute('data-user_image_id'))" style="position: absolute;left: 101px;top: 133px;">-->
+                            <!--<i class="fas fa-pencil-alt" alt="Alterar a foto do perfil do recluso"></i>-->
+                        <!--</button>-->
 <!--                        <button th:data-user_image_id="${oRecluso.id}" class="btn btn-default" onclick="modelRecluso.openReclusoImagesModal(this.getAttribute('data-user_image_id'))" style="position: absolute;left: 101px;top: 133px;">-->
 <!--                            <i class="fas fa-pencil-alt" alt="Alterar a foto do perfil do recluso"></i>-->
 <!--                        </button>-->
@@ -107,24 +110,10 @@
                             <th>Estado civil</th>
                             <td th:text="${oRecluso.estadoCivil != null ? oRecluso.estadoCivil.name : '' }">#</td>
                         </tr>
-                    </table>
-
-
-                    <!-- Endereço e contatos -->
-                    <table class="table table-striped table-bordered">
-                        <tr>
-                            <th colspan="2">
-                                <h4>
-                                    <strong>Endereço e contatos</strong>
-                                </h4>
-                            </th>
-                        </tr>
-
                         <tr>
                             <th>Nacionalidade</th>
                             <td th:text="${oRecluso.nacionalidade != null ? oRecluso.nacionalidade.nome : ''}">#</td>
                         </tr>
-
                         <tr>
                             <th>Ilha</th>
                             <td th:text="${oRecluso.ilha != null ? oRecluso.ilha.nome : ''}">#</td>
@@ -166,14 +155,16 @@
                             <th>Ultima atualização</th>
                             <td th:text="${#dates.format(oRecluso.dateUpdated, 'dd/MM/yyyy')}">#</td>
                         </tr>
-
                     </table>
-
                   </div>
             </div>
         </div>
 
     </div>
+    </div>
 
 </body>
 </html>
+
+
+
