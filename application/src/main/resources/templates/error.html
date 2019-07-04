@@ -1,8 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Eror Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
 <body>
-<h1>Something went wrong! </h1>
-<h2>Our Engineers are on it</h2>
-<a href="/">Go Home</a>
+<div class="container">
+    <div class="row">
+
+        <div class="col" layout:fragment="content">
+
+            <h1><spann th:text="${statusCode}"></spann></h1>
+            <h3><div th:utext="${messsage}">#</div></h3>
+
+            <br />
+            <br />
+            <a href="/home">
+                <span class="btn btn-default">Página inicial</span>
+            </a>
+
+        </div>
+
+    </div>
+</div>
 </body>
 </html>

@@ -3,7 +3,6 @@
 <div th:fragment="ActionView()">
 
       <header class="main-header">
-
         <!-- Logo -->
         <a href="/home" class="logo" style="background-color: #337ab7">
           <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -197,26 +196,33 @@
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <img th:src="@{/dist/img/avatar3.png}" class="user-image" alt="User Image">
-                  <span class="hidden-xs">Ana Maria</span>
+                  <!--<span sec:authorize="isAuthenticated()">-->
+                    <!--<span sec:authentication="name"></span>-->
+                  <!--</span>-->
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
-                    <img th:src="@{/img/favicon.ico}" class="img-circle" alt="User Image">
-
-                    <p>
-                      Alexander Pierce - Tecnico
-                      <small>2</small>
-                    </p>
+                    <img th:src="@{/img/favicon.ico}" class="img-circle">
+                    <!--<p>-->
+                      <!--<div sec:authorize="isAuthenticated()">-->
+                        <!--<span sec:authentication="name"></span>-->
+                      <!--</div>-->
+                    <!--</p>-->
                   </li>
 
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                      <a href="#" class="btn btn-default btn-flat">Conta</a>
+                      <span sec:authorize="isAuthenticated()">
+                        <!--<a th:href="${#authentication.getPrincipal().getName()}">ss</a>-->
+                        <!--<a href="/users/view/${authentication.name}" class="btn btn-default btn-flat">Conta</a>-->
+                      </span>
                     </div>
                     <div class="pull-right">
-                      <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                      <span sec:authorize="isAuthenticated()">
+                        <a class="btn btn-default btn-flat" href="/logout">Terminar seção</a>
+                      </span>
                     </div>
                   </li>
                 </ul>

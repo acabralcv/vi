@@ -53,7 +53,31 @@ public class UsersController {
                         return user;
                     });
 
-            if (oUser != null)
+            if (oUser.isPresent())
+                return ResponseEntity.ok().body(new BaseResponse(1, "ok", oUser.get()));
+            else
+                return ResponseEntity.ok().body(new BaseResponse(0, "ok", null));
+
+        }catch (Exception e){
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
+
+    }
+
+    @RequestMapping(value = {"api/users/details-by-username"}, method = {RequestMethod.GET})
+    public ResponseEntity actionDetailsByUsername(@RequestParam(name = "username") String username) {
+
+        try {
+
+            Optional<User> oUser = userRepository.findByUsername(username)
+                    .map(user -> {
+                        user.setProfileImage(user.getProfileImage());
+                        return user;
+                    });
+
+            if (oUser.isPresent())
                 return ResponseEntity.ok().body(new BaseResponse(1, "ok", oUser.get()));
             else
                 return ResponseEntity.ok().body(new BaseResponse(0, "ok", null));

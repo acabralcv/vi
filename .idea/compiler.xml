@@ -20,6 +20,7 @@
       <module name="app-sigp-application" target="1.8" />
       <module name="app-sigp-library" target="1.8" />
       <module name="app-sigp-module" target="1.5" />
+      <module name="app-sigp-oauth" target="1.8" />
       <module name="gs-multi-module" target="1.5" />
       <module name="gs-multi-module-application" target="1.8" />
       <module name="gs-multi-module-library" target="1.8" />
@@ -30,6 +31,7 @@
       <module name="app-sigp-api" options="-parameters" />
       <module name="app-sigp-application" options="-parameters" />
       <module name="app-sigp-library" options="-parameters" />
+      <module name="app-sigp-oauth" options="" />
       <module name="gs-multi-module-application" options="-parameters" />
       <module name="gs-multi-module-library" options="-parameters" />
     </option>
