@@ -38,4 +38,23 @@ public class UserService {
 
         return oUser;
     }
+
+    /**
+     *
+     * @param username
+     * @return
+     */
+    public User findByUsername(String username){
+
+        BaseResponse oBaseResponse = oServiceProxy
+                .buildParams("api/users/details-by-username", new Params().Add(new Params("username", username)).Get())
+                .getTarget()
+                .get(BaseResponse.class);
+
+            oServiceProxy.close();
+
+        User oUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
+
+        return oUser;
+    }
 }

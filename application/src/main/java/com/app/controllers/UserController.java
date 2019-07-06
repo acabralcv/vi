@@ -17,6 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -25,12 +27,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.UUID;
 
 @Controller
+//@PreAuthorize("hasAuthority('admin')")
 public class UserController {
 
 
@@ -44,7 +48,7 @@ public class UserController {
      * @param pageable
      * @return
      */
-    @RequestMapping(value = "users", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/users", method = RequestMethod.GET)
     public String actionIndex(ModelMap model, @PageableDefault(sort = { "name"}, value = 10, page = 0) Pageable pageable) {
 
         //get info
@@ -66,14 +70,13 @@ public class UserController {
     }
 
 
-
     /**
      *
      * @param model
      * @param id
      * @return
      */
-    @RequestMapping(value = {"users/view/{id}"}, method = {RequestMethod.GET})
+    @RequestMapping(value = {"admin/users/view/{id}"}, method = {RequestMethod.GET})
     public String actionView(ModelMap model, @PathVariable UUID id) {
 
         User oUser = new UserService(env).findOne(id.toString());
@@ -105,7 +108,7 @@ public class UserController {
      * @param request
      * @return
      */
-    @RequestMapping(value = {"users/create"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"admin/users/create"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String actionCreate(@Valid @ModelAttribute User objUser, BindingResult result,
                                ModelMap model, HttpServletRequest request) {
 
@@ -120,7 +123,7 @@ public class UserController {
                     User createdUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
 
                     if(createdUser != null)
-                        return "redirect:/users/view/" + createdUser.getId();
+                        return "redirect:/admin/users/view/" + createdUser.getId();
                     else
                         throw new InternalError(oBaseResponse.getMessage());
                 }
@@ -130,7 +133,7 @@ public class UserController {
             return "views/user/create";
     }
 
-    @RequestMapping(value = {"users/update/{id"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"admin/users/update/{id"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String actionUpdate(@Valid @ModelAttribute User objUser, BindingResult result,
                                ModelMap model, HttpServletRequest request, @PathVariable UUID id) {
 
@@ -145,7 +148,7 @@ public class UserController {
                     User createdUser = (User) BaseResponse.convertToModel(oBaseResponse, new User());
 
                     if(createdUser != null)
-                        return "redirect:/users/view/" + createdUser.getId();
+                        return "redirect:/admin/users/view/" + createdUser.getId();
                     else
                         throw new InternalError(oBaseResponse.getMessage());
                 }
