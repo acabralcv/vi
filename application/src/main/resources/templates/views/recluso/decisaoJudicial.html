@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <title><span th:text="${objRecluso.nome}"></span> - Transferências</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+    <div class="col-xs-12 col-md-12" layout:fragment="content">
+
+        <div clas="col" style="margin: 10px 0">
+            <a th:href="@{|/reclusos/view/${objRecluso.id}|}" class="btn btn-default">Voltar</a>
+        </div>
+
+
+        <div class="panel panel-primary">
+            <div class="panel-heading"><span th:text="${objRecluso.nome}"></span> - Decisão Judicial</div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <tr>
+                        <th>Tribunal</th><th>Estabelecimento prisional</th> <th>Data de inicio</th> <th>Tempo de execução</th><th>Decisão</th><th>Documentos</th>
+                    </tr>
+                    <tr>
+                        <td >Tribunal de Praia</td>
+                        <td >Estabelecimento prisional</td>
+                        <td >15/10/2009</td>
+                        <td >3 anos</td>
+                        <td >Liberdade de saida fim de semana</td>
+                        <td ><a class="btn" target="_blank" href="http://www.publicadireito.com.br/conpedi/manaus/arquivos/anais/bh/claudia_servilha_monteiro.pdf">liberdade fim de semana.pdf</a></td>
+
+                        <td>
+                            <span th:replace="/fragments/ActionColumn:: actionView('/reclusos/view/' + ${objRecluso.id})"></span>
+                            <span th:replace="/fragments/ActionColumn:: actionUpdate('/reclusos/update/' + ${objRecluso.id})"></span>
+                            <span th:replace="/fragments/ActionColumn:: actionDelete('/reclusos/delete/' + ${objRecluso.id})"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td >Tribunal de Praia</td>
+                        <td >Estabelecimento prisional</td>
+                        <td >15/10/2009</td>
+                        <td >3 anos</td>
+                        <td >Prisão efetivo</td>
+                        <td ><a class="btn" target="_blank" href="http://www.publicadireito.com.br/conpedi/manaus/arquivos/anais/bh/claudia_servilha_monteiro.pdf">Sentença.pdf</a></td>
+                        <td>
+
+                            <span th:replace="/fragments/ActionColumn:: actionView('/reclusos/view/' + ${objRecluso.id})"></span>
+                            <span th:replace="/fragments/ActionColumn:: actionUpdate('/reclusos/update/' + ${objRecluso.id})"></span>
+                            <span th:replace="/fragments/ActionColumn:: actionDelete('/reclusos/delete/' + ${objRecluso.id})"></span>
+                        </td>
+                    </tr>
+
+                </table>
+
+                <div clas="col">
+                    <a class="btn" th:href="@{|/reclusos/transfer/${objRecluso.id}|}">
+                        <i class="fas fa-balance-scale fa-2x"></i> Novo decisão Judicial</a>
+                    <a class="btn" th:href="@{|/reclusos/transfer/${objRecluso.id}|}">
+                        <i class="fas fa-print fa-2x"></i> Imprimir</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</html>
