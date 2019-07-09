@@ -12,6 +12,13 @@ import com.library.models.User;
 import com.library.repository.EventslogRepository;
 import com.library.repository.UserRepository;
 import com.library.service.EventsLogService;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.TransportAddress;
+import org.elasticsearch.search.SearchHit;
+//import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +40,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.Principal;
 import java.util.*;
 
@@ -70,6 +79,29 @@ public class HomeController {
      */
     @GetMapping(value = {"/", "home", "index", "default"})
     public String home(ModelMap model) {
+
+        Client client = null;
+        SearchHit[] hits = null;
+
+        try {
+//            Settings settings = Settings.builder()
+//                    .put("cluster.name", "elasticsearch").build();
+//
+//            client = new TransportClient(settings)
+//                    .addTransportAddress(new TransportAddress(InetAddress.getByName("localhost"), 9300)
+//                    /*.addTransportAddress(new TransportAddress(InetAddress.getByName("host2"), 9300)*/);
+
+// on shutdown
+
+            client.close();
+
+
+            SearchResponse searchResponse = client.prepareSearch("music").setTypes("songs").execute().actionGet();
+                hits = searchResponse.getHits().getHits();
+
+        } catch (/*UnknownHost*/Exception e) {
+            e.printStackTrace();
+        }
 
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        if (!(authentication instanceof AnonymousAuthenticationToken)) {
