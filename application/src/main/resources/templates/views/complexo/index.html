@@ -9,7 +9,7 @@
 <div class="col-xs-12 col-md-12" layout:fragment="content">
 
     <div clas="">
-        <a href="/admin/complexos/create" class="btn btn-success">Novo complexos</a>
+        <a href="/admin/complexos/create" class="btn btn-success">Novo complexo</a>
     </div>
 
     <div clas="col" style="margin-top:20px">
@@ -19,30 +19,14 @@
             <div class="panel-body">
 
                 <div class="col">
-                    Total: <!--span th:text="${objPaging.totalElements}"></span-->
+                    Total: <span th:text="${objPaging.totalElements}"></span>
+                    <!--img src="search3.png" alt="Buscar..."/-->
+                    <input type="text" id="txtPesquisar" placeholder="Pesquisar complexo..."/>
+                    <button id="btnPesquisar">Pesquisar</button>
                 </div>
 
-                <table class="table table-striped table-bordered">
-                    <tr>
-                        <th>Nome</th>
-                        <th>Cadeia</th>
-                        <th>Data criação</th>
-                        <th>Ultima atualização</th>
-                        <th>Ações</th>
-                    </tr>
+                <span th:replace="/views/complexo/_index_view:: indexView(${complexos})"></span>
 
-                    <tr th:each="oComplexo : ${complexos}">
-                        <td th:text="${oComplexo.nome}">#</td>
-                        <td th:text="${oComplexo.cadeia != null ? oComplexo.cadeia.nome : '' }">#</td>
-                        <td th:text="${oComplexo.dateCreated}">#</td>
-                        <td th:text="${oComplexo.dateUpdated}">#</td>
-                        <td>
-                            <span th:replace="/fragments/ActionColumn:: actionView('/reclusos/view/' + ${oComplexo.id})"></span>
-                            <span th:replace="/fragments/ActionColumn:: actionUpdate('/reclusos/update/' + ${oComplexo.id})"></span>
-                            <span th:replace="/fragments/ActionColumn:: actionDelete('/reclusos/delete/' + ${oComplexo.id})"></span>
-                        </td>
-                    </tr>
-                </table>
             </div>
         </div>
 

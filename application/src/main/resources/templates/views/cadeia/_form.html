@@ -3,7 +3,7 @@
    <form action="#" th:object="${objCadeia}" method="post">
 
         <div class="row">
-            <div class="col-xs-12 col-md-12">
+            <div class="col-xs-12 col-md-6">
                 <div class="form-group">
                     <label for="name">Nome</label>
                     <input type="text" th:field="*{nome}" id="name" class="form-control" required/>
@@ -12,21 +12,26 @@
             </div>
         </div>
 
-        <div class="col-xs-12 col-md-6">
-            <div class="form-group">
-                <label for="ilha">Localização</label>
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
                 <div class="form-group">
-                   <select th:field="*{ilha}" id="ilha" class="form-control">
-                        <option value="">-- Selecionar Ilha --</option>
-                        <option th:each="objIlha : ${ilhaList}" th:value="${objIlha.id}" th:text="${objIlha.nome}">
-                    </select>
+                    <label for="ilha">Localização</label>
+                    <div class="form-group">
+                       <select th:field="*{ilha}" id="ilha" class="form-control">
+                            <option value="">-- Selecionar Ilha --</option>
+                            <option th:each="objIlha : ${ilhaList}" th:value="${objIlha.id}" th:text="${objIlha.nome}">
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
 
-
-        <div class="form-group">
-             <button type="submit" class="btn btn-primary">Guardar</button>
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                <div class="form-group">
+                     <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
         </div>
 
     </form>

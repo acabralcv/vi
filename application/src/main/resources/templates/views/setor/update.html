@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Atualizar setor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Recluso feature scripts -->
+    <span layout:fragment="custumScripts">
+        <script th:src="@{/js/SetorController.js}"></script>
+    </span>
+
+</head>
+
+<div class="col-xs-12 col-md-12" layout:fragment="content">
+
+    <div clas="col" style="margin: 10px 0">
+        <a th:href="@{|/admin/setores|}" class="btn btn-default">Voltar</a>
+    </div>
+
+
+    <div class="panel panel-primary">
+        <div class="panel-heading"><span th:text="${objSetor.nome}"></span>Atualização</div>
+        <div class="panel-body">
+            <span th:replace="/views/setor/_form:: formSetor(objSetor)"></span>
+        </div>
+    </div>
+</div>
+
+</div>
+
+</html>

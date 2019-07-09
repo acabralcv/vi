@@ -254,6 +254,7 @@ public class UsersController {
             new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
                     + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+
         }
     }
 
@@ -263,7 +264,7 @@ public class UsersController {
      * @return
      */
     @RequestMapping(value = {"api/users/delete"}, method = {RequestMethod.POST})
-    public ResponseEntity actionDelete(@Valid @RequestBody User objUser) {
+    public ResponseEntity actionDelete(@RequestBody User objUser) {
 
         try{
 
@@ -273,6 +274,7 @@ public class UsersController {
             oUser.setDateUpdated(UtilsDate.getDateTime());
             oUser.setStatus(Helper.STATUS_DISABLED);
             userRepository.save(oUser);
+
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", objUser));
 
         }catch (Exception e){
@@ -281,5 +283,4 @@ public class UsersController {
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
     }
-
 }

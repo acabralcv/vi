@@ -23,13 +23,17 @@
     <div clas="col" style="margin-top: 30px">
 
         <div class="panel panel-primary">
-            <div class="panel-heading">Perfil - <span th:text="${oCadeia.name}"></span></div>
+            <div class="panel-heading">Cadeia - <span th:text="${oCadeia.nome}"></span></div>
             <div class="panel-body">
 
                 <table class="table table-striped table-bordered">
                     <tr>
                         <th>Nome</th>
-                        <td th:text="${oCadeia.name}">#</td>
+                        <td th:text="${oCadeia.nome}">#</td>
+                    </tr>
+                    <tr>
+                        <th>Ilha</th>
+                        <td th:text="${oCadeia.ilha != null ? oCadeia.ilha.nome : '' }">#</td>
                     </tr>
                     <tr>
                         <th>Data de criação</th>
@@ -44,6 +48,13 @@
             </div>
         </div>
 
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Complexos</div>
+        <div class="panel-body">
+            <span th:replace="/views/complexo/_index_view:: indexView(${complexosList})"></span>
+        </div>
     </div>
 
 </div>

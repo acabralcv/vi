@@ -7,6 +7,9 @@ import com.library.models.Setor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
+import java.util.ArrayList;
+import java.util.UUID;
+
 public class SetorService {
 
     @Autowired
@@ -28,5 +31,19 @@ public class SetorService {
         oServiceProxy.close();
 
         return (Setor) BaseResponse.convertToModel(oBaseResponse, new Setor());
+    }
+
+    public ArrayList<Setor> findAllByComplexo(UUID id_complexo){
+
+        BaseResponse oBaseResponse = oServiceProxy
+                .buildParams("api/setores", new Params().Add(new Params("id_complexo", id_complexo.toString())).Get())
+                .getTarget()
+                .get(BaseResponse.class);
+        oServiceProxy.close();
+
+        //Pageable result objt
+        ArrayList<Setor> dataResponse = (ArrayList<Setor>) oBaseResponse.getData();
+
+        return dataResponse;
     }
 }

@@ -1,5 +1,6 @@
 package com.library.models;
 
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -7,8 +8,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_setor")
-
 public class Setor extends AuditModel {
+
     @Id
     private UUID id;
 
@@ -19,6 +20,8 @@ public class Setor extends AuditModel {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_complexo", referencedColumnName = "id", nullable = true)
     private Complexo complexo;
+
+
     public UUID getId() {
         return id;
     }
@@ -36,13 +39,11 @@ public class Setor extends AuditModel {
     }
 
 
-    public Complexo getComplexo() {
-
+    public Complexo getcomplexo() {
         return complexo;
     }
 
-    public void setCadeia(Complexo complexo) {
-
+    public void setComplexo(Complexo complexo) {
         this.complexo = complexo;
     }
 }

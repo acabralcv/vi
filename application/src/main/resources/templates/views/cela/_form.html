@@ -1,0 +1,34 @@
+<span th:fragment="formCela(objCela)">
+
+   <form action="#" th:object="${objCela}" method="post">
+
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" th:field="*{nome}" id="name" class="form-control" required/>
+                    <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+            <div class="form-group">
+                <label for="ala">Localização</label>
+                <div class="form-group">
+                   <select th:field="*{ala}" id="ala" class="form-control">
+                        <option value="">-- Selecionar ala --</option>
+                        <option th:each="objAla : ${alaList}" th:value="${objAla.id}" th:text="${objAla.nome}">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+             <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+
+    </form>
+
+</span>

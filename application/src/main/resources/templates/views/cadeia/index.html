@@ -20,6 +20,9 @@
 
                 <div class="col">
                     Total: <span th:text="${objPaging.totalElements}"></span>
+                    <!--img src="search3.png" alt="Buscar..."/-->
+                    <input type="text" id="txtPesquisar" placeholder="Pesquisar cadeia..."/>
+                    <button id="btnPesquisar">Pesquisar</button>
                 </div>
 
                 <table class="table table-striped table-bordered">
@@ -37,9 +40,9 @@
                         <td th:text="${oCadeia.dateCreated}">#</td>
                         <td th:text="${oCadeia.dateUpdated}">#</td>
                         <td>
-                            <span th:replace="/fragments/ActionColumn:: actionView('/reclusos/view/' + ${oCadeia.id})"></span>
-                            <span th:replace="/fragments/ActionColumn:: actionUpdate('/reclusos/update/' + ${oCadeia.id})"></span>
-                            <span th:replace="/fragments/ActionColumn:: actionDelete('/reclusos/delete/' + ${oCadeia.id})"></span>
+                            <span th:replace="/fragments/ActionColumn:: actionView('/admin/cadeias/view/' + ${oCadeia.id})"></span>
+                            <span th:replace="/fragments/ActionColumn:: actionUpdate('/admin/cadeias/update/' + ${oCadeia.id})"></span>
+                            <span th:replace="/fragments/ActionColumn:: actionDelete('/admin/cadeias/delete/' + ${oCadeia.id})"></span>
                         </td>
                     </tr>
                 </table>

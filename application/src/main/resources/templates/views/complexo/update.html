@@ -14,12 +14,12 @@
 <div class="col-xs-12 col-md-12" layout:fragment="content">
 
     <div clas="col" style="margin: 10px 0">
-        <a th:href="@{|/complexo|}" class="btn btn-default">Voltar</a>
+        <a th:href="@{|/admin/complexos|}" class="btn btn-default">Voltar</a>
     </div>
 
 
     <div class="panel panel-primary">
-        <div class="panel-heading">Atualizar Complexo</div>
+        <div class="panel-heading"><span th:text="${objComplexo.nome}"></span>Atualização</div>
         <div class="panel-body">
             <span th:replace="/views/complexo/_form:: formComplexo(objComplexo)"></span>
         </div>

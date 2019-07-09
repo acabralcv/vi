@@ -20,6 +20,8 @@ public class Complexo extends AuditModel {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_cadeia", referencedColumnName = "id", nullable = true)
     private Cadeia cadeia;
+
+
     public UUID getId() {
         return id;
     }
@@ -38,12 +40,10 @@ public class Complexo extends AuditModel {
 
 
     public Cadeia getCadeia() {
-
         return cadeia;
     }
 
-    public void setIlha(Cadeia cadeia) {
-
+    public void setCadeia(Cadeia cadeia) {
         this.cadeia = cadeia;
     }
 }

@@ -20,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 public class CadeiasController {
@@ -54,6 +56,33 @@ public class CadeiasController {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = {"api/cadeias/details"}, method = {RequestMethod.GET})
+    public ResponseEntity actionDetails(@RequestParam(name = "id") UUID id) {
+
+        try{
+
+            Optional<Cadeia> oCadeia  = cadeiaRepository.findById(id);
+
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oCadeia != null ? 1 : 0, "ok", oCadeia));
+
+        }catch (Exception e){
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
+    }
+
+
+    /**
+     *
+     * @param cadeia
+     * @return
+     */
     @RequestMapping(value = {"api/cadeias/create"}, method = {RequestMethod.POST})
     public ResponseEntity actionCreate(@RequestBody Cadeia cadeia) {
 
@@ -66,6 +95,57 @@ public class CadeiasController {
             Cadeia crestedCadeia = cadeiaRepository.save(cadeia);
 
             return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", crestedCadeia ));
+
+        }catch (Exception e){
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
+    }
+
+
+    /**
+     *
+     * @param cadeia
+     * @return
+     */
+    @RequestMapping(value = {"api/cadeias/update"}, method = {RequestMethod.POST})
+    public ResponseEntity actionUpdate(@RequestBody Cadeia cadeia) {
+
+        try {
+
+            cadeia.setStatus(Helper.STATUS_ACTIVE);
+            cadeia.setDateUpdated(UtilsDate.getDateTime());
+
+            Cadeia crestedCadeia = cadeiaRepository.save(cadeia);
+
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", crestedCadeia ));
+
+        }catch (Exception e){
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
+    }
+
+    /**
+     *
+     * @param objCadeia
+     * @return
+     */
+    @RequestMapping(value = {"api/cadeias/delete"}, method = {RequestMethod.POST})
+    public ResponseEntity actionDelete(@RequestBody Cadeia objCadeia) {
+
+        try{
+
+            Cadeia oCadeia = cadeiaRepository.findById(objCadeia.getId())
+                    .orElseThrow(() -> new Exception(Cadeia.class.getName() + " not found with id '" + objCadeia.getId().toString() + "' on actionDelete"));
+
+            oCadeia.setDateUpdated(UtilsDate.getDateTime());
+            oCadeia.setStatus(Helper.STATUS_DISABLED);
+            cadeiaRepository.save(oCadeia);
+
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", objCadeia));
 
         }catch (Exception e){
             new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()

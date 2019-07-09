@@ -7,7 +7,7 @@
         <!-- <script th:src="@{/js/ReclusoController.js}"></script> -->
     </span>
 
-    <title>Complexos</title>
+    <title>Complexo</title>
 
 </head>
 <body>
@@ -23,13 +23,17 @@
     <div clas="col" style="margin-top: 30px">
 
         <div class="panel panel-primary">
-            <div class="panel-heading">Perfil - <span th:text="${oComplexo.name}"></span></div>
+            <div class="panel-heading">Complexo - <span th:text="${oComplexo.nome}"></span></div>
             <div class="panel-body">
 
                 <table class="table table-striped table-bordered">
                     <tr>
                         <th>Nome</th>
-                        <td th:text="${oComplexo.name}">#</td>
+                        <td th:text="${oComplexo.nome}">#</td>
+                    </tr>
+                    <tr>
+                        <th>Cadeia</th>
+                        <td th:text="${oComplexo.cadeia != null ? oComplexo.cadeia.nome : '' }">#</td>
                     </tr>
                     <tr>
                         <th>Data de criação</th>
@@ -44,6 +48,13 @@
             </div>
         </div>
 
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Setor</div>
+        <div class="panel-body">
+            <span th:replace="/views/setor/_index_view:: indexView(${setoresList})"></span>
+        </div>
     </div>
 
 </div>

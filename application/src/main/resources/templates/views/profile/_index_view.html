@@ -9,9 +9,12 @@
             <th>Ação</th>
         </tr>
 
-        <div class="col">
-            Total: <span th:if="${oPaging != null && oPaging != 'null'}" th:text="${objPaging.totalElements}"></span>
-        </div>
+         <div class="col">
+                    Total: <span th:text="${objPaging.totalElements}"></span>
+             <!--img src="search3.png" alt="Buscar..."/-->
+                    <input type="text" id="txtPesquisar" placeholder="Pesquisar perfil..."/>
+                    <button id="btnPesquisar">Pesquisar</button>
+                </div>
 
         <tr th:each="oProfile : ${profiles}">
             <td th:text="${oProfile.name}">#</td>
