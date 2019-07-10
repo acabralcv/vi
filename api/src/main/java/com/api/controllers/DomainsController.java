@@ -67,7 +67,7 @@ public class DomainsController {
 
             Optional<Domain> oDominio = (Optional) domainRepository.findById(id);
 
-            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oDominio != null ? 1 : 0,"ok", oDominio));
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oDominio != null ? 1 : 0,"ok", oDominio.get()));
 
         }catch (Exception e){
             new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()

@@ -115,7 +115,7 @@ public class SetorController {
         }
 
         model.addAttribute("objSetor", objSetor);
-        model.addAttribute("complexoList", new CadeiaService(env).findAll(30));
+        model.addAttribute("complexoList", new ComplexoService(env).findAll(30));
 
         return "views/setor/create";
     }
@@ -156,7 +156,7 @@ public class SetorController {
             throw new ResourceNotFoundException("Não possivel encontrar informaçao do 'Setor' solicitado");
 
         model.addAttribute("objSetor", objSetor);
-        model.addAttribute("complexoList", new CadeiaService(env).findAll(30));
+        model.addAttribute("complexoList", new ComplexoService(env).findAll(30));
 
         return "views/setor/update";
 

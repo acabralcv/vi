@@ -85,7 +85,7 @@ public class ComplexosController {
 
             Optional<Complexo> oComplexo = complexoRepository.findById(id);
 
-            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oComplexo != null ? 1 : 0, "ok", oComplexo));
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oComplexo != null ? 1 : 0, "ok", oComplexo.get()));
 
         } catch (Exception e) {
             new EventsLogService(userRepository).AddEventologs(null, "Excption in class '" + this.getClass().getName()

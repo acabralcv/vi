@@ -7,6 +7,7 @@ import com.library.models.Complexo;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
@@ -24,6 +25,11 @@ public class ComplexoService {
         oServiceProxy = new ServiceProxy(this.env);
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Complexo findOne(String id){
 
         BaseResponse oBaseResponse = oServiceProxy
@@ -35,6 +41,11 @@ public class ComplexoService {
         return (Complexo) BaseResponse.convertToModel(oBaseResponse, new Complexo());
     }
 
+    /**
+     *
+     * @param id_cadeia
+     * @return
+     */
     public ArrayList<Complexo> findAllByCadeia(UUID id_cadeia){
 
         BaseResponse oBaseResponse = oServiceProxy
@@ -47,5 +58,22 @@ public class ComplexoService {
         ArrayList<Complexo> dataResponse = (ArrayList<Complexo>) oBaseResponse.getData();
 
         return dataResponse;
+    }
+
+    /**
+     *
+     * @param limit
+     * @return
+     */
+    public ArrayList<Complexo> findAll(Integer limit){
+
+        if(limit <= 0) limit = 15;
+
+        BaseResponse oBaseResponse = oServiceProxy
+                .getJsonData("api/complexos", oServiceProxy.encodePageableParams(PageRequest.of(0,limit)));
+
+        JSONObject dataResponse = (JSONObject) oBaseResponse.getData();
+
+        return dataResponse != null ? (ArrayList<Complexo>) dataResponse.get("content") : new ArrayList<>();
     }
 }

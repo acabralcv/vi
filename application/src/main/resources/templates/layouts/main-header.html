@@ -3,8 +3,8 @@
 <div th:fragment="ActionView()">
 
 
-  <html xmlns:th="http://www.thymeleaf.org"
-        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+  <!--<html xmlns:th="http://www.thymeleaf.org"-->
+        <!--xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">-->
 
       <header class="main-header">
         <!-- Logo -->
@@ -207,10 +207,7 @@
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <!--<span sec:authorize="isAuthenticated()">-->
-                    <!--<span sec:authentication="name"></span>-->
-                  <!--</span>-->
-                  <img th:src="@{/dist/img/logo.png}" class="user-image" alt="User Image">
+                  <img th:src="@{/dist/img/logo.png}" class="user-image" alt="">
                   <span sec:authorize="isAuthenticated()">
                       <span class="hidden-xs">
                         [[${#httpServletRequest.remoteUser}]]
@@ -223,30 +220,14 @@
                     <img th:src="@{/dist/img/logo.png}" class="user-image" alt="User Image">
 
                     <p>
-                      [[${#httpServletRequest.remoteUser}]
+                      [[${#httpServletRequest.remoteUser}]]
                       <small></small>
                     </p>
-                  </li>ROLE_admin
+                  </li>
 
                   <!-- Menu Footer-->
                   <li class="user-footer">
-                    <div class="pull-left">
-                      <span sec:authorize="isAuthenticated()">
-                        <!--<a th:href="${#authentication.getPrincipal().getName()}">ss</a>-->
-                        <!--<a href="/users/view/${authentication.name}" class="btn btn-default btn-flat">Conta</a>-->
-                      </span>
-                    </div>
                     <div class="pull-right">
-                      <!--
-                      IS ADMIN: <span th:text="${#httpServletRequest.userPrincipal.getAuthorities()[0].getAuthority() == 'ROLE_admin' ? 'YES' : 'NO'}"></span> |
-                      IS TESTE<span th:text="${T(com.app.helpers.Helper).isAdmin(#httpServletRequest.userPrincipal.getAuthorities())}"></span>
-                      IS ADMIN1: <span th:text="${#httpServletRequest.userPrincipal.getAuthorities()[0].getAuthority() == 'ROLE_admin' ? 'YES' : 'NO'}"></span> |
-                      -->
-                      <span sec:authorize="isAuthenticated()">
-                      <span sec:authentication="name"></span>
-                      </span>
-
-                      <br />
 
                       <span sec:authorize="isAuthenticated()">
                         <a class="btn btn-default btn-flat" href="/logout">Terminar seção</a>
@@ -261,4 +242,5 @@
         </nav>
       </header>
 
- </div>
+
+</div>

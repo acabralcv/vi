@@ -6,6 +6,7 @@ import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
 import com.app.service.AlaService;
 import com.app.service.CadeiaService;
+import com.app.service.ComplexoService;
 import com.app.service.SetorService;
 import com.library.helpers.BaseResponse;
 import com.library.helpers.HelperPaging;
@@ -82,6 +83,7 @@ public class AlaController {
         //ArrayList<Setor> sectorList = new SectorService(env).findAllByComplexo(id);
 
         model.addAttribute("oAla", oAla);
+        //model.addAttribute("setoresList", new SetorService(env).findAll(30));
         return  "/views/ala/view";
     }
 
@@ -115,7 +117,7 @@ public class AlaController {
         }
 
         model.addAttribute("objAla", objAla);
-        model.addAttribute("setorList", new CadeiaService(env).findAll(30));
+        model.addAttribute("setoresList", new SetorService(env).findAll(30));
 
         return "views/ala/create";
     }

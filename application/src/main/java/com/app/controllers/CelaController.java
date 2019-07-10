@@ -115,7 +115,7 @@ public class CelaController {
         }
 
         model.addAttribute("objCela", objCela);
-        model.addAttribute("alaList", new CadeiaService(env).findAll(30));
+        model.addAttribute("alaList", new AlaService(env).findAll(30));
 
         return "views/cela/create";
     }

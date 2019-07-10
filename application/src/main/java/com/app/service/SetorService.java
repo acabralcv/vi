@@ -3,9 +3,12 @@ package com.app.service;
 import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
 import com.library.helpers.BaseResponse;
+import com.library.models.Complexo;
 import com.library.models.Setor;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -45,5 +48,23 @@ public class SetorService {
         ArrayList<Setor> dataResponse = (ArrayList<Setor>) oBaseResponse.getData();
 
         return dataResponse;
+    }
+
+
+    /**
+     *
+     * @param limit
+     * @return
+     */
+    public ArrayList<Setor> findAll(Integer limit){
+
+        if(limit <= 0) limit = 15;
+
+        BaseResponse oBaseResponse = oServiceProxy
+                .getJsonData("api/setores", oServiceProxy.encodePageableParams(PageRequest.of(0,limit)));
+
+        JSONObject dataResponse = (JSONObject) oBaseResponse.getData();
+
+        return dataResponse != null ? (ArrayList<Setor>) dataResponse.get("content") : new ArrayList<>();
     }
 }

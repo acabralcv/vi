@@ -68,7 +68,7 @@ public class CadeiasController {
 
             Optional<Cadeia> oCadeia  = cadeiaRepository.findById(id);
 
-            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oCadeia != null ? 1 : 0, "ok", oCadeia));
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oCadeia != null ? 1 : 0, "ok", oCadeia.get()));
 
         }catch (Exception e){
             new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()

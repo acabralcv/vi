@@ -48,7 +48,7 @@ public class ReclusosController {
 
             Optional<Recluso> oRecluso  = reclusoRepository.findById(id);
 
-            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oRecluso != null ? 1 : 0, "ok", oRecluso));
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oRecluso != null ? 1 : 0, "ok", oRecluso.get()));
 
         }catch (Exception e){
             new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()

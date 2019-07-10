@@ -20,57 +20,49 @@
 <!--          </div>-->
 
           <!-- sidebar menu: : style can be found in sidebar.less -->
-          <span sec:authorize="isAuthenticated() && httpServletRequest.userPrincipal != null">
 
             <ul class="sidebar-menu" data-widget="tree" style="margin-top: 20px;">
 
 
-              <!--<li th:if="${T(com.app.helpers.Helper).isAdmin(#httpServletRequest.userPrincipal.getAuthorities())}" class="treeview">-->
-              <li>
+              <li th:if="${T(com.app.helpers.Helper).isAdmin(#httpServletRequest.userPrincipal.getAuthorities())}" class="treeview">
+              <!--<li class="treeview">-->
                 <a href="#">
                   <i class="fas fa-tasks"></i>&nbsp;<span>&nbsp;Parametrizações</span>
                   <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
 
                 <ul class="treeview-menu">
-                  <li><a href="/users"><i class="fas fa-user-friends"></i>&nbsp;Utilizadores</a></li>
+                  <!--<li><a href="/users"><i class="fas fa-user-friends"></i>&nbsp;Utilizadores</a></li>-->
                   <!--li><a href="/admin/profiles"><i class="fas fa-user-tag"></i>&nbsp;Perfil</a></li-->
                   <li><a href="/admin/cadeias"><i class="glyphicon glyphicon-oil"></i>&nbsp;Cadeia</a></li>
                   <li><a href="/admin/complexos"><i class="fas fa-user-tag"></i>&nbsp;Complexo</a></li>
                   <li><a href="/admin/setores"><i class="fas fa-user-tag"></i>&nbsp;Setor</a></li>
                   <li><a href="/admin/alas"><i class="fas fa-user-tag"></i>&nbsp;Ala</a></li>
                   <li><a href="/admin/celas"><i class="fas fa-user-tag"></i>&nbsp;Cela</a></li>
+                  <li><a href="/admin/domains"><i class="fas fa-user-tag"></i>&nbsp;Dominios</a></li>
 
                 </ul>
 
               </li>
 
-              <!--<li  th:if="${T(com.app.helpers.Helper).isAdmin(#httpServletRequest.userPrincipal.getAuthorities())}" class="treeview">-->
-              <li>
+              <li  th:if="${T(com.app.helpers.Helper).isAdmin(#httpServletRequest.userPrincipal.getAuthorities())}" class="treeview">
+              <!--<li class="treeview">-->
                 <a href="#">
                   <i class="fas fa-user-friends"></i><span>&nbsp;Gestão de Acesso</span>
                   <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
 
                 <ul class="treeview-menu">
-                  <<li><a href="/users"><i class="fas fa-user-friends"></i>&nbsp;Utilizadores</a></li>>
-                  <li><a href="/admin/profiles"><i class="fas fa-users"></i>&nbsp;Perfils de Acesso</a></li>
-                  <!--<li><a href="/admin/domains"><i class="fas fa-circle"></i>&nbsp;Dominios</a></li>-->
-                  <!--<li><a href="/admin/eventslog"><i class="fas fa-circle"></i>&nbsp;Events log</a></li>-->
                   <li><a href="/admin/users"><i class="fas fa-user-friends"></i>&nbsp;Utilizadores</a></li>
-                  <li><a href="/admin/profiles"><i class="fas fa-user-tag"></i>&nbsp;Perfis de acesso</a></li>
-                  <li><a href="/admin/cadeias"><i class="glyphicon glyphicon-oil"></i>&nbsp;Cadeia</a></li>
-                  <li><a href="/admin/complexos"><i class="fas fa-user-tag"></i>&nbsp;Complexo</a></li>
-                  <li><a href="/admin/setores"><i class="fas fa-user-tag"></i>&nbsp;Setor</a></li>
-                  <li><a href="/admin/alas"><i class="fas fa-user-tag"></i>&nbsp;Ala</a></li>
-                  <li><a href="/admin/celas"><i class="fas fa-user-tag"></i>&nbsp;Cela</a></li>
-
+                  <li><a href="/admin/profiles"><i class="fas fa-users"></i>&nbsp;Perfils de Acesso</a></li>
                 </ul>
               </li>
-              </li>
 
-              <!--<li  th:if="${T(com.app.helpers.Helper).isGestor(#httpServletRequest.userPrincipal.getAuthorities())}" class="treeview">-->
-              <li>
+
+
+
+              <li  th:if="${T(com.app.helpers.Helper).isGestor(#httpServletRequest.userPrincipal.getAuthorities())}" class="treeview">
+              <!--<li class="treeview">-->
                 <a href="#">
                   <i class="fa fa-user-circle-o"></i><span>&nbsp;Gestão de Reclusos</span>
                   <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
@@ -91,7 +83,6 @@
 
             </ul>
 
-          </span>
         </section>
         <!--/.sidebar -->
       </aside>

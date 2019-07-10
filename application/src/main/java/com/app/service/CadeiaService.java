@@ -42,7 +42,7 @@ public class CadeiaService {
      * Return all cadeias
      * @return
      */
-    public ArrayList<Complexo> findAll(Integer limit){
+    public ArrayList<Cadeia> findAll(Integer limit){
 
         if(limit <= 0) limit = 15;
 
@@ -51,7 +51,7 @@ public class CadeiaService {
 
         JSONObject dataResponse = (JSONObject) oBaseResponse.getData();
 
-        return dataResponse != null ? (ArrayList<Complexo>) dataResponse.get("content") : new ArrayList<>();
+        return dataResponse != null ? (ArrayList<Cadeia>) dataResponse.get("content") : new ArrayList<>();
     }
 
 

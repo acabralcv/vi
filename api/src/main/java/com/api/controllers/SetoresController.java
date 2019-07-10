@@ -85,7 +85,7 @@ public class SetoresController {
 
             Optional<Setor> oSetor = setorRepository.findById(id);
 
-            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oSetor != null ? 1 : 0, "ok", oSetor));
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oSetor != null ? 1 : 0, "ok", oSetor.get()));
 
         } catch (Exception e) {
             new EventsLogService(userRepository).AddEventologs(null, "Excption in class '" + this.getClass().getName()

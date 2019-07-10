@@ -38,8 +38,7 @@ public class Setor extends AuditModel {
         this.nome = nome;
     }
 
-
-    public Complexo getcomplexo() {
+    public Complexo getComplexo() {
         return complexo;
     }
 

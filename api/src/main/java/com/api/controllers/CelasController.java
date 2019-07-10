@@ -86,7 +86,7 @@ public class CelasController {
 
             Optional<Cela> oCela = celaRepository.findById(id);
 
-            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oCela != null ? 1 : 0, "ok", oCela));
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oCela != null ? 1 : 0, "ok", oCela.get()));
 
         } catch (Exception e) {
             new EventsLogService(userRepository).AddEventologs(null, "Excption in class '" + this.getClass().getName()

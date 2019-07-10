@@ -116,7 +116,7 @@ public class CadeiaController {
                 Cadeia createdCadeia = (Cadeia) BaseResponse.convertToModel(oBaseResponse, new Cadeia());
 
                 if(createdCadeia != null)
-                    return "redirect:/admin/cadeias"; // + createdCadeia.getId();
+                    return "redirect:/admin/cadeias/view/" + createdCadeia.getId();
                 else
                     throw new InternalError(oBaseResponse.getMessage());
             }

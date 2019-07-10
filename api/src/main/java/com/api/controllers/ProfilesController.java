@@ -41,7 +41,7 @@ public class ProfilesController {
 
             Optional<Profile> oProfile = (Optional) profileRepository.findById(id);
 
-            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oProfile != null ? 1 : 0,"ok", oProfile));
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(oProfile != null ? 1 : 0,"ok", oProfile.get()));
 
         }catch (Exception e){
             new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
