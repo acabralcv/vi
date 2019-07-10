@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head>
+    <title>Celas</title>
+</head>
+<body>
+
+
+<div class="col-xs-12 col-md-12" layout:fragment="content">
+
+    <div clas="">
+        <a href="/admin/celas/create" class="btn btn-success">Novo cela</a>
+    </div>
+
+    <div clas="col" style="margin-top:20px">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Celas</div>
+            <div class="panel-body">
+
+                <div class="col">
+                    Total: <span th:text="${objPaging.totalElements}"></span>
+                    <!--img src="search3.png" alt="Buscar..."/-->
+                    <input type="text" id="txtPesquisar" placeholder="Pesquisar cela..."/>
+                    <button id="btnPesquisar">Pesquisar</button>
+                </div>
+
+                <span th:replace="/views/cela/_index_view:: indexView(${celas})"></span>
+
+            </div>
+        </div>
+
+        <span th:replace="/fragments/pagingResult:: actionPaging(${objPaging}, '/admin/celas')"></span>
+
+    </div>
+
+</div>
+
+
+
+</body>
+
+</html>

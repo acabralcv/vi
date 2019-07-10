@@ -139,6 +139,7 @@ public class HomeController {
 
         model.addAttribute("appKey", new Helper().getUUID());
         model.addAttribute("appName","App Name Test");
+        //model.addAttribute("userTasks",userTasks);
         model.addAttribute("userTasks", new ArrayList<>());
         return "views/home/index";
     }

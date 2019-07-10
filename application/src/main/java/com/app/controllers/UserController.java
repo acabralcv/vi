@@ -162,4 +162,25 @@ public class UserController {
             return "views/user/create";
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = {"admin/users/delete/{id}"}, method = {RequestMethod.GET})
+    public String actionDelete(@PathVariable(required = true) UUID id) {
+
+        User objUser = new User();
+        objUser.setId(id);
+
+        ArrayList<Params> p = new ArrayList<>();
+        ServiceProxy oServiceProxy = new ServiceProxy(env);
+        BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/users/delete", objUser, new ArrayList<>() );
+        oServiceProxy.close();
+
+        if(oBaseResponse.getStatusAction() == 1)
+            return "redirect:/admin/users";
+        else
+            throw new InternalError(oBaseResponse.getMessage());
+    }
 }

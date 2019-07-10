@@ -18,9 +18,12 @@
             <div class="panel-heading">Reclusos</div>
             <div class="panel-body">
 
-				<div class="col">
-					Total: <span th:text="${objPaging.totalElements}"></span>
-				</div>
+                <div class="col">
+                    Total: <span th:text="${objPaging.totalElements}"></span>
+                    <!--img src="search3.png" alt="Buscar..."/-->
+                    <input type="text" id="txtPesquisar" placeholder="Pesquisar recluso..."/>
+                    <button id="btnPesquisar">Pesquisar</button>
+                </div>
                 <table class="table table-striped table-bordered">
                     <tr>
                         <th>Nome</th>
@@ -39,7 +42,7 @@
                         <td>
                             <span th:replace="/fragments/ActionColumn:: actionView('/reclusos/view/' + ${oRecluso.id})"></span>
                             <span th:replace="/fragments/ActionColumn:: actionUpdate('/reclusos/update/' + ${oRecluso.id})"></span>
-                            <span th:replace="/fragments/ActionColumn:: actionDelete('/reclusos/delete/' + ${oRecluso.id})"></span>
+                            <!--span th:replace="/fragments/ActionColumn:: actionDelete('/reclusos/delete/' + ${oRecluso.id})"></span-->
                         </td>
                     </tr>
                 </table>

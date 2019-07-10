@@ -223,7 +223,8 @@
                     <img th:src="@{/dist/img/logo.png}" class="user-image" alt="User Image">
 
                     <p>
-                      [[${#httpServletRequest.remoteUser}]]
+                      [[${#httpServletRequest.remoteUser}]
+                      <small></small>
                     </p>
                   </li>ROLE_admin
 
@@ -236,10 +237,11 @@
                       </span>
                     </div>
                     <div class="pull-right">
+                      <!--
                       IS ADMIN: <span th:text="${#httpServletRequest.userPrincipal.getAuthorities()[0].getAuthority() == 'ROLE_admin' ? 'YES' : 'NO'}"></span> |
                       IS TESTE<span th:text="${T(com.app.helpers.Helper).isAdmin(#httpServletRequest.userPrincipal.getAuthorities())}"></span>
                       IS ADMIN1: <span th:text="${#httpServletRequest.userPrincipal.getAuthorities()[0].getAuthority() == 'ROLE_admin' ? 'YES' : 'NO'}"></span> |
-
+                      -->
                       <span sec:authorize="isAuthenticated()">
                       <span sec:authentication="name"></span>
                       </span>

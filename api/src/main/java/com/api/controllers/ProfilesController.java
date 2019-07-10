@@ -88,7 +88,7 @@ public class ProfilesController {
                 throw new Exception("Já existe um 'Perfil' com o mesmo nome.");
 
             objProfile.setId(new Helper().getUUID());
-            //objProfile.setStatus(Helper.STATUS_ACTIVE);
+            objProfile.setStatus(Helper.STATUS_ACTIVE);
             objProfile.setDateCreated(UtilsDate.getDateTime());
             profileRepository.save(objProfile);
 

@@ -36,6 +36,9 @@
 
 					<div class="col">
 						Total: <span th:text="${objPaging.totalElements}"></span>
+						<!--img src="search3.png" alt="Buscar..."/-->
+						<input type="text" id="txtPesquisar" placeholder="Pesquisar user..."/>
+						<button id="btnPesquisar">Pesquisar</button>
 					</div>
 
 					<tr th:each="oUser : ${users}">

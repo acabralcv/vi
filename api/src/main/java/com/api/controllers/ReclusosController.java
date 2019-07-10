@@ -153,5 +153,29 @@ public class ReclusosController {
         }
     }
 
+    /**
+     *
+     * @param objRecluso
+     * @return
+     */
+    @RequestMapping(value = {"api/reclusos/delete"}, method = {RequestMethod.POST})
+    public ResponseEntity actionDelete(@RequestBody Recluso objRecluso) {
 
+        try{
+
+            Recluso oRecluso = reclusoRepository.findById(objRecluso.getId())
+                    .orElseThrow(() -> new Exception(Recluso.class.getName() + " not found with id '" + objRecluso.getId().toString() + "' on actionDelete"));
+
+            oRecluso.setDateUpdated(UtilsDate.getDateTime());
+            oRecluso.setStatus(Helper.STATUS_DISABLED);
+            reclusoRepository.save(oRecluso);
+
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", objRecluso));
+
+        }catch (Exception e){
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
+    }
 }

@@ -57,14 +57,14 @@ public class ReclusoController {
 
         Recluso oRecluso = new ReclusoService(env).findOne(id.toString());
 
-        if(oRecluso == null)
+        if (oRecluso == null)
             throw new ResourceNotFoundException("Não possivel encontrar o recluso solicitado");
 
         new EventsLogService().addReclusoLog(oRecluso);
 
         model.addAttribute("oRecluso", oRecluso);
 
-        return  "/views/recluso/view";
+        return "/views/recluso/view";
     }
 
     @RequestMapping(value = "reclusos", method = RequestMethod.GET)
@@ -85,38 +85,38 @@ public class ReclusoController {
         model.addAttribute("objPaging", (new HelperPaging().getResponsePaging(pageable, dataResponse)));
         model.addAttribute("reclusos", reclusos);
 
-        return  "/views/recluso/index";
+        return "/views/recluso/index";
     }
 
     @RequestMapping(value = {"reclusos/create"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String actionCreate(@Valid @ModelAttribute Recluso objRecluso, BindingResult result,
                                ModelMap model, HttpServletRequest request) {
 
-            ServiceProxy oServiceProxy = new ServiceProxy(env);
+        ServiceProxy oServiceProxy = new ServiceProxy(env);
 
-            if (request.getMethod().equals("POST")) {
+        if (request.getMethod().equals("POST")) {
 
-                //eviter problema
-                objRecluso.setDataNascimento(null);
+            //eviter problema
+            objRecluso.setDataNascimento(null);
 
-                if ( !result.hasErrors()) {
-                    BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/reclusos/create", objRecluso, new ArrayList<>());
-                    oServiceProxy.close();
+            if (!result.hasErrors()) {
+                BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/reclusos/create", objRecluso, new ArrayList<>());
+                oServiceProxy.close();
 
-                    Recluso createdUser = (Recluso) BaseResponse.convertToModel(oBaseResponse, new Recluso());
+                Recluso createdUser = (Recluso) BaseResponse.convertToModel(oBaseResponse, new Recluso());
 
-                    if (createdUser == null)
-                        throw new InternalError(oBaseResponse.getMessage());
+                if (createdUser == null)
+                    throw new InternalError(oBaseResponse.getMessage());
 
-                    return "redirect:/reclusos/view/" + createdUser.getId();
-                }
+                return "redirect:/reclusos/view/" + createdUser.getId();
             }
+        }
 
-            model.addAttribute("paisList", new PaisService(env).findAll());
-            model.addAttribute("ilhaList", new IlhaService(env).findAll());
-            model.addAttribute("oServiceProxy", oServiceProxy);
-            model.addAttribute("objRecluso", objRecluso);
-            return "views/recluso/create";
+        model.addAttribute("paisList", new PaisService(env).findAll());
+        model.addAttribute("ilhaList", new IlhaService(env).findAll());
+        model.addAttribute("oServiceProxy", oServiceProxy);
+        model.addAttribute("objRecluso", objRecluso);
+        return "views/recluso/create";
     }
 
 
@@ -129,14 +129,14 @@ public class ReclusoController {
             if (!result.hasErrors()) {
 
                 ServiceProxy oServiceProxy = new ServiceProxy(env);
-                BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/reclusos/update", objRecluso, new ArrayList<>() );
+                BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/reclusos/update", objRecluso, new ArrayList<>());
                 oServiceProxy.close();
 
-                if(oBaseResponse.getStatusAction() != 1 || oBaseResponse.getData() == null || oBaseResponse.getData() == "null")
+                if (oBaseResponse.getStatusAction() != 1 || oBaseResponse.getData() == null || oBaseResponse.getData() == "null")
                     throw new InternalError(oBaseResponse.getMessage());
 
                 Recluso updatedRecluso = objectMapper.convertValue(oBaseResponse.getData(), Recluso.class);
-                if(updatedRecluso != null)
+                if (updatedRecluso != null)
                     return "redirect:/reclusos/view/" + updatedRecluso.getId().toString();
                 else
                     throw new InternalError(oBaseResponse.getMessage());
@@ -144,12 +144,35 @@ public class ReclusoController {
         }
 
         objRecluso = new ReclusoService(env).findOne(id.toString());
-        if(objRecluso == null)
+        if (objRecluso == null)
             throw new ResourceNotFoundException("Não possivel encontrar o recluso solicitado");
 
         model.addAttribute("objRecluso", objRecluso);
-        return  "/views/recluso/update";
+        return "/views/recluso/update";
     }
+
+    /**
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = {"admin/reclusos/delete/{id}"}, method = {RequestMethod.GET})
+    public String actionDelete(@PathVariable(required = true) UUID id) {
+
+        Recluso objRecluso = new Recluso();
+        objRecluso.setId(id);
+
+        ArrayList<Params> p = new ArrayList<>();
+        ServiceProxy oServiceProxy = new ServiceProxy(env);
+        BaseResponse oBaseResponse = oServiceProxy.postJsonData("api/reclusos/delete", objRecluso, new ArrayList<>());
+        oServiceProxy.close();
+
+        if (oBaseResponse.getStatusAction() == 1)
+            return "redirect:/admin/reclusos";
+        else
+            throw new InternalError(oBaseResponse.getMessage());
+    }
+
+
 
 
     @RequestMapping(value = "reclusos/transfer/{id}", method = {RequestMethod.GET, RequestMethod.POST})

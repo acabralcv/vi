@@ -1,33 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
 <head>
-   
-    <title><span th:text="${oUser.name}">#</span> - Atuaçização </title>
 
-    <!-- User feature scripts -->
+    <!-- Recluso feature scripts -->
     <span layout:fragment="custumScripts">
         <script th:src="@{/js/UserController.js}"></script>
-        <script th:src="@{/js/ImageControllers.js}"></script> 
     </span>
 
+    <title><span th:text="${objUser.nome}"></span> - Atualização</title>
 </head>
 
 <div class="col-xs-12 col-md-12" layout:fragment="content">
 
     <div clas="col" style="margin: 10px 0">
+        <a th:href="@{|/users|}" class="btn btn-default">Voltar</a>
+        <button type="submit" class="btn btn-success">Guardar</button>
         <a th:href="@{|/admin/users|}" class="btn btn-default">Voltar</a>
     </div>
 
-
-    <h5><span th:text="${objUser.name}"></span> - Atualização </h5>
-
-    <hr />
-
-    <!-- user form -->
-    <div clas="col">
-        <span th:replace="/views/user/_form:: formUser(objUser)"></span>
+    <div class="panel panel-primary">
+        <div class="panel-heading"><span th:text="${objUser.nome}"></span> - Atualização</div>
+        <div class="panel-body">
+            <span th:replace="/views/user/_form:: formUser(objUser)"></span>
+        </div>
     </div>
-
 </div>
 
 
