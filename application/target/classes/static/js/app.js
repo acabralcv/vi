@@ -61,7 +61,7 @@ setTimeout(function(){
 
 function Sleep(){return;} // Does nothing.
 var goToSleep = Sleep(); // Create the object.
-function printPDF(titulo) {
+function printPDF(){
     var divContents = $("#dvContainer").html();
     var printWindow = window.open('', '');
     printWindow.document.write('<html><head><title>SIGP-GR</title>');

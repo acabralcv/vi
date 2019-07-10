@@ -61,12 +61,12 @@ setTimeout(function(){
 
 function Sleep(){return;} // Does nothing.
 var goToSleep = Sleep(); // Create the object.
-function printPDF() {
+function printPDF(){
     var divContents = $("#dvContainer").html();
     var printWindow = window.open('', '');
     printWindow.document.write('<html><head><title>SIGP-GR</title>');
     printWindow.document.write('</head><body >');
-    printWindow.document.write('<img src="/dist/img/cabecalhoPrint.png" alt="Cabeçalho Impressão do SIGP" height="" width="">');
+    printWindow.document.write('<img src="/dist/img/cabecalho.png" alt="Cabeçalho Impressão do SIGP" height="" width="">');
     var node = document.getElementById('dvTitulo');
     printWindow.document.write('<p align="left"><h2>');
     printWindow.document.write(node.textContent);
