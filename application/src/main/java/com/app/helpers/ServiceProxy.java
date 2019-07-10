@@ -1,6 +1,7 @@
 package com.app.helpers;
 
 import com.library.helpers.BaseResponse;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +86,14 @@ public class ServiceProxy {
             String url = this.getServiceUrl(resourse, params);
 
             //https://www.logicbig.com/how-to/code-snippets/jcode-jax-rs-client-and-clientbuilder.html
-            Client client = ClientBuilder.newClient();
+
+//            HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder()
+//                    .nonPreemptive()
+//                    .credentials("admin", "123")
+//                    .build();
+
+            Client client = ClientBuilder.newClient()/*.register(new Authenticator("admin", "123"))*/;
+//            client.register(feature);
             WebTarget target = client.target(url);
 
             String s = target.request().get(String.class);
