@@ -41,20 +41,19 @@ public class SetoresController {
      * @return
      */
     @RequestMapping(value = {"api/setores"}, method = {RequestMethod.GET})
-    public ResponseEntity actionDetails(@RequestParam(name = "id_complexo", required = false) UUID id_complexo, @PageableDefault(sort = {"nome"}, value = 10, page = 0) Pageable pageable) {
-
-
+    public ResponseEntity actionGet(@RequestParam(name = "id_complexo", required = false) UUID id_complexo, @PageableDefault(sort = {"nome"}, value = 10, page = 0) Pageable pageable) {
 
         try {
 
+            //caso for fornecido o id_complexo, vamos filtrar os setores do respetivos complexo
             if (id_complexo != null) {
 
                 Complexo complexo = new Complexo();
                 complexo.setId(id_complexo);
-
                 ArrayList<Setor> setores = setorRepository.findByComplexo(complexo);
-
                 return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1, "ok", setores));
+
+                //caso contrario vamos pegar todos de forma paginada
             } else {
 
                 Pageable pageableBuilded = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome")

@@ -3,6 +3,7 @@ package com.app.controllers;
 import com.app.exceptions.ResourceNotFoundException;
 import com.app.helpers.Params;
 import com.app.helpers.ServiceProxy;
+import com.app.service.CadeiaService;
 import com.app.service.IlhaService;
 import com.app.service.PaisService;
 import com.app.service.ReclusoService;
@@ -60,9 +61,12 @@ public class ReclusoController {
         if (oRecluso == null)
             throw new ResourceNotFoundException("Não possivel encontrar o recluso solicitado");
 
-        new EventsLogService().addReclusoLog(oRecluso);
+        ReclusoCela oReclusoCela = new ReclusoCela();
+        oReclusoCela.setRecluso(oRecluso);
 
         model.addAttribute("oRecluso", oRecluso);
+        model.addAttribute("oReclusoCela", oReclusoCela);
+        model.addAttribute("cadeiasList", new CadeiaService(env).findAll(30));
 
         return "/views/recluso/view";
     }

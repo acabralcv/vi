@@ -5,11 +5,9 @@ import com.library.helpers.Helper;
 import com.library.helpers.UtilsDate;
 import com.library.models.Image;
 import com.library.models.Recluso;
+import com.library.models.ReclusoCela;
 import com.library.models.User;
-import com.library.repository.EventslogRepository;
-import com.library.repository.ImageRepository;
-import com.library.repository.ReclusoRepository;
-import com.library.repository.UserRepository;
+import com.library.repository.*;
 import com.library.service.EventsLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +19,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,6 +35,9 @@ public class ReclusosController {
 
     @Autowired
     private ImageRepository imageRepository;
+
+    @Autowired
+    private ReclusoCelaRepository reclusoCelaRepository;
 
     /** get recludo details
      * @param id
@@ -83,6 +85,26 @@ public class ReclusosController {
         }
     }
 
+
+    @RequestMapping(value = "api/recluso-celas", method = RequestMethod.GET)
+    public ResponseEntity actionReclusoCelas(@RequestParam(name = "recluso_id") UUID recluso_id) {
+
+        try{
+
+            Recluso recluso = new Recluso();
+            recluso.setId(recluso_id);
+
+            ArrayList<ReclusoCela> reclusoCelas = reclusoCelaRepository.findByRecluso(recluso);
+
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", reclusoCelas ));
+
+        }catch (Exception e){
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
+    }
+
     /**
      * create a new recluso
      * @param objRecluso
@@ -119,10 +141,63 @@ public class ReclusosController {
             return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
         }
     }
-    
-    
-    
 
+
+    /**
+     * Assign recluso to a "cela"
+     * @param objReclusoCela
+     * @return
+     */
+    @RequestMapping(value = {"api/reclusos/add-recluso-cela"}, method = {RequestMethod.POST})
+    public ResponseEntity actionAddReclusoCela(@RequestBody ReclusoCela objReclusoCela) {
+
+        try {
+
+            //ReclusoCela oReclusoCela = new ReclusoCela();
+            Optional<ReclusoCela> reclusoCela = reclusoCelaRepository.findByReclusoAndCela(objReclusoCela.getRecluso(), objReclusoCela.getCela());
+
+            if(reclusoCela.isPresent()){
+                objReclusoCela = reclusoCela.get();
+                objReclusoCela.setDateUpdated(UtilsDate.getDateTime());
+                objReclusoCela.setStatus(Helper.STATUS_ACTIVE);
+            }else{
+                objReclusoCela.setId(new Helper().getUUID());
+                objReclusoCela.setDateCreated(UtilsDate.getDateTime());
+                objReclusoCela.setStatus(Helper.STATUS_ACTIVE);
+            }
+
+            objReclusoCela.setDateRemocao(null);
+            ReclusoCela crestedReclusoCela = reclusoCelaRepository.save(objReclusoCela);
+
+
+            ArrayList<ReclusoCela> reclusoCelas = reclusoCelaRepository.findByRecluso(objReclusoCela.getRecluso());
+
+            //vamos remover o recluso de outras celas caso ja lá estava
+            for (ReclusoCela auxReclusoCela : reclusoCelas) {
+                if(auxReclusoCela.getId() != objReclusoCela.getId()){
+                    auxReclusoCela.setStatus(Helper.STATUS_DISABLED);
+                    auxReclusoCela.setDateUpdated(UtilsDate.getDateTime());
+                    auxReclusoCela.setDateRemocao(UtilsDate.getDateTime());
+                    reclusoCelaRepository.save(auxReclusoCela);
+                }
+            }
+
+
+            return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1,"ok", objReclusoCela ));
+
+        }catch (Exception e){
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
+    }
+
+
+    /**
+     *
+     * @param reclusoPosted
+     * @return
+     */
     @RequestMapping(value = {"api/reclusos/add-profile-image"}, method = {RequestMethod.POST})
     public ResponseEntity actionAddReclusoImage(@RequestBody Recluso reclusoPosted) {
 

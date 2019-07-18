@@ -2,7 +2,8 @@
 <span th:fragment="ActionModal(objRecluso)">
 
         <!-- let's configure the modal -->
-        <span id="uploadReclusoID" th:data-action-reload=true
+        <span id="uploadReclusoID"
+              th:data-action-reload=true
               th:data-recluso_image_upload_id="${objRecluso.id}"
               th:include="/fragments/modalContainer:: ActionModal1('Images do utlizador', ~{ :: #modalContentArea})">
 

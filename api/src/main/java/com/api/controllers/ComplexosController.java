@@ -43,10 +43,11 @@ public class ComplexosController {
      * @return
      */
     @RequestMapping(value = {"api/complexos"}, method = {RequestMethod.GET})
-    public ResponseEntity actionDetails(@RequestParam(name = "id_cadeia", required = false) UUID id_cadeia, @PageableDefault(sort = {"nome"}, value = 10, page = 0) Pageable pageable) {
+    public ResponseEntity actionGet(@RequestParam(name = "id_cadeia", required = false) UUID id_cadeia, @PageableDefault(sort = {"nome"}, value = 10, page = 0) Pageable pageable) {
 
         try {
 
+            //se for fornecido o id_cadeia, vamos filtrar apenas complexos da respetiva cadeia
             if (id_cadeia != null) {
 
                 Cadeia cadeia = new Cadeia();
@@ -55,6 +56,8 @@ public class ComplexosController {
                 ArrayList<Complexo> complexos = complexoRepository.findByCadeia(cadeia);
 
                 return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1, "ok", complexos));
+
+                //caso contrario vamos retornar todos paginados
             } else {
 
                 Pageable pageableBuilded = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome")

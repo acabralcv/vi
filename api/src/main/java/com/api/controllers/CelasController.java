@@ -41,21 +41,19 @@ public class CelasController {
      * @return
      */
     @RequestMapping(value = {"api/celas"}, method = {RequestMethod.GET})
-    public ResponseEntity actionDetails(@RequestParam(name = "id_ala", required = false) UUID id_ala, @PageableDefault(sort = {"nome"}, value = 10, page = 0) Pageable pageable) {
-
-
+    public ResponseEntity actionGet(@RequestParam(name = "id_ala", required = false) UUID id_ala, @PageableDefault(sort = {"nome"}, value = 10, page = 0) Pageable pageable) {
 
         try {
 
-
+            //se for fornecido o id_ala, vamos filtrar apenas celas da respetiva ala
             if (id_ala != null) {
 
                 Ala ala = new Ala();
                 ala.setId(id_ala);
-
                 ArrayList<Cela> celas = celaRepository.findByAla(ala);
-
                 return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1, "ok", celas));
+
+                //caso contrario vamos pegar todos de forma paginada
             } else {
 
                 Pageable pageableBuilded = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome")

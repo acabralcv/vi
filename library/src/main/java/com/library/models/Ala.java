@@ -39,7 +39,7 @@ public class Ala extends AuditModel {
     }
 
 
-    public Setor getsetor() {
+    public Setor getSetor() {
         return setor;
     }
 

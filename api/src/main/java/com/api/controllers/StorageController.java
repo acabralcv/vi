@@ -156,7 +156,28 @@ public class StorageController {
      * @return
      */
     @RequestMapping(value = "api/storage/user-images", method = RequestMethod.GET)
-    public ResponseEntity getImages(@RequestParam(name = "userId") UUID userId, Pageable pageable){
+    public ResponseEntity getUserImages(@RequestParam(name = "userId") UUID userId, Pageable pageable){
+        try {
+
+            Page<Image> images = imageRepository.findByUserId(userId, pageable);
+
+            return ResponseEntity.ok().body(new BaseResponse( 1,"ok", images));
+
+        }catch (Exception e){
+            new EventsLogService(userRepository).AddEventologs(null,"Excption in class '" + this.getClass().getName()
+                    + "' method " + Thread.currentThread().getStackTrace()[1].getMethodName() + "()",e.getMessage(),null, null);
+            return ResponseEntity.ok().body(new BaseResponse(0, e.getMessage(), null));
+        }
+    }
+
+    /**
+     *
+     * @param userId
+     * @param pageable
+     * @return
+     */
+    @RequestMapping(value = "api/storage/recluso-images", method = RequestMethod.GET)
+    public ResponseEntity getReclusoImages(@RequestParam(name = "userId") UUID userId, Pageable pageable){
         try {
 
             Page<Image> images = imageRepository.findByUserId(userId, pageable);

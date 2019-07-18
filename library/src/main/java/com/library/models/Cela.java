@@ -39,7 +39,7 @@ public class Cela extends AuditModel {
     }
 
 
-    public Ala getala() {
+    public Ala getAla() {
         return ala;
     }
 

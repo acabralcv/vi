@@ -31,10 +31,10 @@
                         <th>Nome</th>
                         <td th:text="${oCela.nome}">#</td>
                     </tr>
-                    <!--<tr>-->
-                        <!--<th>Ala</th>-->
-                        <!--<td th:text="${oCela.ala != null ? oCela.ala.nome : '' }">#</td>-->
-                    <!--</tr>-->
+                    <tr>
+                        <th>Ala</th>
+                        <td th:text="${oCela.ala != null ? oCela.ala.nome : '' }">#</td>
+                    </tr>
                     <tr>
                         <th>Data de criação</th>
                         <td th:text="${#dates.format(oCela.dateUpdated, 'dd/MM/yyyy')}">#</td>

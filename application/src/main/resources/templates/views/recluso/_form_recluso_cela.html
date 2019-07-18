@@ -1,0 +1,73 @@
+<span th:fragment="formReclusoCela(oRecluso, oReclusoCela, cadeiasList)">
+
+   <form action="#">
+
+        <div class="row">
+            <div class="col-xs-6 col-md-6">
+               <div class="form-group">
+                   <div class="form-group">
+                       <select id="cadeia" onchange="modelRecluso.getLocalizacao('complexos', 'id_cadeia', this.value, '#complexo')" class="form-control">
+                            <option value="">Selecionar cadeia</option>
+                            <option th:each="oCadeia : ${cadeiasList}" th:value="${oCadeia.id}" th:text="${oCadeia.nome}">
+                            </option>
+                        </select>
+                   </div>
+               </div>
+            </div>
+
+
+            <div class="col-xs-6 col-md-6">
+               <div class="form-group">
+                   <div class="form-group">
+                       <select id="complexo" onchange="modelRecluso.getLocalizacao('setores', 'id_complexo', this.value, '#setor')" class="form-control">
+                            <option value="">Selecionar complexo</option>
+                        </select>
+                   </div>
+               </div>
+            </div>
+
+
+            <div class="col-xs-6 col-md-6">
+               <div class="form-group">
+                   <div class="form-group">
+                       <select id="setor" onchange="modelRecluso.getLocalizacao('alas', 'id_setor', this.value, '#ala')" class="form-control">
+                            <option value="">Selecionar setor</option>
+                        </select>
+                   </div>
+               </div>
+            </div>
+
+
+            <div class="col-xs-6 col-md-6">
+               <div class="form-group">
+                   <div class="form-group">
+                       <select id="ala" onchange="modelRecluso.getLocalizacao('celas', 'id_ala', this.value, '#recluso_cela_ala_id')" class="form-control">
+                            <option value="">Selecionar ala</option>
+                        </select>
+                   </div>
+               </div>
+            </div>
+
+
+            <div class="col-xs-6 col-md-6">
+               <div class="form-group">
+                   <div class="form-group">
+                       <select id="recluso_cela_ala_id" class="form-control">
+                            <option value="">Selecionar cela</option>
+                        </select>
+                   </div>
+               </div>
+            </div>
+
+            <div class="col-xs-1 col-md-1" style="width: auto;padding: 0;">
+                <button id="btnAddReclusoCela" type="button" class="btn btn-primary" style="margin: 0 10px;">
+                    <span th:data-recluso_id="${oRecluso.id}"
+                          class="fas fa-plus-circle"
+                          onclick="modelRecluso.addReclusoCela(this.getAttribute('data-recluso_id'))">&nbsp;Guardar</span>
+                </button>
+            </div>
+        </div>
+
+   </form>
+
+</span>

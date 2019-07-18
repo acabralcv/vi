@@ -14,62 +14,51 @@
 
 <body>
 
-    <div class="col-xs-12 col-md-12" layout:fragment="content">
+    <span layout:fragment="content">
 
-        <!-- TO BE USED TO GET PROFILES -->
-        <input type="hidden" th:value="${oRecluso.id}" id="action_user_id" class="form-control" />
 
-        <span th:replace="/views/recluso/_recluso_image.html:: ActionModal(${oRecluso})"></span>
+        <input type="text" th:value="${oRecluso.id}" id="action_recluso_id" class="form-control" />
 
-        <div clas="col">
-            <a th:href="@{|/reclusos|}" class="btn btn-default">Voltar</a>
-            <a th:href="@{|/reclusos/update/${oRecluso.id}|}" class="btn btn-success">Atualizar</a>
-            <!--a th:href="@{|/reclusos/delete/${oRecluso.id}|}" class="btn btn-danger" onclick="return confirm('Tem certeza de que deseja remover este Recluso')">Remover</a-->
-        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Recluso - <span th:text="${oRecluso.nome}"></span></div>
+            <div class="panel-body">
 
-        <div class="col" style="margin-top: 35px">
-            <div class="panel panel-primary">
-                  <div class="panel-heading">Recluso - <span th:text="${oRecluso.nome}"></span></div>
-                  <div class="panel-body">
-					  <div clas="col" align="center">
-						  <a class="btn" href="#">
-							  <i class="fas fa-balance-scale fa-2x"></i> Decisão Judicial</a>
-						  <a class="btn" href="#">
-							  <i class="fas fa-receipt fa-2x"></i> Titulo Judiciario</a>
-						  <a class="btn" href="#">
-						  <i class="fas fa-gavel fa-2x"></i> Mandado Libertação</a>
-						  <a class="btn" href="#">
-							  <i class="fas fa-user-injured fa-2x"></i> Ocorrências</a>
-						  <a class="btn" href="#">
-							  <i class="fas fa-user-clock fa-2x"></i> Pena Prisão</a>
-						  <a class="btn" th:href="@{|/reclusos/transfer/${oRecluso.id}|}">
-							  <i class="fas fa-bus-alt fa-2x"></i> Transferência</a>
-						  <a class="btn" href="#">
-							  <i class="fas fa-address-card fa-2x"></i> Registro Criminal</a>
-						  <a class="btn" href="#">
-							  <i class="fas fa-hand-holding-usd fa-2x"></i>Valores Apreendidos</a>
-						  <a class="btn" href="#">
-							  <i class="fas fa-user-lock fa-2x"></i> Medida Segurança</a>
-						  <a class="btn" href="#">
-							  <i class="fas fa-medkit fa-2x"></i> Saude, Internamento</a>
-						  <a class="btn" href="#">
-							  <i class="fas fa-hands-helping fa-2x"></i></i>Serviços Voluntários</a>
-						  <a class="btn" href="#">
-							  <i class="fas fa-user-graduate fa-2x"></i></i>Formação</a>
+                <div class="col-xs-12 col-md-3">
 
-                    <div clas="col">
-                        <span th:if="${oRecluso.profileImage != null}">
-                            <img th:src="@{/api/storage/images-details?id={id}(id=${oRecluso.profileImage.storageId})}" style="width:128px;height: 128px;"/>
-                        </span>
-                        <span th:unless="${oRecluso.profileImage != null}">
-                            <div style="width:128px;height: 128px;background-color: #ccc">Foto</div>
-                        </span>
-<!--                        <button th:data-user_image_id="${oRecluso.id}" class="btn btn-default" onclick="modelRecluso.openReclusoImagesModal(this.getAttribute('data-user_image_id'))" style="position: absolute;left: 101px;top: 133px;">-->
-<!--                            <i class="fas fa-pencil-alt" alt="Alterar a foto do perfil do recluso"></i>-->
-<!--                        </button>-->
-                    </div>
+                    <span class="float-left" th:if="${oRecluso.profileImage != null}">
+                        <img th:src="@{/api/storage/images-details?id={id}(id=${oRecluso.profileImage.storageId})}" style="width:128px;height: 128px;"/>
+                    </span>
+                      <span th:unless="${oRecluso.profileImage != null}">
+                        <div style="width:128px;height: 128px;background-color: #ccc">Foto</div>
+                    </span>
+                    <!--<button th:data-user_image_id="${oRecluso.id}" class="btn btn-default" onclick="modelRecluso.openReclusoImagesModal(this.getAttribute('data-user_image_id'))" style="position: absolute;left: 101px;top: 133px;">-->
+                    <!--    <i class="fas fa-pencil-alt" alt="Alterar a foto do perfil do recluso"></i>-->
+                    <!--</button>-->
+                </div>
 
-                    <hr />
+                <div class="col-xs-12 col-md-3">
+                      <!-- fa-2x -->
+                      <div><a class="btn" href="#"><i class="fas fa-balance-scale"></i> Decisão Judicial</a></div>
+                      <div><a class="btn" href="#"><i class="fas fa-receipt"></i> Titulo Judiciario</a></div>
+                      <div><a class="btn" href="#"><i class="fas fa-gavel"></i> Mandado Libertação</a></div>
+                      <div><a class="btn" href="#"><i class="fas fa-user-injured"></i> Ocorrências</a></div>
+                </div>
+
+                <div class="col-xs-12 col-md-3">
+                      <div><a class="btn" href="#"><i class="fas fa-user-clock"></i> Pena Prisão</a></div>
+                      <div><a class="btn" th:href="@{|/reclusos/transfer/${oRecluso.id}|}"><i class="fas fa-bus-alt"></i> Transferência</a></div>
+                      <div><a class="btn" href="#"><i class="fas fa-address-card"></i> Registro Criminal</a></div>
+                      <div><a class="btn" href="#"><i class="fas fa-hand-holding-usd"></i>Valores Apreendidos</a></div>
+                </div>
+
+                <div class="col-xs-12 col-md-3">
+                      <div><a class="btn" href="#"><i class="fas fa-medkit"></i> Saude, Internamento</a></div>
+                      <div><a class="btn" href="#"><i class="fas fa-hands-helping"></i></i>Serviços Voluntários</a></div>
+                      <div><a class="btn" href="#"><i class="fas fa-user-graduate"></i></i>Formação</a></div>
+                      <div><a class="btn" href="#"><i class="fas fa-user-lock"></i> Medida Segurança</a></div>
+                </div>
+
+                <div class="col-xs-12 col-md-12" style="margin-top: 35px">
 
                     <table class="table table-striped table-bordered">
                         <tr>
@@ -109,7 +98,6 @@
                         </tr>
                     </table>
 
-
                     <!-- Endereço e contatos -->
                     <table class="table table-striped table-bordered">
                         <tr>
@@ -136,7 +124,6 @@
                         </tr>
 
                     </table>
-
 
                     <!-- Outras informações -->
                     <table class="table table-striped table-bordered">
@@ -169,11 +156,43 @@
 
                     </table>
 
-                  </div>
+                </div>
+
             </div>
         </div>
 
-    </div>
+        <div class="panel panel-primary" style="margin-top: 30px">
+            <div class="panel-heading">Histórico de localização </div>
+            <div class="panel-body">
+
+                <table id="listaUserPerfilTable" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Cadeia</th>
+                        <th>Complexo</th>
+                        <th>Setor</th>
+                        <th>Ala</th>
+                        <th>Cela</th>
+                        <th>Data remoção</th>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="6">[Sem registo]</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <div class="col" style="background: #f5f5f5;padding: 35px;">
+                    <!--eh utilizado pelo profile/index tambem -->
+                    <span th:replace="/views/recluso/_form_recluso_cela:: formReclusoCela(${oRecluso},${oReclusoCela},${cadeiasList})"></span>
+                </div>
+            </div>
+        </div>
+
+    </span>
 
 </body>
 </html>

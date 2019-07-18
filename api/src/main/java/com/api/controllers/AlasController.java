@@ -41,20 +41,19 @@ public class AlasController {
      * @return
      */
     @RequestMapping(value = {"api/alas"}, method = {RequestMethod.GET})
-    public ResponseEntity actionDetails(@RequestParam(name = "id_setor", required = false) UUID id_setor, @PageableDefault(sort = {"nome"}, value = 10, page = 0) Pageable pageable) {
-
-
+    public ResponseEntity actionGet(@RequestParam(name = "id_setor", required = false) UUID id_setor, @PageableDefault(sort = {"nome"}, value = 10, page = 0) Pageable pageable) {
 
         try {
 
+            //se for fornecido o id_setor, vamos filtrar apenas alas do respetivo setor
             if (id_setor != null) {
 
                 Setor setor = new Setor();
                 setor.setId(id_setor);
-
                 ArrayList<Ala> alas = alaRepository.findBySetor(setor);
-
                 return ResponseEntity.ok().body(new BaseResponse().getObjResponse(1, "ok", alas));
+
+                //caso contrario vamos pegar todos de forma paginada
             } else {
 
                 Pageable pageableBuilded = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome")
